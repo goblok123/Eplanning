@@ -2,7 +2,7 @@
     <div class="masthead" style="">
       <div class="row">
         <div class="col-sm-1" style="padding-top:8px;">
-         <img  class="img-responsive center-block" style="width:50px; height:50px" src= <?php echo base_url('Images/Logo.png') ?>>
+          <img  class="img-responsive center-block" style="width:50px; height:50px" src= <?php echo base_url('Images/Logo.png') ?>>
         </div>
         <div class="col-sm-4" style="padding:5px;">
           <h2 class="" style="font-weight:bold; margin-top:10px; align="" ">Eplaning RSUD Karangasem</h2>
@@ -13,8 +13,13 @@
         <nav style="">
           <ul class="nav nav-justified">
             <li><a href="#">Lihat Usulan</a></li>
-            <li><a href="<?php echo base_url('/login/lihat_item_usulan'); ?>">Item Usulan</a></li>
-            <li><a href="<?php echo base_url('/login/loginPage'); ?>">Masuk</a></li>
+            <li><a href="#">Masukkan Usulan</a></li>
+            <li><a href="<?php echo base_url('/site/item_usulan'); ?>">Item Usulan</a></li>
+            <li><a href="#">Ketahui Usulan</a></li>
+            <li><a href="#">Tambah Pengguna</a></li>
+            <li><a href="#">Lihat Laporan</a></li>
+            <li><a href="#">Keputusan</a></li>
+            <li><a href="#">Password</a></li>
           </ul>
         </nav>
       </div>

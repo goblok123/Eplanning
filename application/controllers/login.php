@@ -12,7 +12,7 @@ class Login extends CI_Controller
 		$is_logged_in2 = $this->session->userdata('is_logged_in');
 
 		if(!isset($is_logged_in2) || $is_logged_in2 != TRUE){
-			$this->load->view('includes/header');
+			$this->load->view('template/header');
 			$this->load->view('menu/menu_not_login');
 			$this->load->view('not_login');
 			$this->load->view('template/footer');
@@ -20,20 +20,27 @@ class Login extends CI_Controller
 			$hak = $this->session->userdata('hakAkses');
 
 			if($hak == 'pengimput'){
+				$this->load->view('template/header');
+				$this->load->view('menu/menu_pengimput');
 				$this->load->view('Pengimput');
+				$this->load->view('template/footer');
 			}else if($hak == 'penanggungJawab'){
-				$this->load->view('Penangung_Jawab');
-			}else if($hak == 'perwakilan'){
-				$this->load->view('Perwakilan');
+				$this->load->view('template/header');
+				$this->load->view('menu/menu_penanggung_jawab');
+				$this->load->view('Penanggung_Jawab');
+				$this->load->view('template/footer');
 			}else if($hak == 'administrator'){
+				$this->load->view('template/header');
+				$this->load->view('menu/menu_administrator');
 				$this->load->view('Administrator');
+				$this->load->view('template/footer');
 			}
 		}
 	}
 
 	function loginPage()
 	{
-		$this->load->view('includes/header');
+		$this->load->view('template/header');
 		$this->load->view('menu/menu_not_login');
 		$this->load->view('login_form');
 		$this->load->view('template/footer');
@@ -59,7 +66,8 @@ class Login extends CI_Controller
 		}else{
 			$data['account_created'] = 'Username atau password Anda salah.<br/><br/> Silahkan coba lagi!';
 
-			$this->load->view('includes/header');
+			$this->load->view('template/header');
+			$this->load->view('menu/menu_not_login');
 			$this->load->view('login_form', $data);
 			$this->load->view('template/footer');
 		}
@@ -71,7 +79,9 @@ class Login extends CI_Controller
 			$this->load->model('membership_model');
 			$data['allUnit'] = $this->membership_model->find_all_unit();
 
-			$this->load->view('includes/header');
+
+			$this->load->view('template/header');
+			$this->load->view('menu/menu_not_login');
 			$this->load->view('signup_form',$data);
 			$this->load->view('template/footer');
 		}else{
@@ -99,7 +109,8 @@ class Login extends CI_Controller
 			if($query = $this->membership_model->create_member()){
 				$data['account_created'] = 'Akun sudah tersimpan.<br/><br/>Anda bisa login sekarang.';
 
-				$this->load->view('includes/header');
+				$this->load->view('template/header');
+				$this->load->view('menu/menu_not_login');
 				$this->load->view('login_form', $data);
 				$this->load->view('template/footer');
 			}else{
@@ -154,5 +165,16 @@ class Login extends CI_Controller
 				return FALSE;
 			}
 		}
+	}
+
+	function lihat_item_usulan(){
+		$this->load->model('master_model');
+		$data['allObat'] = $this->master_model->find_all_obat();
+		$data['allJsdm'] = $this->master_model->find_all_j_sdm();
+
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_not_login');
+		$this->load->view('item_usulan/lihat_item',$data);
+		$this->load->view('template/footer');
 	}
 }

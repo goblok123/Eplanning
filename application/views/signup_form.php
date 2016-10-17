@@ -8,7 +8,6 @@
 		$options = array(
 	        "pengimput"         => "Pengimput",
 	        "penanggungJawab"         => "Penangung Jawab",
-	        "perwakilan"        => "Perwakilan",
 	        "administrator"           => "Administrator",
 		);
 		echo form_dropdown('hakAkses', $options, 'pengimput', 'class="dropdownStyle"');

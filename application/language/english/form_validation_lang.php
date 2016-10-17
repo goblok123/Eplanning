@@ -37,7 +37,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['form_validation_required']		= 'The {field} field is required.';
+$lang['form_validation_required']		= '{field} masih kosong.';
 $lang['form_validation_isset']			= 'The {field} field must have a value.';
 $lang['form_validation_valid_email']		= 'The {field} field must contain a valid email address.';
 $lang['form_validation_valid_emails']		= 'The {field} field must contain all valid email addresses.';
@@ -68,4 +68,5 @@ $lang['form_validation_error_message_not_set']	= 'Unable to access an error mess
 $lang['form_validation_in_list']		= 'The {field} field must be one of: {param}.';
 $lang['check_if_username_exists'] = "Maaf, username anda sudah terdaftar.";
 $lang['check_if_unit_exists'] = "Maaf, unit sudah terdaftar.";
+$lang['check_if_obat_exists'] = "Maaf, obat sudah terdaftar.";
 $lang['check_if_email_exists'] = 'Sorry, that email has already been registered.';
