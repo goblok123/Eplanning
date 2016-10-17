@@ -22,7 +22,7 @@ class Membership_model extends CI_Model{
 			'name' => $this->input->post('name'),
 			'username' => $this->input->post('username'),
 			'access' => $this->input->post('hakAkses'),
-			'name_unit' => $this->input->post('unit'),
+			'id_unit' => $this->input->post('unit'),
 			'pass' => $this->input->post('password')
 		);
 
@@ -53,17 +53,21 @@ class Membership_model extends CI_Model{
 	// }
 
 	function find_all_unit(){
-		$query = $this->db->query("SELECT name_unit from unit");
+		$query = $this->db->query("SELECT id_unit, name_unit from unit");
    		return $query->result();
 	}
 
 	function find_for_sesion($username1){
-		$q = $this->db->query("SELECT name_unit, access from users where username = '$username1' ");
+		$q = $this->db->query("SELECT id_unit, access from users where username = '$username1' ");
 
    		return $q->row();
-
 	}
 
-	
+
+	function find_unit($u){
+		$g = $this->db->query("SELECT name_unit from unit where id_unit = '$u' ");
+
+   		return $g->row();
+	}
 }
 ?>

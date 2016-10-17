@@ -53,11 +53,12 @@ class Login extends CI_Controller
 		if($query){
 			$username1 = $this->input->post('username');
 			$r = $this->membership_model->find_for_sesion($username1);
+			$t = $this->membership_model->find_for_sesion($r->name_unit);
 
 			$data = array(
 					'username' => $this->input->post('username'),
 					'is_logged_in' => true,
-					'unit' => $r->name_unit,
+					'id_unit' => $t->name_unit,
 					'hakAkses'=> $r->access,
 				);
 

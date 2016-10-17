@@ -16,7 +16,7 @@
 	<select name="unit" id="unit" class="dropdownStyle">
 	  <?php
 	    foreach($allUnit  as $r) { ?>
-	      <option value="<?= $r->name_unit ?>"><?= $r->name_unit ?></option>
+	      <option value="<?= $r->id_unit ?>"><?= $r->name_unit ?></option>
 	  <?php
 	    } ?>
 	</select> 
