@@ -52,6 +52,7 @@ class Site extends CI_Controller
 		$this->load->model('master_model');
 		$data['allObat'] = $this->master_model->find_all_obat();
 		$data['allJsdm'] = $this->master_model->find_all_j_sdm();
+		$data['allNon'] = $this->master_model->find_all_bphnon();
 
 		$this->load->view('template/header');
 
@@ -117,24 +118,34 @@ class Site extends CI_Controller
 		}
 	}
 
-	function tambah_obat_form(){
+//OBAT
+	function tambah_obat_form_kosong(){
 		$this->load->view('template/header');
 		$this->load->view('menu/menu_administrator');
 		$this->load->view('item_usulan/tambah_obat');
 		$this->load->view('template/footer');
 	}
 
+	function tambah_obat_form($m){
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_administrator');
+		$this->load->view('item_usulan/tambah_obat',$m);
+		$this->load->view('template/footer');
+	}
+
 	function add_item_obat(){
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('name_obat', 'Nama Obat', 'trim|required|max_length[150]|callback_check_if_obat_exists');
+		$this->form_validation->set_rules('name_obat', 'Nama Obat', 'trim|required|max_length[200]|callback_check_if_obat_exists');
 
 		if($this->form_validation->run() == FALSE){
-			$this->tambah_obat_form();
+			$data['obat_added'] = 'Obat gagal tersimpan.';
+			$this->tambah_obat_form($data);
 		}else{
 			$this->load->model('master_model');
+			$data['obat_added'] = 'Obat sudah tersimpan.';
 			if($query = $this->master_model->addObat()){
-				$this->tambah_obat_form();
+				$this->tambah_obat_form($data);
 			}
 		}
 	}
@@ -151,17 +162,34 @@ class Site extends CI_Controller
 		}
 	}
 
+//SDM
+	function tambah_jenis_sdm_form_kosong(){
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_administrator');
+		$this->load->view('item_usulan/tambah_jenis_sdm');
+		$this->load->view('template/footer');
+	}
+
+	function tambah_jenis_sdm_form($m){
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_administrator');
+		$this->load->view('item_usulan/tambah_jenis_sdm',$m);
+		$this->load->view('template/footer');
+	}
+
 	function add_item_jenis_sdm(){
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('jenis_sdm', 'Jenis SDM', 'trim|required|max_length[150]|callback_check_if_sdm_exists');
+		$this->form_validation->set_rules('jenis_sdm', 'Jenis SDM', 'trim|required|max_length[200]|callback_check_if_sdm_exists');
 
 		if($this->form_validation->run() == FALSE){
-			$this->item_usulan();
+			$data['sdm_added'] = 'Jenis SDM gagal tersimpan.';
+			$this->tambah_jenis_sdm_form($data);
 		}else{
 			$this->load->model('master_model');
-			if($query = $this->master_model->add_item_jenis_sdm()){
-				$this->item_usulan();
+			$data['sdm_added'] = 'Jenis SDM sudah tersimpan.';
+			if($query = $this->master_model->add_jenis_sdm()){
+				$this->tambah_jenis_sdm_form($data);
 			}
 		}
 	}
@@ -178,6 +206,49 @@ class Site extends CI_Controller
 		}
 	}
 
+//BPH NON FARMASI
+	function tambah_bhpnon_form_kosong(){
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_administrator');
+		$this->load->view('item_usulan/tambah_bhpnon');
+		$this->load->view('template/footer');
+	}
+
+	function tambah_bhpnon_form($m){
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_administrator');
+		$this->load->view('item_usulan/tambah_bhpnon',$m);
+		$this->load->view('template/footer');
+	}
+
+	function add_bhpnon(){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('bhpnon', 'BHP Non Farmasi', 'trim|required|max_length[200]|callback_check_if_bhpnon_exists');
+
+		if($this->form_validation->run() == FALSE){
+			$data['added'] = 'BPH non farmasi gagal tersimpan.';
+			$this->tambah_bhpnon_form($data);
+		}else{
+			$this->load->model('master_model');
+			$data['added'] = 'BPH non farmasi sudah tersimpan.';
+			if($query = $this->master_model->add_bhpnon()){
+				$this->tambah_bhpnon_form($data);
+			}
+		}
+	}
+
+	function check_if_bhpnon_exists($requested){
+		$this->load->model('master_model');
+
+		$available = $this->master_model->check_if_bhpnon_exists($requested);
+
+		if($available){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+	}
 
 }
 ?>

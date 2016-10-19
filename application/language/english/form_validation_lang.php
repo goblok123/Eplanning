@@ -68,5 +68,7 @@ $lang['form_validation_error_message_not_set']	= 'Unable to access an error mess
 $lang['form_validation_in_list']		= 'The {field} field must be one of: {param}.';
 $lang['check_if_username_exists'] = "Maaf, username anda sudah terdaftar.";
 $lang['check_if_unit_exists'] = "Maaf, unit sudah terdaftar.";
+$lang['check_if_sdm_exists'] = "Maaf, jenis SDM sudah terdaftar.";
 $lang['check_if_obat_exists'] = "Maaf, obat sudah terdaftar.";
+$lang['check_if_bhpnon_exists'] = "Maaf, BHP non farmasi sudah terdaftar.";
 $lang['check_if_email_exists'] = 'Sorry, that email has already been registered.';

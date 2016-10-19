@@ -23,6 +23,7 @@ class Master_model extends CI_Model{
 		}
 	}
 
+//OBAT
 	function addObat(){
 		$name_obat = $this->input->post('name_obat');
 
@@ -50,7 +51,7 @@ class Master_model extends CI_Model{
    		return $query->result();
 	}
 
-	//Jenis SDM
+//JENIS SDM
 	function add_jenis_sdm(){
 		$new_insert_data = array(
 			'nama_sdm' => $this->input->post('jenis_sdm'),
@@ -76,6 +77,31 @@ class Master_model extends CI_Model{
    		return $query->result();
 	}
 
+//BPH NON FARMASI
+	function add_bhpnon(){
+		$new_insert_data = array(
+			'nama_bhp_nonfarmasi' => $this->input->post('bhpnon'),
+		);
+
+		$insert = $this->db->insert('bhp_nonfarmasi', $new_insert_data);
+		return $insert;
+	}
+
+	function check_if_bhpnon_exists($nama){
+		$this->db->where('nama_bhp_nonfarmasi', $nama);
+		$result = $this->db->get('bhp_nonfarmasi');
+
+		if($result->num_rows() > 0){
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+	}
+
+	function find_all_bhpnon(){
+		$query = $this->db->query("SELECT nama_bhp_nonfarmasi from bhp_nonfarmasi");
+   		return $query->result();
+	}
 
 }
 ?>

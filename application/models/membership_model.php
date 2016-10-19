@@ -63,7 +63,6 @@ class Membership_model extends CI_Model{
    		return $q->row();
 	}
 
-
 	function find_unit($u){
 		$g = $this->db->query("SELECT name_unit from unit where id_unit = '$u' ");
 
