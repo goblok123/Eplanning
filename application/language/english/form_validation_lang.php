@@ -70,5 +70,10 @@ $lang['check_if_username_exists'] = "Maaf, username anda sudah terdaftar.";
 $lang['check_if_unit_exists'] = "Maaf, unit sudah terdaftar.";
 $lang['check_if_sdm_exists'] = "Maaf, jenis SDM sudah terdaftar.";
 $lang['check_if_obat_exists'] = "Maaf, obat sudah terdaftar.";
-$lang['check_if_bhpnon_exists'] = "Maaf, BHP non farmasi sudah terdaftar.";
+$lang['check_if_bhp_exists'] = "Maaf, BHP sudah terdaftar.";
+$lang['check_if_alat_exists'] = 'Maaf, Alat sudah terdaftar.';
+$lang['check_if_gedung_exists'] = 'Maaf, Gedung/konstruksi sudah terdaftar.';
+$lang['check_if_item_keu_exists'] = 'Maaf, Item keuangan sudah terdaftar.';
+
 $lang['check_if_email_exists'] = 'Sorry, that email has already been registered.';
+

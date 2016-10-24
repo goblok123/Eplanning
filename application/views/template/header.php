@@ -14,6 +14,7 @@
     <script src="bootstrap-3.3.6/js/jquery.js"></script>
     <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script src="bootstrap-3.3.6/js/home.js"></script>
+    
   </head>
 
   <body>

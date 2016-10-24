@@ -77,19 +77,20 @@ class Master_model extends CI_Model{
    		return $query->result();
 	}
 
-//BPH NON FARMASI
-	function add_bhpnon(){
+//BPH
+	function add_bhp(){
 		$new_insert_data = array(
-			'nama_bhp_nonfarmasi' => $this->input->post('bhpnon'),
+			'nama_bhp' => $this->input->post('nama_bhp'),
+			'id_kode' => $this->input->post('kode_bhp'),
 		);
 
-		$insert = $this->db->insert('bhp_nonfarmasi', $new_insert_data);
+		$insert = $this->db->insert('bhp', $new_insert_data);
 		return $insert;
 	}
 
-	function check_if_bhpnon_exists($nama){
-		$this->db->where('nama_bhp_nonfarmasi', $nama);
-		$result = $this->db->get('bhp_nonfarmasi');
+	function check_if_bhp_exists($nama){
+		$this->db->where('nama_bhp', $nama);
+		$result = $this->db->get('bhp');
 
 		if($result->num_rows() > 0){
 			return FALSE;
@@ -98,8 +99,99 @@ class Master_model extends CI_Model{
 		}
 	}
 
-	function find_all_bhpnon(){
-		$query = $this->db->query("SELECT nama_bhp_nonfarmasi from bhp_nonfarmasi");
+	function find_all_bhp(){
+		$query = $this->db->query("SELECT id_kode, nama_bhp from bhp");
+   		return $query->result();
+	}
+
+	function find_all_jenis_bhp(){
+		$query = $this->db->query("SELECT id_kode, nama_jenis_bhp from kode_jenis_bhp");
+   		return $query->result();
+	}
+
+	function find_jenis_bhp($b){
+		$query = $this->db->query("SELECT nama_jenis_bhp from kode_jenis_bhp where id_kode = '$b' ");
+   		return $query->row();
+	}
+
+//Alat
+	function add_alat(){
+		$new_insert_data = array(
+			'nama_alat_kes_dan_non' => $this->input->post('nama_alat'),
+			'jenis_alat' => $this->input->post('alat'),
+		);
+
+		$insert = $this->db->insert('alat_kes_dan_non', $new_insert_data);
+		return $insert;
+	}
+
+	function check_if_alat_exists($nama){
+		$this->db->where('nama_alat_kes_dan_non', $nama);
+		$result = $this->db->get('alat_kes_dan_non');
+
+		if($result->num_rows() > 0){
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+	}
+
+	function find_all_alat(){
+		$query = $this->db->query("SELECT nama_alat_kes_dan_non, jenis_alat from alat_kes_dan_non");
+   		return $query->result();
+	}
+
+
+//Gedung
+	function add_gedung(){
+		$new_insert_data = array(
+			'nama_gedung' => $this->input->post('nama_gedung'),
+		);
+
+		$insert = $this->db->insert('gedung', $new_insert_data);
+		return $insert;
+	}
+
+	function check_if_gedung_exists($nama){
+		$this->db->where('nama_gedung', $nama);
+		$result = $this->db->get('gedung');
+
+		if($result->num_rows() > 0){
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+	}
+
+	function find_all_gedung(){
+		$query = $this->db->query("SELECT nama_gedung from gedung");
+   		return $query->result();
+	}
+
+//Item Keuangan
+	function add_item_keu(){
+		$new_insert_data = array(
+			'nama_item_keu' => $this->input->post('nama_item_keu'),
+			'jenis_item_keu' => $this->input->post('jenis_item_keu'),
+		);
+
+		$insert = $this->db->insert('item_keuangan', $new_insert_data);
+		return $insert;
+	}
+
+	function check_if_item_keu_exists($nama){
+		$this->db->where('nama_item_keu', $nama);
+		$result = $this->db->get('item_keuangan');
+
+		if($result->num_rows() > 0){
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+	}
+
+	function find_all_item_keu(){
+		$query = $this->db->query("SELECT nama_item_keu, jenis_item_keu from item_keuangan");
    		return $query->result();
 	}
 

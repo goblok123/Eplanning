@@ -6,9 +6,9 @@
 		echo form_input('username', set_value('username', 'Username'));
 
 		$options = array(
-	        "pengimput"         => "Pengimput",
-	        "penanggungJawab"         => "Penangung Jawab",
-	        "administrator"           => "Administrator",
+	        "Pengimput"         => "Pengimput",
+	        "Penangung Jawab"         => "Penangung Jawab",
+	        "Administrator"           => "Administrator",
 		);
 		echo form_dropdown('hakAkses', $options, 'pengimput', 'class="dropdownStyle"');
 	?>
