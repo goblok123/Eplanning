@@ -11,9 +11,9 @@
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>bootstrap-3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>bootstrap-3.3.6/css/customStyle.css">
-    <script src="bootstrap-3.3.6/js/jquery.js"></script>
-    <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script src="bootstrap-3.3.6/js/home.js"></script>
+    <script src="<?php echo base_url();?>bootstrap-3.3.6/js/jquery.js"></script>
+    <script src="<?php echo base_url();?>bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script src="<?php echo base_url();?>bootstrap-3.3.6/js/home.js"></script>
     
   </head>
 

@@ -19,22 +19,23 @@ class Login extends CI_Controller
 		}else{
 			$hak = $this->session->userdata('hakAkses');
 
-			if($hak == 'pengimput'){
-				$this->load->view('template/header');
-				$this->load->view('menu/menu_pengimput');
-				$this->load->view('Pengimput');
-				$this->load->view('template/footer');
-			}else if($hak == 'penanggungJawab'){
-				$this->load->view('template/header');
-				$this->load->view('menu/menu_penanggung_jawab');
-				$this->load->view('Penanggung_Jawab');
-				$this->load->view('template/footer');
-			}else if($hak == 'administrator'){
-				$this->load->view('template/header');
-				$this->load->view('menu/menu_administrator');
-				$this->load->view('Administrator');
-				$this->load->view('template/footer');
-			}
+			redirect('site/members_area');
+			// if($hak == 'Pengimput'){
+			// 	$this->load->view('template/header');
+			// 	$this->load->view('menu/menu_pengimput');
+			// 	$this->load->view('Pengimput');
+			// 	$this->load->view('template/footer');
+			// }else if($hak == 'penanggungJawab'){
+			// 	$this->load->view('template/header');
+			// 	$this->load->view('menu/menu_penanggung_jawab');
+			// 	$this->load->view('Penanggung_Jawab');
+			// 	$this->load->view('template/footer');
+			// }else if($hak == 'administrator'){
+			// 	$this->load->view('template/header');
+			// 	$this->load->view('menu/menu_administrator');
+			// 	$this->load->view('Administrator');
+			// 	$this->load->view('template/footer');
+			// }
 		}
 	}
 

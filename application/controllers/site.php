@@ -415,7 +415,11 @@ class Site extends CI_Controller
 
 
 	function usulan(){
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_administrator');
 		$this->load->view('usulan/usulan_form');
+		$this->load->view('template/footer');
+
 	}
 }
 ?>
