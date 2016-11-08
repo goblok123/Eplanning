@@ -18,7 +18,7 @@
 	</select> 
 
 	<?php
-		echo form_input('nama_bhp', set_value('nama_bhp', 'Nama BHP'));
+		echo form_input('nama_bhp', set_value('nama_bhp', 'Nama BHP'), 'class="input1"');
 		echo form_submit('submit', 'Tambah');
 	?>
 

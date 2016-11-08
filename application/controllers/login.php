@@ -56,13 +56,15 @@ class Login extends CI_Controller
 		if($query){
 			$username1 = $this->input->post('username');
 			$r = $this->membership_model->find_for_sesion($username1);
-			$t = $this->membership_model->find_for_sesion($r->name_unit);
+			$t = $this->membership_model->find_unit($r->id_unit);
 
 			$data = array(
 					'username' => $this->input->post('username'),
 					'is_logged_in' => true,
-					'id_unit' => $t->name_unit,
+					'id_unit' => $r->id_unit,
+					'nama_unit' => $t->name_unit,
 					'hakAkses'=> $r->access,
+					'id_user'=> $r->id_user,
 				);
 
 			$this->session->set_userdata($data);
@@ -149,7 +151,7 @@ class Login extends CI_Controller
 	// }
 
 	function destroy_session(){
-		$array_items = array('username', 'is_logged_in', 'unit', 'hakAkses');
+		$array_items = array('username', 'is_logged_in', 'id_unit', 'hakAkses', 'id_user');
 
 		$this->session->unset_userdata($array_items);
 		redirect('login');

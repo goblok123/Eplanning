@@ -53,20 +53,20 @@ class Membership_model extends CI_Model{
 	// }
 
 	function find_all_unit(){
-		$query = $this->db->query("SELECT id_unit, name_unit from unit");
-   		return $query->result();
+		$result = $this->db->query("SELECT id_unit, name_unit from unit");
+   		return $result->row();
 	}
 
 	function find_for_sesion($username1){
-		$q = $this->db->query("SELECT id_unit, access from users where username = '$username1' ");
+		$result = $this->db->query("SELECT id_user, id_unit, access from users where username = '$username1' ");
 
-   		return $q->row();
+   		return $result->row();
 	}
 
 	function find_unit($u){
-		$g = $this->db->query("SELECT name_unit from unit where id_unit = '$u' ");
+		$result = $this->db->query("SELECT name_unit from unit where id_unit = '$u' ");
 
-   		return $g->row();
+   		return $result->row();
 	}
 }
 ?>

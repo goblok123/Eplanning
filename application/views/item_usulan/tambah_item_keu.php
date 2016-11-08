@@ -15,7 +15,7 @@
 		);
 		echo form_dropdown('jenis_item_keu', $options, 'Komponen Pendapatan Rumah Sakit', 'class="dropdownStyle"');
 
-		echo form_input('nama_item_keu', set_value('nama_item_keu', 'Nama Item Keuangan'));
+		echo form_input('nama_item_keu', set_value('nama_item_keu', 'Nama Item Keuangan'), 'class="input1"');
 
 		echo form_submit('submit', 'Tambah');
 	?>

@@ -13,7 +13,7 @@
         <nav style="">
           <ul class="nav nav-justified">
             <li><a href="#">Lihat Usulan</a></li>
-            <li><a href="#">Masukkan Usulan</a></li>
+            <li><a href="<?php echo base_url('/site/usulan'); ?>">Masukkan Usulan</a></li>
             <li><a href="<?php echo base_url('/site/item_usulan'); ?>">Item Usulan</a></li>
             <li><a href="#">Ketahui Usulan</a></li>
             <li><a href="#">Tambah Pengguna</a></li>

@@ -74,6 +74,7 @@ $lang['check_if_bhp_exists'] = "Maaf, BHP sudah terdaftar.";
 $lang['check_if_alat_exists'] = 'Maaf, Alat sudah terdaftar.';
 $lang['check_if_gedung_exists'] = 'Maaf, Gedung/konstruksi sudah terdaftar.';
 $lang['check_if_item_keu_exists'] = 'Maaf, Item keuangan sudah terdaftar.';
+$lang['check_if_item_exists'] = 'Maaf, Ada filed yang masih kosong.';
 
 $lang['check_if_email_exists'] = 'Sorry, that email has already been registered.';
 

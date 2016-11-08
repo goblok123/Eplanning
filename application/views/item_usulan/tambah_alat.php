@@ -14,7 +14,7 @@
 		);
 		echo form_dropdown('alat', $options, 'Alat Kesehatan', 'class="dropdownStyle"');
 
-		echo form_input('nama_alat', set_value('nama_alat', 'Nama Alat'));
+		echo form_input('nama_alat', set_value('nama_alat', 'Nama Alat'), 'class="input1"');
 
 		echo form_submit('submit', 'Tambah');
 	?>

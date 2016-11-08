@@ -8,7 +8,7 @@
 	<?php
 		echo form_open('site/add_gedung');
 
-		echo form_input('nama_gedung', set_value('nama_gedung', 'Nama Gedung'));
+		echo form_input('nama_gedung', set_value('nama_gedung', 'Nama Gedung'), 'class="input1"');
 
 		echo form_submit('submit', 'Tambah');
 	?>

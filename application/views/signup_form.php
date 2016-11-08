@@ -2,8 +2,8 @@
 	<h1>Tambah Pengguna!</h1>
 	<?php
 		echo form_open('login/create_member');
-		echo form_input('name', set_value('name', 'Nama'));
-		echo form_input('username', set_value('username', 'Username'));
+		echo form_input('name', set_value('name', 'Nama'), 'class="input1"');
+		echo form_input('username', set_value('username', 'Username') 'class="input1"');
 
 		$options = array(
 	        "Pengimput"         => "Pengimput",

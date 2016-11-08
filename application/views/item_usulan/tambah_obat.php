@@ -7,7 +7,7 @@
 
 	<?php
 		echo form_open('site/add_item_obat');
-		echo form_input('name_obat', set_value('name_obat', 'Nama Obat'));
+		echo form_input('nama_obat', set_value('nama_obat', 'Nama Obat'), 'class="input1"');
 		echo form_submit('submit', 'Tambah');
 	?>
 

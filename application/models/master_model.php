@@ -25,15 +25,18 @@ class Master_model extends CI_Model{
 
 //OBAT
 	function addObat(){
-		$name_obat = $this->input->post('name_obat');
+		$nama = $this->input->post('nama_obat');
 
 		$new_insert_data = array(
-			'nama_obat' => $this->input->post('name_obat'),
+			'nama_obat' => $this->input->post('nama_obat'),
 		);
 
 		$insert = $this->db->insert('obat', $new_insert_data);
+
 		return $insert;
 	}
+
+	
 
 	function check_if_obat_exists($name_obat){
 		$this->db->where('nama_obat', $name_obat);
@@ -47,7 +50,7 @@ class Master_model extends CI_Model{
 	}
 
 	function find_all_obat(){
-		$query = $this->db->query("SELECT nama_obat from obat");
+		$query = $this->db->query("SELECT id_obat, nama_obat from obat");
    		return $query->result();
 	}
 
