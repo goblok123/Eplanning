@@ -74,7 +74,7 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->row();
 	}
 
-	function rubah_usulan_all($id){
+	function ubah_usulan_all($id){
 		// $new_insert_data = array(
 		// 	'nama_diklat' => $this->input->post('nama_diklat'),
 		// 	'jmlh_sdm_pernah' => $this->input->post('jmlh_sdm_pernah'),
@@ -159,16 +159,16 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->row();
 	}
 
-	function rubah_dtl_usulan_obat($id){
+	function ubah_dtl_usulan_obat($id){
 		
-		$new_insert_data = array(
-			'jmlh_yg_diusulkan' => $this->input->post('jmlh_yg_diusulkan'),
-			'satuan' => $this->input->post('satuan'),
-			'hrg_satuan' => $this->input->post('hrg_satuan'),
-			'jmlh_harga' => $this->input->post('jmlh_harga'),
-			'merk' => $this->input->post('merk'),
-			'jmlh_pnggnaan_thn_sblm' => $this->input->post('jmlh_pnggnaan_thn_sblm'),
-		);
+		// $new_insert_data = array(
+		// 	'jmlh_yg_diusulkan' => $this->input->post('jmlh_yg_diusulkan'),
+		// 	'satuan' => $this->input->post('satuan'),
+		// 	'hrg_satuan' => $this->input->post('hrg_satuan'),
+		// 	'jmlh_harga' => $this->input->post('jmlh_harga'),
+		// 	'merk' => $this->input->post('merk'),
+		// 	'jmlh_pnggnaan_thn_sblm' => $this->input->post('jmlh_pnggnaan_thn_sblm'),
+		// );
 
 		$b = $this->input->post('jmlh_yg_diusulkan');
 		$c = $this->input->post('satuan');
@@ -237,6 +237,113 @@ class Tambah_usulan_model extends CI_Model{
 	}
 
 	function hapus_usulan_sdm($id){
-		$this->db->query("delete from dtl_usulan_sdm where id_dtl = '$id' ");
+		$this->db->query("delete from dtl_usulan_sdm where id_dtl_usulan_sdm = '$id' ");
+	}
+
+	//Ubah usulan SDM belum buat
+
+	function ubah_dtl_usulan_sdm($id){
+
+		$b = $this->input->post('pendidikan_dan_keahlian');
+		$c = $this->input->post('jmlh_ada');
+		$d = $this->input->post('jmlh_mnrt_stndr');
+		$e = $this->input->post('jmlh_usulan');
+		$f = $this->input->post('justifikasi');
+
+		$result = $this->db->query("Update dtl_usulan_sdm SET pendidikan_dan_keahlian = '$b',
+			jmlh_ada = '$c',
+			jmlh_mnrt_stndr = '$d',
+			jmlh_usulan = '$e',
+			justifikasi = '$f'
+			WHERE id_dtl_usulan_sdm = '$id'");
+
+		return $result;
+	}
+
+	//BHP
+	function cari_data_jenis_bhp($no){
+		$q = $this->db->query("Select id_bhp, nama_bhp from bhp where id_kode = '$no'");
+   		return $q->result();
+	}
+
+	function find_id_bhp($nama){
+		$find = $this->db->query("Select id_bhp from bhp where nama_bhp = '$nama'");
+		return $find->row();
+	}
+
+	function find_nama_bhp($id_bhp){
+		$q = $this->db->query("Select nama_bhp from bhp where id_bhp = '$id_bhp'");
+   		return $q->row();
+	}
+
+	function find_kode_jenis_bhp($id_bhp){
+		$q = $this->db->query("Select id_kode from bhp where id_bhp = '$id_bhp'");
+   		return $q->row();
+	}
+
+	function check_bhp($id){
+		$q = $this->db->query("Select id_bhp from dtl_usulan_bhp where id_bhp = '$id'");
+   		if($q->num_rows() >= 1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	function tambah_usulan_bhp($id_usulan,$id_bhp){
+
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_bhp' => $id_bhp,
+			'jmlh_yg_diusulkan' => $this->input->post('jmlh_yg_diusulkan'),
+			'satuan' => $this->input->post('satuan'),
+			'hrg_satuan' => $this->input->post('hrg_satuan'),
+			'jmlh_harga' => $this->input->post('jmlh_harga'),
+			'merk' => $this->input->post('merk'),
+			'jmlh_pnggnaan_thn_sblm' => $this->input->post('jmlh_pnggnaan_thn_sblm'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_bhp', $new_insert_data);
+		return $insert;
+	}
+
+	function usulan_bhp_satu_jenis($kode, $id){
+
+		$find = $this->db->query("Select * from dtl_usulan_bhp,(Select id_bhp from bhp where id_kode = '$kode') as nt  where dtl_usulan_bhp.id_usulan = '$id' AND nt.id_bhp = dtl_usulan_bhp.id_bhp");
+		return $find->result();
+	}
+
+	function find_detail_usulan_bhp($id){
+		$q = $this->db->query("Select * from dtl_usulan_bhp where id_dtl_bhp = '$id'");
+   		return $q->row();
+	}
+
+	function find_nama_jenis_bhp($id){
+		$q = $this->db->query("Select (kode_jenis_bhp.nama_jenis_bhp) as jenis_bhp from kode_jenis_bhp, bhp where bhp.id_bhp = '$id' and bhp.id_kode = kode_jenis_bhp.id_kode");
+   		return $q->row();
+	}
+
+	function ubah_dtl_usulan_bhp($id){
+
+		$b = $this->input->post('jmlh_yg_diusulkan');
+		$c = $this->input->post('satuan');
+		$d = $this->input->post('hrg_satuan');
+		$e = $this->input->post('jmlh_harga');
+		$f = $this->input->post('merk');
+		$g = $this->input->post('jmlh_pnggnaan_thn_sblm');
+
+		$result = $this->db->query("Update dtl_usulan_bhp SET jmlh_yg_diusulkan = '$b',
+			satuan = '$c',
+			hrg_satuan = '$d',
+			jmlh_harga = '$e',
+			merk = '$f',
+			jmlh_pnggnaan_thn_sblm = '$f'
+			WHERE id_dtl_bhp = '$id'");
+
+		return $result;
+	}
+
+	function hapus_usulan_bhp($id){
+		$this->db->query("delete from dtl_usulan_bhp where id_dtl_bhp = '$id' ");
 	}
 }

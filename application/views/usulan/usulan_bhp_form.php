@@ -1,23 +1,23 @@
 <?php
 	$phpArray = array();
-	foreach($obat  as $r)
+	foreach($dt  as $r)
 	{
-	    $phpArray[] = $r->nama_obat;
+	    $phpArray[] = $r->nama_bhp;
 	}
 ?>
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		var nama_obat = <?php echo json_encode($phpArray ); ?>;
-		$("#nama_obat").select2({
-		  data: nama_obat
+		var nama_bhp = <?php echo json_encode($phpArray ); ?>;
+		$("#nama_bhp").select2({
+		  data: nama_bhp
 		});
 	});
 </script>
 
 <div id="add_usulan_obat" class="formMid">
 
-    <h1>Tambah Usulan Obat</h1>
+    <h1>Tambah Usulan BHP</h1>
 
 	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
@@ -28,12 +28,17 @@
 	<?php echo validation_errors('<p class="error">'); ?>
 
 	<?php
-		echo form_open('site/add_usulan_obat');
-		echo form_label('Nama obat : ', 'nama_obat');
+		echo form_open('site/tambah_usulan_bhp/'.$no_jenis.'');
+	?>
+
+	<h4>Jenis BHP : <?php echo "$jenis_bhp"; ?></h4>
+
+	<?php
+		echo form_label('Nama BHP : ', 'nama_bhp');
 	?>
 
 	<div>
-		<select name="nama_obat" id="nama_obat" style="width:275px;">
+		<select name="nama_bhp" id="nama_bhp" style="width:275px;">
 
 		</select>
 	</div>
@@ -74,7 +79,8 @@
 	<table class="table table-bordered" >
 		<tr>
 			<th>No.</th>
-			<th>Nama Obat</th>
+			<th>Jenis BHP</th>
+			<th>Nama BHP</th>
 			<th>Satuan</th>
 			<th>Merk/Type/Model/Ukuran yang Diinginkan</th>
 			<th>Jumlah yang Diusulkan</th>
@@ -84,18 +90,21 @@
 		</tr>
 		<?php $h = 0; ?>
 
-		<?php foreach($usulan_obat  as $r): ?>
+		<?php foreach($usulan_bhp  as $r): ?>
 			<tr>
 				<th style="width:20px;">
 					<?php $h += 1; ?>
 					<?php  echo "$h" ?>
 				</th>
 				<th>
+					<?php echo $jenis_bhp; ?>
+				</th>
+				<th>
 		  			<?php
-						foreach($obat as $t)
+						foreach($dt as $t)
 						{
-						    if($t->id_obat == $r->id_obat){
-						    	echo "$t->nama_obat";
+						    if($t->id_bhp == $r->id_bhp){
+						    	echo "$t->nama_bhp";
 						    	break;
 						    }
 						}
@@ -120,10 +129,10 @@
 		  			<?php echo $r->jmlh_harga; ?>
 		  		</th>
 		  		<th>
-		  			<a href="<?php echo base_url('/site/ubah_usulan_obat_form/'.$r->id_dtl_obat.''); ?>" class="btn btn-success">Perbaharui</a>
+		  			<a href="<?php echo base_url('/site/ubah_usulan_bhp_form/'.$r->id_dtl_bhp.''); ?>" class="btn btn-success">Perbaharui</a>
 		  		</th>
 		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_obat/'.$r->id_dtl_obat.''); ?>" class="btn btn-danger">Hapus</a>
+		  			<a href="<?php echo base_url('/site/hapus_usulan_bhp/'.$r->id_dtl_bhp.''); ?>" class="btn btn-danger">Hapus</a>
 		  		</th>
 			</tr>
 		<?php endforeach; ?>

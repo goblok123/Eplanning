@@ -8,7 +8,7 @@
     justifikasi text,
     catatan text, -->
 
-    <h1>Rubah Usulan Diklat</h1>
+    <h1>Ubah Usulan Diklat</h1>
 
 	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
@@ -19,7 +19,7 @@
 	<?php echo validation_errors('<p class="error">'); ?>
 
 	<?php
-		echo form_open('site/rubah_usulan_diklat/'.$id.'');
+		echo form_open('site/ubah_usulan_diklat/'.$id.'');
 		echo form_label('Nama Diklat : ', 'nama_diklat');
 		echo form_input('nama_diklat', set_value('nama_diklat', "$nama_diklat"), 'class="input1"');
 		echo form_label('Jumlah SDM Pernah Mengikuti : ', 'jmlh_sdm_pernah');
@@ -33,7 +33,7 @@
 		echo form_label('Catatan : ', 'catatan');
 		echo form_textarea('catatan', set_value('catatan', "$catatan"), 'class="input1"');
 
-		echo form_submit('submit', 'Rubah');
+		echo form_submit('submit', 'Ubah');
 	?>
 
 	

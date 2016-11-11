@@ -69,7 +69,7 @@
 
 
 <div class="tableMiddlePage">
-	<h1>Daftar Usulan Obat</h1>
+	<h1>Daftar Usulan SDM</h1>
 
 	<table class="table table-bordered" >
 		<tr>
@@ -117,7 +117,7 @@
 		  		</th>
 		  		
 		  		<th>
-		  			<a href="<?php echo base_url('/site/rubah_usulan_sdm_form/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-success">Perbaharui</a>
+		  			<a href="<?php echo base_url('/site/ubah_usulan_sdm_form/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-success">Perbaharui</a>
 		  		</th>
 		  		<th>
 		  			<a href="<?php echo base_url('/site/hapus_usulan_sdm/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-danger">Hapus</a>

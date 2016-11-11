@@ -1,6 +1,6 @@
 <div id="rubah_usulan_obat" class="formMid">
 
-    <h1>Rubah Usulan Obat</h1>
+    <h1>Ubah Usulan Obat</h1>
 
 	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
@@ -13,7 +13,7 @@
 
 
 	<?php
-		echo form_open('site/rubah_usulan_obat/'.$id.'');
+		echo form_open('site/ubah_usulan_obat/'.$id.'');
 		echo form_label('Nama obat :  ', "$nama_obat");
 		echo form_label(" $nama_obat", "");
 	?>
@@ -40,7 +40,7 @@
 		echo form_label('Jumlah yang Penggunaan Tahun n-1 : ', 'jmlh_pnggnaan_thn_sblm');
 		echo form_input('jmlh_pnggnaan_thn_sblm', set_value('jmlh_pnggnaan_thn_sblm', "$jmlh_pnggnaan_thn_sblm"), 'class="input1"');
 
-		echo form_submit('submit', 'Rubah');
+		echo form_submit('submit', 'Ubah');
 	?>
 
 	

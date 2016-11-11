@@ -1,6 +1,6 @@
 <div id="rubah_usulan_sdm" class="formMid">
 
-    <h1>Rubah Usulan SDM</h1>
+    <h1>Ubah Usulan SDM</h1>
 
 	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
@@ -11,7 +11,7 @@
 	<?php echo validation_errors('<p class="error">'); ?>
 
 	<?php
-		echo form_open('site/rubah_usulan_sdm');
+		echo form_open('site/ubah_usulan_sdm/'.$id.'');
 		echo form_label('Jenis dan Kualifikasi SDM yang Diusulkan Ditambah :', "$nama_sdm");
 		echo form_label(" $nama_sdm", '');
 	?>
@@ -29,7 +29,7 @@
 		echo form_label('Justifikasi : ', 'justifikasi');
 		echo form_input('justifikasi', set_value('justifikasi', "$justifikasi"), 'class="input1"');
 
-		echo form_submit('submit', 'Rubah');
+		echo form_submit('submit', 'Ubah');
 	?>
 
 	

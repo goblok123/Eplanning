@@ -73,10 +73,10 @@
 		  			<?php echo $r->catatan; ?>
 		  		</th>
 		  		<th>
-		  			<a href="<?php echo base_url('/site/rubah_usulan_diklat_form/'.$r->id_dtl.''); ?>" class="btn btn-success">Perbaharui</a>
+		  			<a href="<?php echo base_url('/site/ubah_usulan_diklat_form/'.$r->id_dtl.'/-'); ?>" class="btn btn-success">Perbaharui</a>
 		  		</th>
 		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_diklat/'.$r->id_dtl.''); ?>" class="btn btn-danger">Hapus</a>
+		  			<a href="<?php echo base_url('/site/hapus_usulan_diklat/'.$r->id_dtl.'/-'); ?>" class="btn btn-danger">Hapus</a>
 		  		</th>
 			</tr>
 		<?php endforeach; ?>

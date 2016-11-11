@@ -572,10 +572,11 @@ class Site extends CI_Controller
 		}
 	}
 
-	function rubah_usulan_diklat_form($id){
+	function ubah_usulan_diklat_form($id,$da){
 		$this->load->model('tambah_usulan_model');
 		$dtl = $this->tambah_usulan_model->find_detail_usulan($id);
 
+		$data["added"] = $da;
 		$data["id"] = $id;
 		$data["nama_diklat"] = $dtl->nama_diklat;
 		$data["jmlh_sdm_pernah"] = $dtl->jmlh_sdm_pernah;
@@ -598,7 +599,7 @@ class Site extends CI_Controller
 			$this->load->view('menu/menu_not_login');
 		}
 
-		$this->load->view('usulan/rubah_usulan_diklat_form',$data);
+		$this->load->view('usulan/ubah_usulan_diklat_form',$data);
 
 
 		$this->load->view('template/footer');
@@ -612,7 +613,7 @@ class Site extends CI_Controller
 
 	}
 
-	function rubah_usulan_diklat($id){
+	function ubah_usulan_diklat($id){
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('nama_diklat', 'Nama Diklat', 'trim|required|max_length[500]');
@@ -626,11 +627,11 @@ class Site extends CI_Controller
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
-			$this->rubah_usulan_diklat_form($id);
+			$this->ubah_usulan_diklat_form($id,$da);
 		}else{
 			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
-			$this->tambah_usulan_model->rubah_usulan_all($id);
+			$this->tambah_usulan_model->ubah_usulan_all($id);
 			redirect('site/tambah_usulan_diklat_form/Usulan_Berhasil_Dirubah');
 			//$this->tambah_usulan_diklat_form("-");
 		}
@@ -684,7 +685,7 @@ class Site extends CI_Controller
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
-			$this->usulan_obat_form($da);
+			$this->tambah_usulan_obat_form($da);
 		}else{
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->find_id_obat($this->input->post('nama_obat'));
@@ -725,7 +726,7 @@ class Site extends CI_Controller
 
 	}
 
-	function rubah_usulan_obat_form($id){
+	function ubah_usulan_obat_form($id){
 		$this->load->model('tambah_usulan_model');
 		$dtl = $this->tambah_usulan_model->find_detail_usulan_obat($id);
 		$nm_obat = $this->tambah_usulan_model->find_nama_obat($dtl->id_obat);
@@ -753,13 +754,13 @@ class Site extends CI_Controller
 			$this->load->view('menu/menu_not_login');
 		}
 
-		$this->load->view('usulan/rubah_usulan_obat_form',$data);
+		$this->load->view('usulan/ubah_usulan_obat_form',$data);
 
 
 		$this->load->view('template/footer');
 	}
 
-	function rubah_usulan_obat($id){
+	function ubah_usulan_obat($id){
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('jmlh_yg_diusulkan', 'Jumlah yang Diusulkan', 'trim|required');
@@ -773,9 +774,9 @@ class Site extends CI_Controller
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
-			$this->rubah_usulan_obat_form($id);
+			$this->ubah_usulan_obat_form($da);
 		}else{
-			$this->tambah_usulan_model->rubah_dtl_usulan_obat($id);
+			$this->tambah_usulan_model->ubah_dtl_usulan_obat($id);
 			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect('site/tambah_usulan_obat_form/Usulan_Berhasil_Dirubah');
@@ -867,7 +868,7 @@ class Site extends CI_Controller
 
 	}
 
-	function rubah_usulan_sdm_form($id){
+	function ubah_usulan_sdm_form($id){
 		$this->load->model('tambah_usulan_model');
 		$dtl = $this->tambah_usulan_model->find_detail_usulan_sdm($id);
 		$nm_sdm = $this->tambah_usulan_model->find_nama_sdm($dtl->id_jenis_sdm);
@@ -894,13 +895,241 @@ class Site extends CI_Controller
 			$this->load->view('menu/menu_not_login');
 		}
 
-		$this->load->view('usulan/rubah_usulan_sdm_form',$data);
+		$this->load->view('usulan/ubah_usulan_sdm_form',$data);
 
 
 		$this->load->view('template/footer');
 	}
 
-	function rubah_usulan_sdm($id){
+	function ubah_usulan_sdm($id){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('pendidikan_dan_keahlian', 'Pendidikan dan Keahlian', 'trim|required');
+		$this->form_validation->set_rules('jmlh_ada', 'Jumlah yang Sudah Ada', 'trim|required');
+		$this->form_validation->set_rules('jmlh_mnrt_stndr', 'Jumlah yg Harus Ada Menurut Standar', 'trim|required');
+		$this->form_validation->set_rules('jmlh_usulan', 'Jumlah Kebutuhan SDM yang Diusulkan', 'trim|required');
+		$this->form_validation->set_rules('justifikasi', 'justifikasi', 'trim');
+
+		$this->load->model('tambah_usulan_model');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->ubah_usulan_sdm_form($da);
+		}else{
+			$this->tambah_usulan_model->ubah_dtl_usulan_sdm($id);
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+			redirect('site/tambah_usulan_sdm_form/Usulan_Berhasil_Dirubah');
+			//$this->tambah_usulan_diklat_form("-");
+		}
+	}
+
+	function hapus_usulan_sdm($id){
+		$this->load->model('tambah_usulan_model');
+		$this->tambah_usulan_model->hapus_usulan_sdm($id);
+
+		redirect('site/tambah_usulan_sdm_form/Usulan_Berhasil_Dihapus');
+	}
+
+
+	//BHP
+	function pilih_jenis_bhp_c(){
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/pilihan_jenis_bhp');
+
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_bhp_form($no,$a){
+		$this->load->model('tambah_usulan_model');
+		
+		if($no == 1){
+			echo "1";
+			$data["jenis_bhp"] = "Kesehatan (Farmasi)";
+		}else if($no == 2){
+			echo "2";
+			$data["jenis_bhp"] = "Khusus Lab dan Reagen(Lab)";
+		}else if($no == 3){
+			echo "3";
+			$data["jenis_bhp"] = "Khusus Radiologi (Rontgent)";
+		}else if($no == 4){
+			echo "4";
+			$data["jenis_bhp"] = "Khusus Loundry";
+		}else if($no == 5){
+			echo "6";
+			$data["jenis_bhp"] = "Khusus CSSD";
+		}else if($no == 6){
+			echo "6";
+			$data["jenis_bhp"] = "Khusus HD";
+		}else if($no == 7){
+			echo "7";
+			$data["jenis_bhp"] = "Makanan (khusus Inst Gizi)";
+		}else if($no == 8){
+			echo "8";
+			$data["jenis_bhp"] = "Makanan Jadi";
+		}else if($no == 9){
+			echo "9";
+			$data["jenis_bhp"] = "Listrik dan Elektronik";
+		}else if($no == 10){
+			echo "10";
+			$data["jenis_bhp"] = "Kebersihan (Kesling)";
+		}else if($no == 11){
+			echo "11";
+			$data["jenis_bhp"] = "Linen Petugas";
+		}else if($no == 12){
+			echo "12";
+			$data["jenis_bhp"] = "Linen Pasien";
+		}else if($no == 13){
+			echo "13";
+			$data["jenis_bhp"] = "Barang Cetakan Khusus Rekam Medis";
+		}else if($no == 14){
+			echo "14";
+			$data["jenis_bhp"] = "Barang Cetakan Khusus Administrasi Keuangan";
+		}else if($no == 15){
+			echo "15";
+			$data["jenis_bhp"] = "ATK non IT";
+		}else if($no == 16){
+			echo "16";
+			$data["jenis_bhp"] = "Tambah ATK IT";
+		}else if($no == 17){
+			echo "17";
+			$data["jenis_bhp"] = "Bahan Bangunan (Khusus IPSRS)";
+		}
+		$data["added"] = $a;
+		$data["no_jenis"] = $no;
+		$data["dt"] = $this->tambah_usulan_model->cari_data_jenis_bhp($no);
+		$tp = "Bhp";
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+		$data["usulan_bhp"] = $this->tambah_usulan_model->usulan_bhp_satu_jenis($no, $r->id_usulan);
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/usulan_bhp_form', $data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_bhp($no){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('nama_bhp', 'Nama BHP', 'trim|required|max_length[500]'); //check_if_item_exists belum bikin call back function di model obat
+		$this->form_validation->set_rules('jmlh_yg_diusulkan', 'Jumlah yang Diusulkan', 'trim|required');
+		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required');
+		$this->form_validation->set_rules('hrg_satuan', 'Harga Satuan', 'trim|required');
+		$this->form_validation->set_rules('jmlh_harga', 'Jumlah Harga', 'trim|required');
+		$this->form_validation->set_rules('merk', 'Merk/Type/Model/Ukuran yang Diinginkan', 'trim|required');
+		$this->form_validation->set_rules('jmlh_pnggnaan_thn_sblm', 'Jumlah Penggunaan Tahun Sebelumnya', 'trim|required');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->tambah_usulan_bhp_form($no,$da);
+		}else{
+			$this->load->model('tambah_usulan_model');
+			$s = $this->tambah_usulan_model->find_id_bhp($this->input->post('nama_bhp'));
+
+			if($this->tambah_usulan_model->check_bhp($s->id_bhp)){
+				$tp = "Bhp";
+				
+				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+				if($r != null){
+					if($this->tambah_usulan_model->tambah_usulan_bhp($r->id_usulan, $s->id_bhp)){
+						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+						$this->tambah_usulan_bhp_form($no, "Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_bhp_form($no, "Usulan GAGAL disimpan");
+					}
+				}else{
+					$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+					);
+
+					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
+					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+					if($this->tambah_usulan_model->tambah_usulan_bhp($r->id_usulan, $s->id_bhp)){
+						$this->tambah_usulan_bhp_form($no, "Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_bhp_form($no, "Usulan GAGAL disimpan");
+					}
+
+				}
+			}else{
+				$this->tambah_usulan_bhp_form($no, "Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+			}
+		}
+	}
+
+	function ubah_usulan_bhp_form($id){
+		$this->load->model('tambah_usulan_model');
+
+		$dtl = $this->tambah_usulan_model->find_detail_usulan_bhp($id);
+		$nama_bhp = $this->tambah_usulan_model->find_nama_bhp($dtl->id_bhp);
+		$nama_jenis_bhp = $this->tambah_usulan_model->find_nama_jenis_bhp($dtl->id_bhp);
+		$kode_jenis_bhp =  $this->tambah_usulan_model->find_kode_jenis_bhp($dtl->id_bhp);
+
+		$data["id"] = $id;
+		$data["jenis_bhp"] = $nama_jenis_bhp->jenis_bhp;
+		$data["id_jenis_bhp"] = $kode_jenis_bhp->id_kode;
+		$data["nama_bhp"] = $nama_bhp->nama_bhp;
+		$data["jmlh_yg_diusulkan"] = $dtl->jmlh_yg_diusulkan;
+		$data["satuan"] = $dtl->satuan;
+		$data["hrg_satuan"] = $dtl->hrg_satuan;
+		$data["jmlh_harga"] = $dtl->jmlh_harga;
+		$data["merk"] = $dtl->merk;
+		$data["jmlh_pnggnaan_thn_sblm"] = $dtl->jmlh_pnggnaan_thn_sblm;
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/ubah_usulan_bhp_form',$data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function ubah_usulan_bhp($id, $no){
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('jmlh_yg_diusulkan', 'Jumlah yang Diusulkan', 'trim|required');
@@ -914,21 +1143,26 @@ class Site extends CI_Controller
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
-			$this->rubah_usulan_obat_form($id);
+			$this->ubah_usulan_bhp_form($da);
 		}else{
-			$this->tambah_usulan_model->rubah_dtl_usulan_obat($id);
+			$this->tambah_usulan_model->ubah_dtl_usulan_bhp($id);
 			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
-			redirect('site/tambah_usulan_obat_form/Usulan_Berhasil_Dirubah');
+			redirect("site/tambah_usulan_bhp_form/$no/Usulan_Berhasil_Dirubah");
 			//$this->tambah_usulan_diklat_form("-");
 		}
 	}
 
-	function hapus_usulan_sdm($id){
+	function hapus_usulan_bhp($id){
 		$this->load->model('tambah_usulan_model');
-		$this->tambah_usulan_model->hapus_usulan_obat($id);
+		$dtl = $this->tambah_usulan_model->find_detail_usulan_bhp($id);
+		$kode_jenis_bhp =  $this->tambah_usulan_model->find_kode_jenis_bhp($dtl->id_bhp);
+		$no = $kode_jenis_bhp->id_kode;
 
-		redirect('site/tambah_usulan_sdm_form/Usulan_Berhasil_Dihapus');
+		$this->load->model('tambah_usulan_model');
+		$this->tambah_usulan_model->hapus_usulan_bhp($id);
+
+		redirect("site/tambah_usulan_bhp_form/$no/Usulan_Berhasil_Dihapus");
 	}
 
 }
