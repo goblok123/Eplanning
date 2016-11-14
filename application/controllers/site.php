@@ -675,7 +675,7 @@ class Site extends CI_Controller
 	function add_usulan_obat(){
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('nama_obat', 'Nama Obat', 'trim|required|max_length[500]'); //check_if_item_exists belum bikin call back function di model obat
+		$this->form_validation->set_rules('nama_obat', 'Nama Obat', 'trim|required|max_length[200]'); //check_if_item_exists belum bikin call back function di model obat
 		$this->form_validation->set_rules('jmlh_yg_diusulkan', 'Jumlah yang Diusulkan', 'trim|required');
 		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required');
 		$this->form_validation->set_rules('hrg_satuan', 'Harga Satuan', 'trim|required');
@@ -958,64 +958,50 @@ class Site extends CI_Controller
 		$this->load->model('tambah_usulan_model');
 		
 		if($no == 1){
-			echo "1";
 			$data["jenis_bhp"] = "Kesehatan (Farmasi)";
 		}else if($no == 2){
-			echo "2";
 			$data["jenis_bhp"] = "Khusus Lab dan Reagen(Lab)";
 		}else if($no == 3){
-			echo "3";
 			$data["jenis_bhp"] = "Khusus Radiologi (Rontgent)";
 		}else if($no == 4){
-			echo "4";
 			$data["jenis_bhp"] = "Khusus Loundry";
 		}else if($no == 5){
-			echo "6";
 			$data["jenis_bhp"] = "Khusus CSSD";
 		}else if($no == 6){
-			echo "6";
 			$data["jenis_bhp"] = "Khusus HD";
 		}else if($no == 7){
-			echo "7";
 			$data["jenis_bhp"] = "Makanan (khusus Inst Gizi)";
 		}else if($no == 8){
-			echo "8";
 			$data["jenis_bhp"] = "Makanan Jadi";
 		}else if($no == 9){
-			echo "9";
 			$data["jenis_bhp"] = "Listrik dan Elektronik";
 		}else if($no == 10){
-			echo "10";
 			$data["jenis_bhp"] = "Kebersihan (Kesling)";
 		}else if($no == 11){
-			echo "11";
 			$data["jenis_bhp"] = "Linen Petugas";
 		}else if($no == 12){
-			echo "12";
 			$data["jenis_bhp"] = "Linen Pasien";
 		}else if($no == 13){
-			echo "13";
 			$data["jenis_bhp"] = "Barang Cetakan Khusus Rekam Medis";
 		}else if($no == 14){
-			echo "14";
 			$data["jenis_bhp"] = "Barang Cetakan Khusus Administrasi Keuangan";
 		}else if($no == 15){
-			echo "15";
 			$data["jenis_bhp"] = "ATK non IT";
 		}else if($no == 16){
-			echo "16";
 			$data["jenis_bhp"] = "Tambah ATK IT";
 		}else if($no == 17){
-			echo "17";
 			$data["jenis_bhp"] = "Bahan Bangunan (Khusus IPSRS)";
 		}
 		$data["added"] = $a;
 		$data["no_jenis"] = $no;
 		$data["dt"] = $this->tambah_usulan_model->cari_data_jenis_bhp($no);
 		$tp = "Bhp";
+
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-		$data["usulan_bhp"] = $this->tambah_usulan_model->usulan_bhp_satu_jenis($no, $r->id_usulan);
+		if($r != null){
+			$data["usulan_bhp"] = $this->tambah_usulan_model->usulan_bhp_satu_jenis($no, $r->id_usulan);
+		}
 
 		$hak = $this->session->userdata('hakAkses');
 		$this->load->view('template/header');
@@ -1040,7 +1026,7 @@ class Site extends CI_Controller
 	function tambah_usulan_bhp($no){
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('nama_bhp', 'Nama BHP', 'trim|required|max_length[500]'); //check_if_item_exists belum bikin call back function di model obat
+		$this->form_validation->set_rules('nama_bhp', 'Nama BHP', 'trim|required|max_length[200]'); //check_if_item_exists belum bikin call back function di model obat
 		$this->form_validation->set_rules('jmlh_yg_diusulkan', 'Jumlah yang Diusulkan', 'trim|required');
 		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required');
 		$this->form_validation->set_rules('hrg_satuan', 'Harga Satuan', 'trim|required');
@@ -1146,7 +1132,7 @@ class Site extends CI_Controller
 			$this->ubah_usulan_bhp_form($da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_bhp($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Bhp");
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect("site/tambah_usulan_bhp_form/$no/Usulan_Berhasil_Dirubah");
 			//$this->tambah_usulan_diklat_form("-");
@@ -1163,6 +1149,204 @@ class Site extends CI_Controller
 		$this->tambah_usulan_model->hapus_usulan_bhp($id);
 
 		redirect("site/tambah_usulan_bhp_form/$no/Usulan_Berhasil_Dihapus");
+	}
+
+	//alat kesehatan dan non kesehatan
+	function pilih_jenis_alat_c(){
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/pilihan_jenis_alat');
+
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_alat_form($no,$msg){
+		$this->load->model('tambah_usulan_model');
+		
+		if($no == 1){
+			$data["no_jenis"] = 1;
+			$jenis = "Alat Kesehatan";
+		}else if($no == 2){
+			$data["no_jenis"] = 2;
+			$jenis = "Alat Non Kesehatan";
+		}
+
+		$data["jenis_alat"] = $jenis;
+		$data["semua_alat"] = $this->tambah_usulan_model->cari_jenis_alat($jenis);
+
+		$data["added"] = $msg;
+		$tp = "Alat";
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+		if($r != null){
+			$data["usulan_alat"] = $this->tambah_usulan_model->usulan_alat_satu_jenis($jenis, $r->id_usulan);
+		}
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/usulan_alat_form', $data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_alat($no){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('nama_alat', 'Nama Alat', 'trim|required|max_length[200]'); 
+		$this->form_validation->set_rules('jmlh_yg_sdh_ada', 'Jumlah yang Diusulkan', 'trim|required');
+		$this->form_validation->set_rules('kondisi', 'Kondisi', 'trim|required');
+		$this->form_validation->set_rules('jmlh_yg_diusulkan', 'Jumlah yang Diusulkan', 'trim|required');
+		$this->form_validation->set_rules('merk', 'Merk/Type/Model/Ukuran yang Diinginkan', 'trim|required');
+		$this->form_validation->set_rules('justifikasi', 'Justifikasi', 'trim');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->tambah_usulan_alat_form($no,$da);
+		}else{
+			$this->load->model('tambah_usulan_model');
+			$r = $this->input->post('nama_alat');
+			$s = $this->tambah_usulan_model->find_id_alat($r);
+
+			if($this->tambah_usulan_model->check_alat($s->id_alat)){
+				$tp = "Alat";
+				
+				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+				if($r != null){
+					if($this->tambah_usulan_model->tambah_usulan_alat($r->id_usulan, $s->id_alat)){
+						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+						$this->tambah_usulan_alat_form($no, "Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_alat_form($no, "Usulan GAGAL disimpan");
+					}
+				}else{
+					$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+					);
+
+					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
+					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+					if($this->tambah_usulan_model->tambah_usulan_alat($r->id_usulan, $s->id_alat)){
+						$this->tambah_usulan_alat_form($no, "Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_alat_form($no, "Usulan GAGAL disimpan");
+					}
+
+				}
+			}else{
+				$this->tambah_usulan_alat_form($no, "Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+			}
+		}
+	}
+
+	function ubah_usulan_alat_form($id){
+		$this->load->model('tambah_usulan_model');
+
+		$dtl = $this->tambah_usulan_model->find_detail_usulan_alat($id);
+		$alat = $this->tambah_usulan_model->find_nama_alat($dtl->id_alat);
+		$data["kode_jenis_alat"] = 2;
+
+		if($alat->jenis_alat == "Alat Kesehatan"){
+			$data["kode_jenis_alat"] = 1;
+		}
+
+		$data["id"] = $id;
+		$data["jenis_alat"] = $alat->jenis_alat;
+		$data["nama_alat"] = $alat->nama_alat_kes_dan_non;
+		$data["jmlh_yg_sdh_ada"] = $dtl->jmlh_yg_sdh_ada;
+		$data["jmlh_yg_diusulkan"] = $dtl->jmlh_yg_diusulkan;
+		$data["kondisi"] = $dtl->kondisi;
+		$data["merk"] = $dtl->merk;
+		$data["justifikasi"] = $dtl->justifikasi;
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/ubah_usulan_alat_form',$data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function ubah_usulan_alat($id,$no){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('jmlh_yg_sdh_ada', 'Jumlah yang Diusulkan', 'trim|required');
+		$this->form_validation->set_rules('kondisi', 'Kondisi', 'trim|required');
+		$this->form_validation->set_rules('jmlh_yg_diusulkan', 'Jumlah yang Diusulkan', 'trim|required');
+		$this->form_validation->set_rules('merk', 'Merk/Type/Model/Ukuran yang Diinginkan', 'trim|required');
+		$this->form_validation->set_rules('justifikasi', 'Justifikasi', 'trim');
+
+		$this->load->model('tambah_usulan_model');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->ubah_usulan_alat_form($da);
+		}else{
+			$this->tambah_usulan_model->ubah_dtl_usulan_alat($id);
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Alat");
+			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+			redirect("site/tambah_usulan_alat_form/$no/Usulan_Berhasil_Dirubah");
+			//$this->tambah_usulan_diklat_form("-");
+		}
+	}
+
+	function hapus_usulan_alat($id){
+		$this->load->model('tambah_usulan_model');
+		$dtl = $this->tambah_usulan_model->find_detail_usulan_alat($id);
+
+		$kode =  $this->tambah_usulan_model->find_nama_alat($dtl->id_alat);
+
+		$no = 2;
+
+		if($kode->jenis_alat == "Alat Kesehatan"){
+			$no = 1;
+		}
+
+		$this->load->model('tambah_usulan_model');
+		$this->tambah_usulan_model->hapus_usulan_alat($id);
+
+		redirect("site/tambah_usulan_alat_form/$no/Usulan_Berhasil_Dihapus");
 	}
 
 }

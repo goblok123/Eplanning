@@ -346,4 +346,77 @@ class Tambah_usulan_model extends CI_Model{
 	function hapus_usulan_bhp($id){
 		$this->db->query("delete from dtl_usulan_bhp where id_dtl_bhp = '$id' ");
 	}
+
+	//Alat
+	function cari_jenis_alat($type){
+		$q = $this->db->query("Select id_alat, nama_alat_kes_dan_non from alat_kes_dan_non where jenis_alat = '$type'");
+   		return $q->result();
+	}
+
+	function usulan_alat_satu_jenis($jenis, $id){
+		$find = $this->db->query("Select * from dtl_usulan_alat,(Select id_alat from alat_kes_dan_non where jenis_alat = '$jenis') as alat where dtl_usulan_alat.id_usulan = '$id' AND alat.id_alat = dtl_usulan_alat.id_alat");
+		return $find->result();
+	}
+
+	function find_id_alat($nama){
+		$find = $this->db->query("Select id_alat from alat_kes_dan_non where nama_alat_kes_dan_non = '$nama'");
+		return $find->row();
+	}
+
+	function check_alat($id){
+		$q = $this->db->query("Select id_alat from dtl_usulan_alat where id_alat = '$id'");
+   		if($q->num_rows() >= 1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	function tambah_usulan_alat($id_usulan, $id_alat){
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_alat' => $id_alat,
+			'jmlh_yg_sdh_ada' => $this->input->post('jmlh_yg_sdh_ada'),
+			'jmlh_yg_diusulkan' => $this->input->post('jmlh_yg_diusulkan'),
+			'kondisi' => $this->input->post('kondisi'),
+			'justifikasi' => $this->input->post('justifikasi'),
+			'merk' => $this->input->post('merk'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_alat', $new_insert_data);
+		return $insert;
+	}
+
+	function find_detail_usulan_alat($id){
+		$q = $this->db->query("Select * from dtl_usulan_alat where id_dtl_usulan_alat = '$id'");
+   		return $q->row();
+	}
+
+	function find_nama_alat($id_alat){
+		$q = $this->db->query("Select nama_alat_kes_dan_non, jenis_alat from alat_kes_dan_non where id_alat = '$id_alat'");
+   		return $q->row();
+	}
+
+	function ubah_dtl_usulan_alat($id){
+		$b = $this->input->post('jmlh_yg_sdh_ada');
+		$c = $this->input->post('jmlh_yg_diusulkan');
+		$d = $this->input->post('kondisi');
+		$e = $this->input->post('justifikasi');
+		$f = $this->input->post('merk');
+
+		$result = $this->db->query("Update dtl_usulan_alat SET 
+			jmlh_yg_sdh_ada = '$b',
+			jmlh_yg_diusulkan = '$c',
+			kondisi = '$d',
+			justifikasi = '$e',
+			merk = '$f'
+			WHERE id_dtl_usulan_alat = '$id'");
+
+		return $result;
+	}
+
+	function hapus_usulan_alat($id){
+		$this->db->query("delete from dtl_usulan_alat where id_dtl_usulan_alat = '$id' ");
+	}
+
 }
