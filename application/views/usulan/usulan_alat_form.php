@@ -69,7 +69,7 @@
 
 
 	<div class="tableMiddlePage">
-		<h1>Daftar Usulan Obat</h1>
+		<h1>Daftar Usulan Alat</h1>
 
 		<table class="table table-bordered" >
 			<tr>

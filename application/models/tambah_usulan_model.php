@@ -419,4 +419,64 @@ class Tambah_usulan_model extends CI_Model{
 		$this->db->query("delete from dtl_usulan_alat where id_dtl_usulan_alat = '$id' ");
 	}
 
+	//Pemeliharaan Alat
+	function usulan_pemeliharaan_alat_satu_jenis($jenis, $id){
+		$find = $this->db->query("Select * from dtl_usulan_pmlhrn_alat,(Select id_alat from alat_kes_dan_non where jenis_alat = '$jenis') as alat where dtl_usulan_pmlhrn_alat.id_usulan = '$id' AND alat.id_alat = dtl_usulan_pmlhrn_alat.id_alat");
+		return $find->result();
+	}
+
+	function check_pemeliharaan_alat($id){
+		$q = $this->db->query("Select id_alat from dtl_usulan_pmlhrn_alat where id_alat = '$id'");
+   		if($q->num_rows() >= 1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	function tambah_usulan_pemeliharaan_alat($id_usulan, $id_alat){
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_alat' => $id_alat,
+			'merk' => $this->input->post('merk'),
+			'pngdn_thn' => $this->input->post('pngdn_thn'),
+			'kondisi' => $this->input->post('kondisi'),
+			'jmlh_diperbaiki' => $this->input->post('jmlh_diperbaiki'),
+			'jns_pmlhrn' => $this->input->post('jns_pmlhrn'),
+			'info' => $this->input->post('info'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_pmlhrn_alat', $new_insert_data);
+		return $insert;
+	}
+
+	function find_detail_usulan_pemeliharaan_alat($id){
+		$q = $this->db->query("Select * from dtl_usulan_pmlhrn_alat where id_dtl_pmlhrn_alat = '$id'");
+   		return $q->row();
+	}
+
+	function ubah_dtl_usulan_pemeliharaan_alat($id){
+		$b = $this->input->post('merk');
+		$c = $this->input->post('pngdn_thn');
+		$d = $this->input->post('kondisi');
+		$e = $this->input->post('jmlh_diperbaiki');
+		$f = $this->input->post('jns_pmlhrn');
+		$g = $this->input->post('info');
+
+		$result = $this->db->query("Update dtl_usulan_pmlhrn_alat SET 
+			merk = '$b',
+			pngdn_thn = '$c',
+			kondisi = '$d',
+			jmlh_diperbaiki = '$e',
+			jns_pmlhrn = '$f',
+			info = '$g'
+			WHERE id_dtl_pmlhrn_alat = '$id'");
+
+		return $result;
+	}
+
+	function hapus_usulan_pemeliharaan_alat($id){
+		$this->db->query("delete from dtl_usulan_pmlhrn_alat where id_dtl_pmlhrn_alat = '$id' ");
+	}
+
 }
