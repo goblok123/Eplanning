@@ -1,6 +1,6 @@
 <div id="" class="formMid">
 
-    <h1>Ubah Usulan BHP</h1>
+    <h1>Ubah Usulan Alat</h1>
 
 	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
@@ -14,10 +14,10 @@
 		echo form_open('site/ubah_usulan_alat/'.$id.'/'.$kode_jenis_alat.''); //belum
 	?>
 
-	<h4>Jenis BHP : <?php echo "$jenis_alat"; ?></h4>
+	<h4>Jenis Alat : <?php echo "$jenis_alat"; ?></h4>
 
 	<?php
-		echo form_label('Nama BHP : ', 'nama_bhp');
+		echo form_label('Nama Alat : ', 'nama_alat');
 		echo form_label("$nama_alat");
 	?>
 

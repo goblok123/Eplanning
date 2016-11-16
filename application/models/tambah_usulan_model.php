@@ -479,4 +479,65 @@ class Tambah_usulan_model extends CI_Model{
 		$this->db->query("delete from dtl_usulan_pmlhrn_alat where id_dtl_pmlhrn_alat = '$id' ");
 	}
 
+	//Gedung
+	function cari_semua_gedung(){
+		$q = $this->db->query("Select * from gedung");
+   		return $q->result();
+	}
+
+	function cari_id_gedung($nama){
+		$q = $this->db->query("Select id_gedung from gedung where nama_gedung = '$nama'");
+   		return $q->row();
+	}
+
+	function semua_usulan_gedung($unit, $t){
+		$q = $this->db->query("Select * from dtl_usulan_gedung where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
+   		return $q->result();
+	}
+
+	function tambah_usulan_gedung($id_usulan,$id_gdng){
+	
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_gedung' => $id_gdng,
+			'jmlh_ada' => $this->input->post('jmlh_ada'),
+			'kondisi' => $this->input->post('kondisi'),
+			'jmlh_diusulkan' => $this->input->post('jmlh_diusulkan'),
+			'info' => $this->input->post('info'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_gedung', $new_insert_data);
+		return $insert;
+	}
+
+	function cari_dtl_usulan_gedung($id){
+		$q = $this->db->query("Select * from dtl_usulan_gedung where id_dtl_usulan_gedung = '$id'");
+   		return $q->row();
+	}
+
+	function cari_nama_gedung($id){
+		$q = $this->db->query("Select nama_gedung from gedung where id_gedung = '$id'");
+   		return $q->row();
+	}
+
+	function ubah_dtl_usulan_gedung($id){
+		$a = $this->input->post('jmlh_ada');
+		$b = $this->input->post('kondisi');
+		$c = $this->input->post('jmlh_diusulkan');
+		$d = $this->input->post('info');
+
+		$result = $this->db->query("Update dtl_usulan_gedung SET 
+			jmlh_ada = '$a',
+			kondisi = '$b',
+			jmlh_diusulkan = '$c',
+			info = '$d'
+			WHERE id_dtl_usulan_gedung = '$id'");
+
+		return $result;
+	}
+
+	function hapus_dtl_usulan_gedung($id){
+		$this->db->query("delete from dtl_usulan_gedung where id_dtl_usulan_gedung = '$id' ");
+	}
+
 }
