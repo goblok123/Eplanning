@@ -540,4 +540,57 @@ class Tambah_usulan_model extends CI_Model{
 		$this->db->query("delete from dtl_usulan_gedung where id_dtl_usulan_gedung = '$id' ");
 	}
 
+	//Pemeliharaan Gedung
+	function semua_usulan_pmlhrn_gedung($unit, $t){
+		$q = $this->db->query("Select * from dtl_usulan_pmlhrn_gedung where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
+   		return $q->result();
+	}
+
+	function tambah_usulan_pmlhrn_gedung($id_usulan,$id_gdng){
+	
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_gedung' => $id_gdng,
+			'bgn_diperbaiki' => $this->input->post('bgn_diperbaiki'),
+			'pngdn_thn' => $this->input->post('pngdn_thn'),
+			'kondisi' => $this->input->post('kondisi'),
+			'jmlh_dprbk' => $this->input->post('jmlh_dprbk'),
+			'jns_pmlhrn' => $this->input->post('jns_pmlhrn'),
+			'info' => $this->input->post('info'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_pmlhrn_gedung', $new_insert_data);
+		return $insert;
+	}
+
+	function ubah_dtl_usulan_pmlhrn_gedung($id){
+		$b = $this->input->post('bgn_diperbaiki');
+		$c = $this->input->post('pngdn_thn');
+		$d = $this->input->post('kondisi');
+		$e = $this->input->post('jmlh_dprbk');
+		$f = $this->input->post('jns_pmlhrn');
+		$g = $this->input->post('info');
+
+		$result = $this->db->query("Update dtl_usulan_pmlhrn_gedung SET 
+			bgn_diperbaiki = '$b',
+			pngdn_thn = '$c',
+			kondisi = '$d',
+			jmlh_dprbk = '$e',
+			jns_pmlhrn = '$f',
+			info = '$g'
+			WHERE id_dtl_usln_pmlhrn_gedung = '$id'");
+
+		return $result;
+	}
+
+	function hapus_usulan_pmlhrn_gedung($id){
+		$this->db->query("delete from dtl_usulan_pmlhrn_gedung where id_dtl_usln_pmlhrn_gedung = '$id' ");
+	}
+
+	function cari_dtl_usulan_pmlhrn_gedung($id){
+		$q = $this->db->query("Select * from dtl_usulan_pmlhrn_gedung where id_dtl_usln_pmlhrn_gedung = '$id'");
+   		return $q->row();
+	}
+
+
 }

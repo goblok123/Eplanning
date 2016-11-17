@@ -1388,7 +1388,7 @@ class Site extends CI_Controller
 		$data["semua_alat"] = $this->tambah_usulan_model->cari_jenis_alat($jenis);
 
 		$data["added"] = $msg;
-		$tp = "Pemeliharaan";
+		$tp = "Pemeliharaan Alat";
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
 		if($r != null){
@@ -1688,7 +1688,143 @@ class Site extends CI_Controller
 		redirect('site/tambah_usulan_gedung_form/Usulan_Berhasil_Dihapus');
 	}
 
+	//Pemeliharaan Gedung
+	function tambah_usulan_pmlhrn_gedung_form($msg){
+		$unit = $this->session->userdata('id_unit');
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->model('tambah_usulan_model');
+		$data["gedung"] = $this->tambah_usulan_model->cari_semua_gedung();
+		$data["added"] = $msg;
+		$data["usulan_pmlhraan_gdng"] = $this->tambah_usulan_model->semua_usulan_pmlhrn_gedung($unit, "Pemeliharaan Gedung");
 
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/usulan_pmlhrn_gedung_form',$data);
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_pmlhrn_gedung(){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('nama_gedung', 'Nama Gedung', 'trim|required'); 
+		$this->form_validation->set_rules('bgn_diperbaiki', 'Bagian yang Diperbaiki/Dipelihara', 'trim');
+		$this->form_validation->set_rules('pngdn_thn', 'Pengadaan Tahun', 'trim|required');
+		$this->form_validation->set_rules('kondisi', 'Kondisi', 'trim');
+		$this->form_validation->set_rules('jns_pmlhrn', 'Jenis Pemeliharaan', 'trim');
+		$this->form_validation->set_rules('info', 'Info Kerusakan', 'trim');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->tambah_usulan_pmlhrn_gedung_form($da);
+		}else{
+			$this->load->model('tambah_usulan_model');
+			$s = $this->tambah_usulan_model->cari_id_gedung($this->input->post('nama_gedung'));
+
+			$tp = "Pemeliharaan Gedung";
+			
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+			if($r != null){
+				if($this->tambah_usulan_model->tambah_usulan_pmlhrn_gedung($r->id_usulan, $s->id_gedung)){
+					$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+					$this->tambah_usulan_pmlhrn_gedung_form("Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_pmlhrn_gedung_form("Usulan GAGAL disimpan");
+				}
+			}else{
+				$dataUsulan =  array(
+					'id_pemasuk' => $this->session->userdata('id_user'),
+					'id_unit' => $this->session->userdata('id_unit'),
+					'type_usulan' => $tp
+				);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
+				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+				if($this->tambah_usulan_model->tambah_usulan_pmlhrn_gedung($r->id_usulan, $s->id_gedung)){
+					$this->tambah_usulan_pmlhrn_gedung_form("Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_pmlhrn_gedung_form("Usulan GAGAL disimpan");
+				}
+			}
+		}
+	}
+
+	function ubah_usulan_pmlhrn_gedung_form($id, $msg){
+		$this->load->model('tambah_usulan_model');
+		$dtl = $this->tambah_usulan_model->cari_dtl_usulan_pmlhrn_gedung($id);
+		$nm_gdng = $this->tambah_usulan_model->cari_nama_gedung($dtl->id_gedung);
+
+		$data["added"] = $msg;
+		$data["id"] = $id;
+		$data["nama_gedung"] = $nm_gdng->nama_gedung;
+		$data["bgn_diperbaiki"] = $dtl->bgn_diperbaiki;
+		$data["jmlh_dprbk"] = $dtl->jmlh_dprbk;
+		$data["pngdn_thn"] = $dtl->pngdn_thn;
+		$data["kondisi"] = $dtl->kondisi;
+		$data["jns_pmlhrn"] = $dtl->jns_pmlhrn;
+		$data["info"] = $dtl->info;
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/ubah_usulan_pmlhrn_gedung_form',$data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function ubah_usulan_pmlhrn_gedung($id){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('bgn_diperbaiki', 'Bagian yang Diperbaiki/Dipelihara', 'trim');
+		$this->form_validation->set_rules('pngdn_thn', 'Pengadaan Tahun', 'trim|required');
+		$this->form_validation->set_rules('kondisi', 'Kondisi', 'trim');
+		$this->form_validation->set_rules('jns_pmlhrn', 'Jenis Pemeliharaan', 'trim');
+		$this->form_validation->set_rules('info', 'Info Kerusakan', 'trim');
+
+		$this->load->model('tambah_usulan_model');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->ubah_usulan_pmlhrn_gedung_form($id, $da);
+		}else{
+			$this->tambah_usulan_model->ubah_dtl_usulan_pmlhrn_gedung($id);
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Pemeliharaan Gedung");
+			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+			redirect('site/tambah_usulan_pmlhrn_gedung_form/Usulan_Berhasil_Dirubah');
+			//$this->tambah_usulan_diklat_form("-");
+		}
+	}
+
+	function hapus_usulan_pmlhrn_gedung($id){
+		$this->load->model('tambah_usulan_model');
+		$this->tambah_usulan_model->hapus_usulan_pmlhrn_gedung($id);
+
+		redirect('site/tambah_usulan_pmlhrn_gedung_form/Usulan_Berhasil_Dihapus');
+	}
 
 
 }
