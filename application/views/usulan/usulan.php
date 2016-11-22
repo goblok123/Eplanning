@@ -11,5 +11,6 @@
 
 	<a href="<?php echo base_url('/site/tambah_usulan_gaji_non_pns_form/-'); ?>" class="btn btn-success">Tambah Usulan Gaji Kontrak/Pegawai Tidak Tetap</a>
 	<a href="<?php echo base_url('/site/tambah_usulan_gaji_pns_form/-'); ?>" class="btn btn-success">Tambah Usulan Gaji PNS</a>
+	<a href="<?php echo base_url('/site/tambah_usulan_perencanaan_pendapatan_form/-'); ?>" class="btn btn-success">Tambah Usulan Perencanaan Anggaran Pendapatan</a>
 
 </div>0

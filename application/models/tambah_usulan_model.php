@@ -723,4 +723,64 @@ class Tambah_usulan_model extends CI_Model{
 	function hapus_usulan_gaji_pns($id){
 		$this->db->query("delete from dtl_usulan_gaji_pns where id_dtl_usln_gaji_pns = '$id' ");
 	}
+
+	//usulan perencanaan
+	function cari_data_jenis_item_komponen(){
+		$q = $this->db->query("Select * from item_keuangan where jenis_item_keu = 'Komponen Pendapatan Rumah Sakit'");
+   		return $q->result();
+	}
+
+	function usulan_perencanaan_pendapatan($id){
+		$q = $this->db->query("Select * from dtl_usulan_prncnn_pndptn where id_usulan = '$id'");
+   		return $q->result();
+	}
+
+	function check_item_komponen($id){
+		$q = $this->db->query("Select id_item from dtl_usulan_prncnn_pndptn where id_item = '$id'");
+   		if($q->num_rows() >= 1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	function tambah_usulan_perencanaan_pendapatan($id_usulan, $id_item){
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_item' => $id_item,
+			'realisasi_tahun_lalu' => $this->input->post('realisasi_tahun_lalu'),
+			'realisasi_pendapatan' => $this->input->post('realisasi_pendapatan'),
+			'rencana_pendapatan' => $this->input->post('rencana_pendapatan'),
+			'info' => $this->input->post('info'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_prncnn_pndptn', $new_insert_data);
+		return $insert;
+	}
+
+	function cari_dtl_usulan_perencanaan_pendapatan($id){
+		$q = $this->db->query("Select * from dtl_usulan_prncnn_pndptn where id_dtl_usulan_prncnn_pndptn = '$id'");
+   		return $q->row();
+	}
+
+	function ubah_usulan_perencanaan_pendapatan($id){
+		$b = $this->input->post('realisasi_tahun_lalu');
+		$c = $this->input->post('realisasi_pendapatan');
+		$d = $this->input->post('rencana_pendapatan');
+		$g = $this->input->post('info');
+
+		$result = $this->db->query("Update dtl_usulan_prncnn_pndptn SET 
+			realisasi_tahun_lalu = '$b',
+			realisasi_pendapatan = '$c',
+			rencana_pendapatan = '$d',
+			info = '$g'
+			WHERE id_dtl_usulan_prncnn_pndptn = '$id'");
+
+		return $result;
+	}
+
+	function hapus_usulan_perencanaan_pendapatan($id){
+		$this->db->query("delete from dtl_usulan_prncnn_pndptn where id_dtl_usulan_prncnn_pndptn = '$id' ");
+	}
+
 }

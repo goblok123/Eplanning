@@ -723,7 +723,7 @@ class Site extends CI_Controller
 
 				}
 			}else{
-				$this->tambah_usulan_obat_form("Item Obat Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+				$this->tambah_usulan_obat_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 
@@ -1077,7 +1077,7 @@ class Site extends CI_Controller
 
 				}
 			}else{
-				$this->tambah_usulan_bhp_form($no, "Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+				$this->tambah_usulan_bhp_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -1270,7 +1270,7 @@ class Site extends CI_Controller
 
 				}
 			}else{
-				$this->tambah_usulan_alat_form($no, "Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+				$this->tambah_usulan_alat_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -1472,7 +1472,7 @@ class Site extends CI_Controller
 
 				}
 			}else{
-				$this->tambah_usulan_pemeliharaan_alat_form($no, "Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+				$this->tambah_usulan_pemeliharaan_alat_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -1918,7 +1918,7 @@ class Site extends CI_Controller
 
 				}
 			}else{
-				$this->tambah_usulan_gaji_non_pns_form("Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+				$this->tambah_usulan_gaji_non_pns_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -2070,7 +2070,7 @@ class Site extends CI_Controller
 
 				}
 			}else{
-				$this->tambah_usulan_gaji_pns_form("Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+				$this->tambah_usulan_gaji_pns_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -2134,6 +2134,153 @@ class Site extends CI_Controller
 		$this->tambah_usulan_model->hapus_usulan_gaji_pns($id);
 
 		redirect("site/tambah_usulan_gaji_pns_form/Usulan_Berhasil_Dihapus");
+	}
+
+	//Perencanaan Naggaran Pendapatan
+	function tambah_usulan_perencanaan_pendapatan_form($msg){
+		$this->load->model('tambah_usulan_model');
+	
+		$data["added"] = $msg;
+		$data["komponen"] = $this->tambah_usulan_model->cari_data_jenis_item_komponen();
+		$tp = "PERENCANAAN PENDAPATAN";
+
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+		if($r != null){
+			$data["usulan_perencanaan_pendapatan"] = $this->tambah_usulan_model->usulan_perencanaan_pendapatan($r->id_usulan);
+		}
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/usulan_perencanaan_pendapatan_form', $data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_perencanaan_pendapatan(){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('nama_item_keu', 'Komponen Pendapatan Rumah Sakit', 'trim|required'); 
+		$this->form_validation->set_rules('realisasi_tahun_lalu', 'Realisasi Pendapatan Tahun Lalu(N-1)', 'trim|required');
+		$this->form_validation->set_rules('realisasi_pendapatan', 'Realisasi Pendapatan s/d Bulan ini TS ke-N', 'trim|required');
+		$this->form_validation->set_rules('rencana_pendapatan', 'Rencana Anggaran Pendapatan TA ke (N+1)', 'trim|required');
+		$this->form_validation->set_rules('info', 'Informasi/Justifikasi', 'trim');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->tambah_usulan_perencanaan_pendapatan_form($da);
+		}else{
+			$this->load->model('tambah_usulan_model');
+			$s = $this->tambah_usulan_model->find_id_item_keu($this->input->post('nama_item_keu'));
+
+			if($this->tambah_usulan_model->check_item_komponen($s->id_item)){
+				$tp = "PERENCANAAN PENDAPATAN";
+				
+				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+				if($r != null){
+					if($this->tambah_usulan_model->tambah_usulan_perencanaan_pendapatan($r->id_usulan, $s->id_item)){
+						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan GAGAL disimpan");
+					}
+				}else{
+					$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+					);
+
+					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
+					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+					if($this->tambah_usulan_model->tambah_usulan_perencanaan_pendapatan($r->id_usulan, $s->id_item)){
+						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan GAGAL disimpan");
+					}
+				}
+			}else{
+				$this->tambah_usulan_perencanaan_pendapatan_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
+			}
+		}
+	}
+
+	function ubah_usulan_perencanaan_pendapatan_form($id){
+		$this->load->model('tambah_usulan_model');
+
+		$dtl = $this->tambah_usulan_model->cari_dtl_usulan_perencanaan_pendapatan($id);
+		$nama_item = $this->tambah_usulan_model->cari_nama_item($dtl->id_item);
+
+		$data["id"] = $id;
+		$data["nama_item_keu"] = $nama_item->nama_item_keu;
+		$data["realisasi_tahun_lalu"] = $dtl->realisasi_tahun_lalu;
+		$data["realisasi_pendapatan"] = $dtl->realisasi_pendapatan;
+		$data["rencana_pendapatan"] = $dtl->rencana_pendapatan;
+		$data["info"] = $dtl->info;
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/ubah_usulan_perencanaan_pendapatan_form',$data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function ubah_usulan_perencanaan_pendapatan($id){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('realisasi_tahun_lalu', 'Realisasi Pendapatan Tahun Lalu(N-1)', 'trim|required');
+		$this->form_validation->set_rules('realisasi_pendapatan', 'Realisasi Pendapatan s/d Bulan ini TS ke-N', 'trim|required');
+		$this->form_validation->set_rules('rencana_pendapatan', 'Rencana Anggaran Pendapatan TA ke (N+1)', 'trim|required');
+		$this->form_validation->set_rules('info', 'Informasi/Justifikasi', 'trim');
+
+
+		$this->load->model('tambah_usulan_model');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->ubah_usulan_perencanaan_pendapatan_form($id,$da);
+		}else{
+			$tp = "PERENCANAAN PENDAPATAN";
+			$this->tambah_usulan_model->ubah_usulan_perencanaan_pendapatan($id);
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+			redirect("site/tambah_usulan_perencanaan_pendapatan_form/Usulan_Berhasil_Dirubah");
+		}
+	}
+
+	function hapus_usulan_perencanaan_pendapatan($id){
+		$this->load->model('tambah_usulan_model');
+		$this->tambah_usulan_model->hapus_usulan_perencanaan_pendapatan($id);
+
+		redirect("site/tambah_usulan_perencanaan_pendapatan_form/Usulan_Berhasil_Dihapus");
 	}
 
 }
