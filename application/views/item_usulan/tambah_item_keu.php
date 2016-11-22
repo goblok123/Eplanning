@@ -10,7 +10,7 @@
 	
 		$options = array(
 			"Komponen Pendapatan Rumah Sakit"         => "Komponen Pendapatan Rumah Sakit",
-	        "Urain Belanja Gaji dan Tunjangan PNS"         => "Urain Belanja Gaji dan Tunjangan PNS",
+	        "Uraian Belanja Gaji dan Tunjangan PNS"         => "Uraian Belanja Gaji dan Tunjangan PNS",
 	        "Kualifikasi Tenaga Kontrak"         => "Kualifikasi Tenaga Kontrak",
 		);
 		echo form_dropdown('jenis_item_keu', $options, 'Komponen Pendapatan Rumah Sakit', 'class="dropdownStyle"');

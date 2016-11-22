@@ -531,15 +531,16 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('justifikasi', 'Justifikasi', 'trim');
 		$this->form_validation->set_rules('catatan', 'Catatan', 'trim');
 
-
+		$tp = "DIKLAT";
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->tambah_usulan_diklat_form($da);
 		}else{
 			$this->load->model('tambah_usulan_model');
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
 			// echo $r->id_usulan;
+
 
 			if($r != null){
 				if($this->tambah_usulan_model->add_usulan_diklat($r->id_usulan)){
@@ -553,12 +554,13 @@ class Site extends CI_Controller
 				$dataUsulan =  array(
 					'id_pemasuk' => $this->session->userdata('id_user'),
 					'id_unit' => $this->session->userdata('id_unit'),
-					'type_usulan' => 'Diklat'
+					'type_usulan' => 'DIKLAT'
 				);
 
 				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
+				$tp = "DIKLAT";
 
-				$t = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+				$t = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
 				if($this->tambah_usulan_model->add_usulan_diklat($t->id_usulan)){
 					$this->tambah_usulan_diklat_form("Usulan BERHASIL disimpan");
@@ -624,12 +626,13 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('catatan', 'Catatan', 'trim');
 
 		$this->load->model('tambah_usulan_model');
+		$tp = "DIKLAT";
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_diklat_form($id,$da);
 		}else{
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			$this->tambah_usulan_model->ubah_usulan_all($id);
 			redirect('site/tambah_usulan_diklat_form/Usulan_Berhasil_Dirubah');
@@ -651,7 +654,7 @@ class Site extends CI_Controller
 		$this->load->model('tambah_usulan_model');
 		$data["obat"] = $this->tambah_usulan_model->find_all_obat();
 		$data["added"] = $a;
-		$data["usulan_obat"] = $this->tambah_usulan_model->all_usulan_obat($unit, "Obat");
+		$data["usulan_obat"] = $this->tambah_usulan_model->all_usulan_obat($unit, "OBAT");
 
 		$this->load->view('template/header');
 
@@ -691,7 +694,7 @@ class Site extends CI_Controller
 			$s = $this->tambah_usulan_model->find_id_obat($this->input->post('nama_obat'));
 
 			if($this->tambah_usulan_model->check_obat($s->id_obat)){
-				$tp = "Obat";
+				$tp = "OBAT";
 				
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -771,13 +774,14 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('jmlh_pnggnaan_thn_sblm', 'Jumlah Penggunaan Tahun Sebelumnya', 'trim|required');
 
 		$this->load->model('tambah_usulan_model');
+		$tp = "OBAT";
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_obat_form($da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_obat($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect('site/tambah_usulan_obat_form/Usulan_Berhasil_Dirubah');
 			//$this->tambah_usulan_diklat_form("-");
@@ -798,7 +802,8 @@ class Site extends CI_Controller
 		$this->load->model('tambah_usulan_model');
 		$data["sdm"] = $this->tambah_usulan_model->find_all_sdm();
 		$data["added"] = $a;
-		$data["usulan_sdm"] = $this->tambah_usulan_model->all_usulan_sdm($unit, "SDM");
+		$tp = "SDM";
+		$data["usulan_sdm"] = $this->tambah_usulan_model->all_usulan_sdm($unit, $tp);
 
 		$this->load->view('template/header');
 
@@ -911,13 +916,14 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('justifikasi', 'justifikasi', 'trim');
 
 		$this->load->model('tambah_usulan_model');
+		$tp = "DIKLAT";
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_sdm_form($da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_sdm($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect('site/tambah_usulan_sdm_form/Usulan_Berhasil_Dirubah');
 			//$this->tambah_usulan_diklat_form("-");
@@ -995,7 +1001,7 @@ class Site extends CI_Controller
 		$data["added"] = $a;
 		$data["no_jenis"] = $no;
 		$data["dt"] = $this->tambah_usulan_model->cari_data_jenis_bhp($no);
-		$tp = "Bhp";
+		$tp = "BHP";
 
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1042,7 +1048,7 @@ class Site extends CI_Controller
 			$s = $this->tambah_usulan_model->find_id_bhp($this->input->post('nama_bhp'));
 
 			if($this->tambah_usulan_model->check_bhp($s->id_bhp)){
-				$tp = "Bhp";
+				$tp = "BHP";
 				
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1126,13 +1132,14 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('jmlh_pnggnaan_thn_sblm', 'Jumlah Penggunaan Tahun Sebelumnya', 'trim|required');
 
 		$this->load->model('tambah_usulan_model');
+		$tp = "BHP";
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_bhp_form($da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_bhp($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Bhp");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect("site/tambah_usulan_bhp_form/$no/Usulan_Berhasil_Dirubah");
 			//$this->tambah_usulan_diklat_form("-");
@@ -1188,7 +1195,7 @@ class Site extends CI_Controller
 		$data["semua_alat"] = $this->tambah_usulan_model->cari_jenis_alat($jenis);
 
 		$data["added"] = $msg;
-		$tp = "Alat";
+		$tp = "ALAT";
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
 		if($r != null){
@@ -1234,7 +1241,7 @@ class Site extends CI_Controller
 			$s = $this->tambah_usulan_model->find_id_alat($r);
 
 			if($this->tambah_usulan_model->check_alat($s->id_alat)){
-				$tp = "Alat";
+				$tp = "ALAT";
 				
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1318,13 +1325,14 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('justifikasi', 'Justifikasi', 'trim');
 
 		$this->load->model('tambah_usulan_model');
+		$tp = "ALAT";
 
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_alat_form($da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_alat($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Alat");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect("site/tambah_usulan_alat_form/$no/Usulan_Berhasil_Dirubah");
 			//$this->tambah_usulan_diklat_form("-");
@@ -1388,7 +1396,7 @@ class Site extends CI_Controller
 		$data["semua_alat"] = $this->tambah_usulan_model->cari_jenis_alat($jenis);
 
 		$data["added"] = $msg;
-		$tp = "Pemeliharaan Alat";
+		$tp = "PEMELIHARAAN ALAT";
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
 		if($r != null){
@@ -1435,7 +1443,7 @@ class Site extends CI_Controller
 			$s = $this->tambah_usulan_model->find_id_alat($r);
 
 			if($this->tambah_usulan_model->check_pemeliharaan_alat($s->id_alat)){
-				$tp = "Pemeliharaan";
+				$tp = "PEMELIHARAAN ALAT";
 				
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1520,13 +1528,13 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('info', 'Info Kerusakan', 'trim');
 
 		$this->load->model('tambah_usulan_model');
-
+		$tp = "PEMELIHARAAN ALAT";
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_pemeliharaan_alat_form($da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_pemeliharaan_alat($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Pemeliharaan");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp );
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect("site/tambah_usulan_pemeliharaan_alat_form/$no/Usulan_Berhasil_Dirubah");
 			//$this->tambah_usulan_diklat_form("-");
@@ -1558,7 +1566,8 @@ class Site extends CI_Controller
 		$this->load->model('tambah_usulan_model');
 		$data["gedung"] = $this->tambah_usulan_model->cari_semua_gedung();
 		$data["added"] = $msg;
-		$data["usulan_gedung"] = $this->tambah_usulan_model->semua_usulan_gedung($unit, "Gedung");
+		$tp = "GEDUNG";
+		$data["usulan_gedung"] = $this->tambah_usulan_model->semua_usulan_gedung($unit, $tp);
 
 		$this->load->view('template/header');
 
@@ -1593,7 +1602,7 @@ class Site extends CI_Controller
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->cari_id_gedung($this->input->post('nama_gedung'));
 
-			$tp = "Gedung";
+			$tp = "GEDUNG";
 			
 			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1668,13 +1677,13 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('info', 'Informasi/Justifikasi', 'trim');
 
 		$this->load->model('tambah_usulan_model');
-
+		$tp = "GEDUNG";
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_gedung_form($id, $da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_gedung($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Diklat");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect('site/tambah_usulan_gedung_form/Usulan_Berhasil_Dirubah');
 			//$this->tambah_usulan_diklat_form("-");
@@ -1695,7 +1704,7 @@ class Site extends CI_Controller
 		$this->load->model('tambah_usulan_model');
 		$data["gedung"] = $this->tambah_usulan_model->cari_semua_gedung();
 		$data["added"] = $msg;
-		$data["usulan_pmlhraan_gdng"] = $this->tambah_usulan_model->semua_usulan_pmlhrn_gedung($unit, "Pemeliharaan Gedung");
+		$data["usulan_pmlhraan_gdng"] = $this->tambah_usulan_model->semua_usulan_pmlhrn_gedung($unit, "PEMELIHARAAN GEDUNG");
 
 		$this->load->view('template/header');
 
@@ -1731,7 +1740,7 @@ class Site extends CI_Controller
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->cari_id_gedung($this->input->post('nama_gedung'));
 
-			$tp = "Pemeliharaan Gedung";
+			$tp = "PEMELIHARAAN GEDUNG";
 			
 			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1806,13 +1815,13 @@ class Site extends CI_Controller
 		$this->form_validation->set_rules('info', 'Info Kerusakan', 'trim');
 
 		$this->load->model('tambah_usulan_model');
-
+		$tp = "PEMELIHARAAN GEDUNG";
 		if($this->form_validation->run() == FALSE){
 			$da = 'Usulan gagal tersimpan.';
 			$this->ubah_usulan_pmlhrn_gedung_form($id, $da);
 		}else{
 			$this->tambah_usulan_model->ubah_dtl_usulan_pmlhrn_gedung($id);
-			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), "Pemeliharaan Gedung");
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 			redirect('site/tambah_usulan_pmlhrn_gedung_form/Usulan_Berhasil_Dirubah');
 			//$this->tambah_usulan_diklat_form("-");
@@ -1826,6 +1835,306 @@ class Site extends CI_Controller
 		redirect('site/tambah_usulan_pmlhrn_gedung_form/Usulan_Berhasil_Dihapus');
 	}
 
+	//usulan pegawai non pns
+
+	function tambah_usulan_gaji_non_pns_form($msg){
+		$this->load->model('tambah_usulan_model');
+	
+		$data["added"] = $msg;
+		$data["non_pns"] = $this->tambah_usulan_model->cari_data_jenis_item_non_pns();
+		$tp = "GAJI NON PNS";
+
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+		if($r != null){
+			$data["usulan_gj_non"] = $this->tambah_usulan_model->usulan_gaji_non($r->id_usulan);
+		}
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/usulan_gaji_non_pns_form', $data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_gaji_non_pns(){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('nama_item_keu', 'Kualifikasi Tenaga Kontrak/Pegawai Tidak Tetap', 'trim|required'); 
+		$this->form_validation->set_rules('jmlh_pgwi', 'Jumlah Pegawai', 'trim|required');
+		$this->form_validation->set_rules('jmlh_bln', 'Jumlah Bulan', 'trim|required');
+		$this->form_validation->set_rules('jmlh_gaji_perbulan', 'Jumlah Gaji Perbulan', 'trim|required');
+		$this->form_validation->set_rules('jmlh_gaji_pertahun_n1', 'Jumlah Gaji Per Tahun(n+1)', 'trim|required');
+		$this->form_validation->set_rules('jmlh_gaji_pertahun_n', 'Jumlah Gaji Per Tahun(n)', 'trim|required');
+		$this->form_validation->set_rules('info', 'Informasi/Justifikasi', 'trim');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->tambah_usulan_gaji_non_pns_form($da);
+		}else{
+			$this->load->model('tambah_usulan_model');
+			$s = $this->tambah_usulan_model->find_id_item_keu($this->input->post('nama_item_keu'));
+
+			if($this->tambah_usulan_model->check_item_keu($s->id_item)){
+				$tp = "GAJI NON PNS";
+				
+				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+				if($r != null){
+					if($this->tambah_usulan_model->tambah_usulan_gaji_non_pns($r->id_usulan, $s->id_item)){
+						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+						$this->tambah_usulan_gaji_non_pns_form("Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_gaji_non_pns_form("Usulan GAGAL disimpan");
+					}
+				}else{
+					$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+					);
+
+					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
+					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+					if($this->tambah_usulan_model->tambah_usulan_gaji_non_pns($r->id_usulan, $s->id_item)){
+						$this->tambah_usulan_gaji_non_pns_form("Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_gaji_non_pns_form("Usulan GAGAL disimpan");
+					}
+
+				}
+			}else{
+				$this->tambah_usulan_gaji_non_pns_form("Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+			}
+		}
+	}
+
+	function ubah_usulan_gaji_non_pns_form($id){
+		$this->load->model('tambah_usulan_model');
+
+		$dtl = $this->tambah_usulan_model->cari_dtl_usulan_gaji_non($id);
+		$nama_item = $this->tambah_usulan_model->cari_nama_item($dtl->id_item);
+
+		$data["id"] = $id;
+		$data["nama_item_keu"] = $nama_item->nama_item_keu;
+		$data["jmlh_pgwi"] = $dtl->jmlh_pgwi;
+		$data["jmlh_bln"] = $dtl->jmlh_bln;
+		$data["jmlh_gaji_perbulan"] = $dtl->jmlh_gaji_perbulan;
+		$data["jmlh_gaji_pertahun_n1"] = $dtl->jmlh_gaji_pertahun_n1;
+		$data["jmlh_gaji_pertahun_n"] = $dtl->jmlh_gaji_pertahun_n;
+		$data["info"] = $dtl->info;
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/ubah_usulan_gaji_non_pns_form',$data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function ubah_usulan_gaji_non_pns($id){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('jmlh_pgwi', 'Jumlah Pegawai', 'trim|required');
+		$this->form_validation->set_rules('jmlh_bln', 'Jumlah Bulan', 'trim|required');
+		$this->form_validation->set_rules('jmlh_gaji_perbulan', 'Jumlah Gaji Perbulan', 'trim|required');
+		$this->form_validation->set_rules('jmlh_gaji_pertahun_n1', 'Jumlah Gaji Per Tahun(n+1)', 'trim|required');
+		$this->form_validation->set_rules('jmlh_gaji_pertahun_n', 'Jumlah Gaji Per Tahun(n)', 'trim|required');
+		$this->form_validation->set_rules('info', 'Informasi/Justifikasi', 'trim');
+
+		$this->load->model('tambah_usulan_model');
+		$tp = "GAJI NON PNS";
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->ubah_usulan_gaji_non_pns_form($id,$da);
+		}else{
+			$this->tambah_usulan_model->ubah_usulan_gaji_non_pns($id);
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+			redirect("site/tambah_usulan_gaji_non_pns_form/Usulan_Berhasil_Dirubah");
+			//$this->tambah_usulan_diklat_form("-");
+		}
+	}
+
+	function hapus_usulan_gaji_non_pns($id){
+		$this->load->model('tambah_usulan_model');
+		$this->tambah_usulan_model->hapus_usulan_gaji_non_pns($id);
+
+		redirect("site/tambah_usulan_gaji_non_pns_form/Usulan_Berhasil_Dihapus");
+	}
+
+	//usulan pegawai pns
+
+	function tambah_usulan_gaji_pns_form($msg){
+		$this->load->model('tambah_usulan_model');
+	
+		$data["added"] = $msg;
+		$data["pns"] = $this->tambah_usulan_model->cari_data_jenis_item_pns();
+		$tp = "GAJI PNS";
+
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+		if($r != null){
+			$data["usulan_gj_pns"] = $this->tambah_usulan_model->usulan_gaji_pns($r->id_usulan);
+		}
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/usulan_gaji_pns_form', $data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function tambah_usulan_gaji_pns(){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('nama_item_keu', 'Kualifikasi Tenaga Kontrak/Pegawai Tidak Tetap', 'trim|required'); 
+		$this->form_validation->set_rules('gaji_tahun_lalu', 'Realisasi Belanja Gaji Tahun Lalu(N-1)', 'trim|required');
+		$this->form_validation->set_rules('rencana_gaji', 'Rencana Anggaran Gaji PNS TA (n+1)', 'trim|required');
+		$this->form_validation->set_rules('info', 'Informasi/Justifikasi', 'trim');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->tambah_usulan_gaji_pns_form($da);
+		}else{
+			$this->load->model('tambah_usulan_model');
+			$s = $this->tambah_usulan_model->find_id_item_keu($this->input->post('nama_item_keu'));
+
+			if($this->tambah_usulan_model->check_item_keu_pns($s->id_item)){
+				$tp = "GAJI PNS";
+				
+				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+				if($r != null){
+					if($this->tambah_usulan_model->tambah_usulan_gaji_pns($r->id_usulan, $s->id_item)){
+						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+						$this->tambah_usulan_gaji_pns_form("Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_gaji_pns_form("Usulan GAGAL disimpan");
+					}
+				}else{
+					$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+					);
+
+					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
+					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+					if($this->tambah_usulan_model->tambah_usulan_gaji_pns($r->id_usulan, $s->id_item)){
+						$this->tambah_usulan_gaji_pns_form("Usulan BERHASIL disimpan");
+					}else{
+						$this->tambah_usulan_gaji_pns_form("Usulan GAGAL disimpan");
+					}
+
+				}
+			}else{
+				$this->tambah_usulan_gaji_pns_form("Item bhp Sudah Pernah Disimpan. \n Silakan Gunakan Perubahan");
+			}
+		}
+	}
+
+	function ubah_usulan_gaji_pns_form($id){
+		$this->load->model('tambah_usulan_model');
+
+		$dtl = $this->tambah_usulan_model->cari_dtl_usulan_gaji_pns($id);
+		$nama_item = $this->tambah_usulan_model->cari_nama_item($dtl->id_item);
+
+		$data["id"] = $id;
+		$data["nama_item_keu"] = $nama_item->nama_item_keu;
+		$data["gaji_tahun_lalu"] = $dtl->gaji_tahun_lalu;
+		$data["rencana_gaji"] = $dtl->rencana_gaji;
+		$data["info"] = $dtl->info;
+
+		$hak = $this->session->userdata('hakAkses');
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+			
+		}else if($hak == 'Penangung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->view('usulan/ubah_usulan_gaji_pns_form',$data);
+
+
+		$this->load->view('template/footer');
+	}
+
+	function ubah_usulan_gaji_pns($id){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('gaji_tahun_lalu', 'Realisasi Belanja Gaji Tahun Lalu(N-1)', 'trim|required');
+		$this->form_validation->set_rules('rencana_gaji', 'Rencana Anggaran Gaji PNS TA (n+1)', 'trim|required');
+		$this->form_validation->set_rules('info', 'Informasi/Justifikasi', 'trim');
+
+		$this->load->model('tambah_usulan_model');
+
+		if($this->form_validation->run() == FALSE){
+			$da = 'Usulan gagal tersimpan.';
+			$this->ubah_usulan_gaji_pns_form($id,$da);
+		}else{
+			$tp = "GAJI PNS";
+			$this->tambah_usulan_model->ubah_usulan_gaji_pns($id);
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+			$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+			redirect("site/tambah_usulan_gaji_pns_form/Usulan_Berhasil_Dirubah");
+			//$this->tambah_usulan_diklat_form("-");
+		}
+	}
+
+	function hapus_usulan_gaji_pns($id){
+		$this->load->model('tambah_usulan_model');
+		$this->tambah_usulan_model->hapus_usulan_gaji_pns($id);
+
+		redirect("site/tambah_usulan_gaji_pns_form/Usulan_Berhasil_Dihapus");
+	}
 
 }
 ?>

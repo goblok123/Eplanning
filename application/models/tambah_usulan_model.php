@@ -592,5 +592,135 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->row();
 	}
 
+	//Usulan gaji non pns
+	function cari_data_jenis_item_non_pns(){
+		$q = $this->db->query("Select * from item_keuangan where jenis_item_keu = 'Kualifikasi Tenaga Kontrak'");
+   		return $q->result();
+	}
 
+	function usulan_gaji_non($id){
+		$q = $this->db->query("Select * from dtl_usulan_gaji_non_pns where id_usulan = '$id'");
+   		return $q->result();
+	}
+
+
+	function find_id_item_keu($nama){
+		$q = $this->db->query("Select id_item from item_keuangan where nama_item_keu = '$nama'");
+   		return $q->row();
+	}
+
+	function check_item_keu($id){
+		$q = $this->db->query("Select id_item from dtl_usulan_gaji_non_pns where id_item = '$id'");
+   		if($q->num_rows() >= 1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	function tambah_usulan_gaji_non_pns($id_usulan, $id_item){
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_item' => $id_item,
+			'jmlh_pgwi' => $this->input->post('jmlh_pgwi'),
+			'jmlh_bln' => $this->input->post('jmlh_bln'),
+			'jmlh_gaji_perbulan' => $this->input->post('jmlh_gaji_perbulan'),
+			'jmlh_gaji_pertahun_n1' => $this->input->post('jmlh_gaji_pertahun_n1'),
+			'jmlh_gaji_pertahun_n' => $this->input->post('jmlh_gaji_pertahun_n'),
+			'info' => $this->input->post('info'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_gaji_non_pns', $new_insert_data);
+		return $insert;
+	}
+
+	function cari_dtl_usulan_gaji_non($id){
+		$q = $this->db->query("Select * from dtl_usulan_gaji_non_pns where id_dtl_usln_gaji_non_pns = '$id'");
+   		return $q->row();
+	}
+
+	function cari_nama_item($id){
+		$q = $this->db->query("Select nama_item_keu from item_keuangan where id_item = '$id'");
+   		return $q->row();
+	}
+
+	function ubah_usulan_gaji_non_pns($id){
+		$b = $this->input->post('jmlh_pgwi');
+		$c = $this->input->post('jmlh_bln');
+		$d = $this->input->post('jmlh_gaji_perbulan');
+		$e = $this->input->post('jmlh_gaji_pertahun_n1');
+		$f = $this->input->post('jmlh_gaji_pertahun_n');
+		$g = $this->input->post('info');
+
+		$result = $this->db->query("Update dtl_usulan_gaji_non_pns SET 
+			jmlh_pgwi = '$b',
+			jmlh_bln = '$c',
+			jmlh_gaji_perbulan = '$d',
+			jmlh_gaji_pertahun_n1 = '$e',
+			jmlh_gaji_pertahun_n = '$f',
+			info = '$g'
+			WHERE id_dtl_usln_gaji_non_pns = '$id'");
+
+		return $result;
+	}
+
+	function hapus_usulan_gaji_non_pns($id){
+		$this->db->query("delete from dtl_usulan_gaji_non_pns where id_dtl_usln_gaji_non_pns = '$id' ");
+	}
+
+	//Usulan gaji pns
+	function cari_data_jenis_item_pns(){
+		$q = $this->db->query("Select * from item_keuangan where jenis_item_keu = 'Uraian Belanja Gaji dan Tunjangan PNS'");
+   		return $q->result();
+	}
+
+	function usulan_gaji_pns($id){
+		$q = $this->db->query("Select * from dtl_usulan_gaji_pns where id_usulan = '$id'");
+   		return $q->result();
+	}
+
+	function check_item_keu_pns($id){
+		$q = $this->db->query("Select id_item from dtl_usulan_gaji_pns where id_item = '$id'");
+   		if($q->num_rows() >= 1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	function tambah_usulan_gaji_pns($id_usulan, $id_item){
+		$new_insert_data = array(
+			'id_usulan' => $id_usulan,
+			'id_item' => $id_item,
+			'gaji_tahun_lalu' => $this->input->post('gaji_tahun_lalu'),
+			'rencana_gaji' => $this->input->post('rencana_gaji'),
+			'info' => $this->input->post('info'),
+		);
+
+		$insert = $this->db->insert('dtl_usulan_gaji_pns', $new_insert_data);
+		return $insert;
+	}
+
+	function ubah_usulan_gaji_pns($id){
+		$b = $this->input->post('gaji_tahun_lalu');
+		$c = $this->input->post('rencana_gaji');
+		$g = $this->input->post('info');
+
+		$result = $this->db->query("Update dtl_usulan_gaji_pns SET 
+			gaji_tahun_lalu = '$b',
+			rencana_gaji = '$c',
+			info = '$g'
+			WHERE id_dtl_usln_gaji_pns = '$id'");
+
+		return $result;
+	}
+
+	function cari_dtl_usulan_gaji_pns($id){
+		$q = $this->db->query("Select * from dtl_usulan_gaji_pns where id_dtl_usln_gaji_pns = '$id'");
+   		return $q->row();
+	}
+
+	function hapus_usulan_gaji_pns($id){
+		$this->db->query("delete from dtl_usulan_gaji_pns where id_dtl_usln_gaji_pns = '$id' ");
+	}
 }
