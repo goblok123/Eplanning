@@ -1,11 +1,6 @@
-<div>
-	<a href="<?php echo base_url('/site/tambah_usulan_alat_form/1/-'); ?>" class="btn btn-success">Tambah Usulan Alat Kesehatan Medis/Penunjang</a>
-	<a href="<?php echo base_url('/site/tambah_usulan_alat_form/2/-'); ?>" class="btn btn-success">Tambah Usulan Alat Non Kesehatan</a>
-</div>
 
-</div>
 	<div class="tableMiddlePage">
-		<h1>Daftar Usulan Alat</h1>
+		<h1>Daftar Usulan Alat oleh <?php echo $nama_unit->name_unit; ?></h1>
 
 		<table class="table table-bordered" >
 			<tr>
@@ -20,8 +15,8 @@
 			</tr>
 			<?php $h = 0; ?>
 
-			<?php if (isset($usulan_alat)){ ?>
-				<?php foreach($usulan_alat  as $r): ?>
+			<?php if (isset($all)){ ?>
+				<?php foreach($all  as $r): ?>
 					<tr>
 						<th style="width:20px;">
 							<?php $h += 1; ?>
@@ -32,7 +27,7 @@
 						</th>
 						<th>
 				  			<?php
-								echo $r->nama_alat_kes_dan_non; 
+								echo $r->nama_alat_kes_dan_non;
 							?>
 				  		</th>
 				  		<th>
@@ -49,12 +44,6 @@
 				  		</th>
 				  		<th>
 				  			<?php echo $r->justifikasi; ?>
-				  		</th>
-				  		<th>
-				  			<a href="<?php echo base_url('/site/ubah_usulan_alat_form/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-success">Perbaharui</a>
-				  		</th>
-				  		<th>
-				  			<a href="<?php echo base_url('/site/hapus_usulan_alat/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-danger">Hapus</a>
 				  		</th>
 					</tr>
 				<?php endforeach; ?>

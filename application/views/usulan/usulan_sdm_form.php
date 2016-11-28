@@ -83,46 +83,48 @@
 		</tr>
 		<?php $h = 0; ?>
 
-		<?php foreach($usulan_sdm  as $r): ?>
-			<tr>
-				<th style="width:20px;">
-					<?php $h += 1; ?>
-					<?php  echo "$h" ?>
-				</th>
-				<th>
-		  			<?php
-						foreach($sdm as $t)
-						{
-						    if($t->id_jenis_sdm == $r->id_jenis_sdm){
-						    	echo "$t->nama_sdm";
-						    	break;
-						    }
-						}
-					?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->pendidikan_dan_keahlian; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_ada; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_mnrt_stndr; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_usulan; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->justifikasi; ?>
-		  		</th>
-		  		
-		  		<th>
-		  			<a href="<?php echo base_url('/site/ubah_usulan_sdm_form/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-success">Perbaharui</a>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_sdm/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-danger">Hapus</a>
-		  		</th>
-			</tr>
-		<?php endforeach; ?>
+		<?php if (isset($usulan_sdm)){ ?>
+			<?php foreach($usulan_sdm  as $r): ?>
+				<tr>
+					<th style="width:20px;">
+						<?php $h += 1; ?>
+						<?php  echo "$h" ?>
+					</th>
+					<th>
+			  			<?php
+							foreach($sdm as $t)
+							{
+							    if($t->id_jenis_sdm == $r->id_jenis_sdm){
+							    	echo "$t->nama_sdm";
+							    	break;
+							    }
+							}
+						?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->pendidikan_dan_keahlian; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_ada; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_mnrt_stndr; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_usulan; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->justifikasi; ?>
+			  		</th>
+			  		
+			  		<th>
+			  			<a href="<?php echo base_url('/site/ubah_usulan_sdm_form/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-success">Perbaharui</a>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/hapus_usulan_sdm/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-danger">Hapus</a>
+			  		</th>
+				</tr>
+			<?php endforeach; ?>
+		<?php } ?>
 	</table>
 </div>

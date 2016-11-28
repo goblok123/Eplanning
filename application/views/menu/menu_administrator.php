@@ -12,14 +12,14 @@
       <div class="row" style="background:#1a651a; padding-left:15px; padding-right:15px; padding-top:5px; padding-bottom:5px;">
         <nav style="">
           <ul class="nav nav-justified">
-            <li><a href="#">Lihat Usulan</a></li>
+            <li><a href="<?php echo base_url('/site/semua_usulan'); ?>">Lihat Usulan</a></li>
             <li><a href="<?php echo base_url('/site/usulan'); ?>">Masukkan Usulan</a></li>
             <li><a href="<?php echo base_url('/site/item_usulan'); ?>">Item Usulan</a></li>
             <li><a href="#">Ketahui Usulan</a></li>
             <li><a href="#">Tambah Pengguna</a></li>
             <li><a href="#">Lihat Laporan</a></li>
             <li><a href="#">Keputusan</a></li>
-            <li><a href="#">Password</a></li>
+            <li><a href="<?php echo base_url('/site/members_area'); ?>">Password</a></li>
           </ul>
         </nav>
       </div>

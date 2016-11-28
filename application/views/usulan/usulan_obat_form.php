@@ -84,48 +84,50 @@
 		</tr>
 		<?php $h = 0; ?>
 
-		<?php foreach($usulan_obat  as $r): ?>
-			<tr>
-				<th style="width:20px;">
-					<?php $h += 1; ?>
-					<?php  echo "$h" ?>
-				</th>
-				<th>
-		  			<?php
-						foreach($obat as $t)
-						{
-						    if($t->id_obat == $r->id_obat){
-						    	echo "$t->nama_obat";
-						    	break;
-						    }
-						}
-					?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->satuan; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->merk; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_yg_diusulkan; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_pnggnaan_thn_sblm; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->hrg_satuan; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_harga; ?>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/ubah_usulan_obat_form/'.$r->id_dtl_obat.''); ?>" class="btn btn-success">Perbaharui</a>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_obat/'.$r->id_dtl_obat.''); ?>" class="btn btn-danger">Hapus</a>
-		  		</th>
-			</tr>
-		<?php endforeach; ?>
+		<?php if (isset($usulan_obat)){ ?>
+			<?php foreach($usulan_obat  as $r): ?>
+				<tr>
+					<th style="width:20px;">
+						<?php $h += 1; ?>
+						<?php  echo "$h" ?>
+					</th>
+					<th>
+			  			<?php
+							foreach($obat as $t)
+							{
+							    if($t->id_obat == $r->id_obat){
+							    	echo "$t->nama_obat";
+							    	break;
+							    }
+							}
+						?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->satuan; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->merk; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_yg_diusulkan; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_pnggnaan_thn_sblm; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->hrg_satuan; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_harga; ?>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/ubah_usulan_obat_form/'.$r->id_dtl_obat.''); ?>" class="btn btn-success">Perbaharui</a>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/hapus_usulan_obat/'.$r->id_dtl_obat.''); ?>" class="btn btn-danger">Hapus</a>
+			  		</th>
+				</tr>
+			<?php endforeach; ?>
+		<?php }?>
 	</table>
 </div>

@@ -84,49 +84,51 @@
 		</tr>
 		<?php $h = 0; ?>
 
-		<?php foreach($usulan_pmlhraan_gdng  as $r): ?>
-			<tr>
-				<th style="width:20px;">
-					<?php $h += 1; ?>
-					<?php  echo "$h" ?>
-				</th>
-				<th>
-		  			<?php
-						foreach($gedung as $t)
-						{
-						    if($t->id_gedung == $r->id_gedung){
-						    	echo "$t->nama_gedung";
-						    	break;
-						    }
-						}
-					?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->bgn_diperbaiki; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->pngdn_thn; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->kondisi; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_dprbk; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jns_pmlhrn; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->info; ?>
-		  		</th>
-		  		
-		  		<th>
-		  			<a href="<?php echo base_url('/site/ubah_usulan_pmlhrn_gedung_form/'.$r->id_dtl_usln_pmlhrn_gedung.'/-'); ?>" class="btn btn-success">Perbaharui</a>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_pmlhrn_gedung/'.$r->id_dtl_usln_pmlhrn_gedung.''); ?>" class="btn btn-danger">Hapus</a>
-		  		</th>
-			</tr>
-		<?php endforeach; ?>
+		<?php if (isset($usulan_pmlhraan_gdng)){ ?>
+			<?php foreach($usulan_pmlhraan_gdng  as $r): ?>
+				<tr>
+					<th style="width:20px;">
+						<?php $h += 1; ?>
+						<?php  echo "$h" ?>
+					</th>
+					<th>
+			  			<?php
+							foreach($gedung as $t)
+							{
+							    if($t->id_gedung == $r->id_gedung){
+							    	echo "$t->nama_gedung";
+							    	break;
+							    }
+							}
+						?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->bgn_diperbaiki; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->pngdn_thn; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->kondisi; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_dprbk; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jns_pmlhrn; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->info; ?>
+			  		</th>
+			  		
+			  		<th>
+			  			<a href="<?php echo base_url('/site/ubah_usulan_pmlhrn_gedung_form/'.$r->id_dtl_usln_pmlhrn_gedung.'/-'); ?>" class="btn btn-success">Perbaharui</a>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/hapus_usulan_pmlhrn_gedung/'.$r->id_dtl_usln_pmlhrn_gedung.''); ?>" class="btn btn-danger">Hapus</a>
+			  		</th>
+				</tr>
+			<?php endforeach; ?>
+		<?php }?>
 	</table>
 </div>

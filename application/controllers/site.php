@@ -33,7 +33,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			$this->load->view('Pengimput');
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 			$this->load->view('Penanggung_Jawab');
 		}else if($hak == 'Administrator'){
@@ -68,7 +68,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			$this->load->view('item_usulan/lihat_item',$data);
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 			$this->load->view('item_usulan/lihat_item',$data);
 		}else if($hak == 'Administrator'){
@@ -428,7 +428,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			$this->load->view('usulan/usulan');
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 			$this->load->view('usulan/usulan');
 		}else if($hak == 'Administrator'){
@@ -465,7 +465,7 @@ class Site extends CI_Controller
 	// 	if($hak == 'Pengimput'){
 	// 		$this->load->view('menu/menu_pengimput');
 			
-	// 	}else if($hak == 'Penangung Jawab'){
+	// 	}else if($hak == 'Penanggung Jawab'){
 	// 		$this->load->view('menu/menu_penanggung_jawab');
 	// 	}else if($hak == 'Administrator'){
 	// 		$this->load->view('menu/menu_administrator');
@@ -492,7 +492,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -593,7 +593,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -661,7 +661,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -672,7 +672,6 @@ class Site extends CI_Controller
 		$this->load->view('usulan/usulan_obat_form',$data);
 
 		$this->load->view('template/footer');
-
 	}
 
 	function add_usulan_obat(){
@@ -691,14 +690,28 @@ class Site extends CI_Controller
 			$this->tambah_usulan_obat_form($da);
 		}else{
 			$this->load->model('tambah_usulan_model');
+			$tp = "OBAT";
 			$s = $this->tambah_usulan_model->find_id_obat($this->input->post('nama_obat'));
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-			if($this->tambah_usulan_model->check_obat($s->id_obat)){
-				$tp = "OBAT";
-				
+			if($r == null){
+				$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+				);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-				if($r != null){
+				if($this->tambah_usulan_model->add_usulan_obat($r->id_usulan, $s->id_obat)){
+					$this->tambah_usulan_obat_form("Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_obat_form("Usulan GAGAL disimpan");
+				}
+
+			}else{
+				if($this->tambah_usulan_model->check_obat($s->id_obat, $r->id_usulan)){
 					if($this->tambah_usulan_model->add_usulan_obat($r->id_usulan, $s->id_obat)){
 						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 						$this->tambah_usulan_obat_form("Usulan BERHASIL disimpan");
@@ -706,24 +719,8 @@ class Site extends CI_Controller
 						$this->tambah_usulan_obat_form("Usulan GAGAL disimpan");
 					}
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->add_usulan_obat($r->id_usulan, $s->id_obat)){
-						$this->tambah_usulan_obat_form("Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_obat_form("Usulan GAGAL disimpan");
-					}
-
+					$this->tambah_usulan_obat_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 				}
-			}else{
-				$this->tambah_usulan_obat_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 
@@ -749,7 +746,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -803,6 +800,8 @@ class Site extends CI_Controller
 		$data["sdm"] = $this->tambah_usulan_model->find_all_sdm();
 		$data["added"] = $a;
 		$tp = "SDM";
+
+
 		$data["usulan_sdm"] = $this->tambah_usulan_model->all_usulan_sdm($unit, $tp);
 
 		$this->load->view('template/header');
@@ -810,7 +809,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -840,34 +839,34 @@ class Site extends CI_Controller
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->find_id_sdm($this->input->post('nama_sdm'));
 
-				$tp = "SDM";
-				
+			$tp = "SDM";
+			
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+			if($r != null){
+				if($this->tambah_usulan_model->add_usulan_sdm($r->id_usulan, $s->id_jenis_sdm)){
+					$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
+					$this->tambah_usulan_sdm_form("Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_sdm_form("Usulan GAGAL disimpan");
+				}
+			}else{
+				$dataUsulan =  array(
+					'id_pemasuk' => $this->session->userdata('id_user'),
+					'id_unit' => $this->session->userdata('id_unit'),
+					'type_usulan' => $tp
+				);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-				if($r != null){
-					if($this->tambah_usulan_model->add_usulan_sdm($r->id_usulan, $s->id_jenis_sdm)){
-						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
-						$this->tambah_usulan_sdm_form("Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_sdm_form("Usulan GAGAL disimpan");
-					}
+				if($this->tambah_usulan_model->add_usulan_sdm($r->id_usulan, $s->id_jenis_sdm)){
+					$this->tambah_usulan_sdm_form("Usulan BERHASIL disimpan");
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->add_usulan_sdm($r->id_usulan, $s->id_jenis_sdm)){
-						$this->tambah_usulan_sdm_form("Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_sdm_form("Usulan GAGAL disimpan");
-					}
-
+					$this->tambah_usulan_sdm_form("Usulan GAGAL disimpan");
 				}
+
+			}
 			
 		}
 
@@ -892,7 +891,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -939,14 +938,22 @@ class Site extends CI_Controller
 
 
 	//BHP
+
 	function pilih_jenis_bhp_c(){
 		$hak = $this->session->userdata('hakAkses');
 		$this->load->view('template/header');
+		$tp = "BHP";
+		$this->load->model('tambah_usulan_model');
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+		$data["usulan_bhp"]  = null;
+		if($r != null){
+			$data["usulan_bhp"] = $this->tambah_usulan_model->usulan_bhp($r->id_usulan);
+		}
 
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -954,7 +961,7 @@ class Site extends CI_Controller
 			$this->load->view('menu/menu_not_login');
 		}
 
-		$this->load->view('usulan/pilihan_jenis_bhp');
+		$this->load->view('usulan/pilihan_jenis_bhp', $data);
 
 
 		$this->load->view('template/footer');
@@ -1015,7 +1022,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1046,13 +1053,25 @@ class Site extends CI_Controller
 		}else{
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->find_id_bhp($this->input->post('nama_bhp'));
+			$tp = "BHP";
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+			if($r == null){
+				$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+				);
 
-			if($this->tambah_usulan_model->check_bhp($s->id_bhp)){
-				$tp = "BHP";
-				
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-				if($r != null){
+				if($this->tambah_usulan_model->tambah_usulan_bhp($r->id_usulan, $s->id_bhp)){
+					$this->tambah_usulan_bhp_form($no, "Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_bhp_form($no, "Usulan GAGAL disimpan");
+				}
+			}else{
+				if($this->tambah_usulan_model->check_bhp($s->id_bhp,  $r->id_usulan)){
+				
 					if($this->tambah_usulan_model->tambah_usulan_bhp($r->id_usulan, $s->id_bhp)){
 						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 						$this->tambah_usulan_bhp_form($no, "Usulan BERHASIL disimpan");
@@ -1060,24 +1079,8 @@ class Site extends CI_Controller
 						$this->tambah_usulan_bhp_form($no, "Usulan GAGAL disimpan");
 					}
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->tambah_usulan_bhp($r->id_usulan, $s->id_bhp)){
-						$this->tambah_usulan_bhp_form($no, "Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_bhp_form($no, "Usulan GAGAL disimpan");
-					}
-
+					$this->tambah_usulan_bhp_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 				}
-			}else{
-				$this->tambah_usulan_bhp_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -1107,7 +1110,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1166,7 +1169,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1174,8 +1177,17 @@ class Site extends CI_Controller
 			$this->load->view('menu/menu_not_login');
 		}
 
-		$this->load->view('usulan/pilihan_jenis_alat');
+		$tp = "ALAT";
+		$this->load->model('tambah_usulan_model');
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+		$data["usulan_alat"] = null;
+		if($r != null){
+			$data["usulan_alat"] = $this->tambah_usulan_model->usulan_alat($r->id_usulan);
+		}else{
 
+		}
+		
+		$this->load->view('usulan/pilihan_jenis_alat', $data);
 
 		$this->load->view('template/footer');
 	}
@@ -1208,7 +1220,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1240,12 +1252,27 @@ class Site extends CI_Controller
 			$r = $this->input->post('nama_alat');
 			$s = $this->tambah_usulan_model->find_id_alat($r);
 
-			if($this->tambah_usulan_model->check_alat($s->id_alat)){
-				$tp = "ALAT";
-				
+			$tp = "ALAT";
+
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+			if($r == null){
+				$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+					);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-				if($r != null){
+				if($this->tambah_usulan_model->tambah_usulan_alat($r->id_usulan, $s->id_alat)){
+					$this->tambah_usulan_alat_form($no, "Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_alat_form($no, "Usulan GAGAL disimpan");
+				}
+			}else{
+				if($this->tambah_usulan_model->check_alat($r->id_usulan, $s->id_alat)){
 					if($this->tambah_usulan_model->tambah_usulan_alat($r->id_usulan, $s->id_alat)){
 						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 						$this->tambah_usulan_alat_form($no, "Usulan BERHASIL disimpan");
@@ -1253,24 +1280,8 @@ class Site extends CI_Controller
 						$this->tambah_usulan_alat_form($no, "Usulan GAGAL disimpan");
 					}
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->tambah_usulan_alat($r->id_usulan, $s->id_alat)){
-						$this->tambah_usulan_alat_form($no, "Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_alat_form($no, "Usulan GAGAL disimpan");
-					}
-
+					$this->tambah_usulan_alat_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 				}
-			}else{
-				$this->tambah_usulan_alat_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -1301,7 +1312,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1366,7 +1377,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1374,8 +1385,15 @@ class Site extends CI_Controller
 			$this->load->view('menu/menu_not_login');
 		}
 
-		$this->load->view('usulan/pilihan_jenis_pemeliharaan_alat');
+		$this->load->model('tambah_usulan_model');
+		$tp = "PEMELIHARAAN ALAT";
+		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+		$data["usulan_pemeliharaan"] = null;
+		if($r != null){
+			$data["usulan_pemeliharaan"] = $this->tambah_usulan_model->usulan_pemeliharaan_alat($r->id_usulan);
+		}
 
+		$this->load->view('usulan/pilihan_jenis_pemeliharaan_alat',$data);
 
 		$this->load->view('template/footer');
 	}
@@ -1409,7 +1427,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1442,38 +1460,40 @@ class Site extends CI_Controller
 			$r = $this->input->post('nama_alat');
 			$s = $this->tambah_usulan_model->find_id_alat($r);
 
-			if($this->tambah_usulan_model->check_pemeliharaan_alat($s->id_alat)){
-				$tp = "PEMELIHARAAN ALAT";
-				
+			$tp = "PEMELIHARAAN ALAT";
+
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+			if($r == null){
+				$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+					);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-				if($r != null){
+				if($this->tambah_usulan_model->tambah_usulan_pemeliharaan_alat($r->id_usulan, $s->id_alat)){
+					$this->tambah_usulan_pemeliharaan_alat_form($no, "Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_pemeliharaan_alat_form($no, "Usulan GAGAL disimpan");
+				}
+			}else{
+				if($this->tambah_usulan_model->check_pemeliharaan_alat($s->id_alat, $r->id_usulan)){
+
 					if($this->tambah_usulan_model->tambah_usulan_pemeliharaan_alat($r->id_usulan, $s->id_alat)){
 						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 						$this->tambah_usulan_pemeliharaan_alat_form($no, "Usulan BERHASIL disimpan");
 					}else{
 						$this->tambah_usulan_pemeliharaan_alat_form($no, "Usulan GAGAL disimpan");
 					}
+					
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->tambah_usulan_pemeliharaan_alat($r->id_usulan, $s->id_alat)){
-						$this->tambah_usulan_pemeliharaan_alat_form($no, "Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_pemeliharaan_alat_form($no, "Usulan GAGAL disimpan");
-					}
-
+					$this->tambah_usulan_pemeliharaan_alat_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 				}
-			}else{
-				$this->tambah_usulan_pemeliharaan_alat_form($no, "Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
+			
 		}
 	}
 
@@ -1504,7 +1524,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1573,7 +1593,7 @@ class Site extends CI_Controller
 
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1654,7 +1674,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1710,7 +1730,7 @@ class Site extends CI_Controller
 
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1791,7 +1811,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1856,7 +1876,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -1888,12 +1908,28 @@ class Site extends CI_Controller
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->find_id_item_keu($this->input->post('nama_item_keu'));
 
-			if($this->tambah_usulan_model->check_item_keu($s->id_item)){
-				$tp = "GAJI NON PNS";
+			$tp = "GAJI NON PNS";
 				
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+			if($r == null){
+				$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+				);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-				if($r != null){
+				if($this->tambah_usulan_model->tambah_usulan_gaji_non_pns($r->id_usulan, $s->id_item)){
+					$this->tambah_usulan_gaji_non_pns_form("Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_gaji_non_pns_form("Usulan GAGAL disimpan");
+				}
+			}else{
+
+				if($this->tambah_usulan_model->check_item_keu($s->id_item, $r->id_usulan)){
 					if($this->tambah_usulan_model->tambah_usulan_gaji_non_pns($r->id_usulan, $s->id_item)){
 						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 						$this->tambah_usulan_gaji_non_pns_form("Usulan BERHASIL disimpan");
@@ -1901,25 +1937,13 @@ class Site extends CI_Controller
 						$this->tambah_usulan_gaji_non_pns_form("Usulan GAGAL disimpan");
 					}
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->tambah_usulan_gaji_non_pns($r->id_usulan, $s->id_item)){
-						$this->tambah_usulan_gaji_non_pns_form("Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_gaji_non_pns_form("Usulan GAGAL disimpan");
-					}
-
+					$this->tambah_usulan_gaji_non_pns_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 				}
-			}else{
-				$this->tambah_usulan_gaji_non_pns_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
+
 			}
+
+
+			
 		}
 	}
 
@@ -1944,7 +1968,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -2011,7 +2035,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -2040,12 +2064,28 @@ class Site extends CI_Controller
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->find_id_item_keu($this->input->post('nama_item_keu'));
 
-			if($this->tambah_usulan_model->check_item_keu_pns($s->id_item)){
-				$tp = "GAJI PNS";
-				
+			$tp = "GAJI PNS";
+
+			
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+			if($r == null){
+				$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+				);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-				if($r != null){
+				if($this->tambah_usulan_model->tambah_usulan_gaji_pns($r->id_usulan, $s->id_item)){
+					$this->tambah_usulan_gaji_pns_form("Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_gaji_pns_form("Usulan GAGAL disimpan");
+				}
+			}else{
+				if($this->tambah_usulan_model->check_item_keu_pns($s->id_item, $r->id_usulan)){
 					if($this->tambah_usulan_model->tambah_usulan_gaji_pns($r->id_usulan, $s->id_item)){
 						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 						$this->tambah_usulan_gaji_pns_form("Usulan BERHASIL disimpan");
@@ -2053,24 +2093,8 @@ class Site extends CI_Controller
 						$this->tambah_usulan_gaji_pns_form("Usulan GAGAL disimpan");
 					}
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->tambah_usulan_gaji_pns($r->id_usulan, $s->id_item)){
-						$this->tambah_usulan_gaji_pns_form("Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_gaji_pns_form("Usulan GAGAL disimpan");
-					}
-
+					$this->tambah_usulan_gaji_pns_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 				}
-			}else{
-				$this->tambah_usulan_gaji_pns_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
 		}
 	}
@@ -2093,7 +2117,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -2156,7 +2180,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -2186,37 +2210,39 @@ class Site extends CI_Controller
 			$this->load->model('tambah_usulan_model');
 			$s = $this->tambah_usulan_model->find_id_item_keu($this->input->post('nama_item_keu'));
 
-			if($this->tambah_usulan_model->check_item_komponen($s->id_item)){
-				$tp = "PERENCANAAN PENDAPATAN";
-				
+			$tp = "PERENCANAAN PENDAPATAN";
+			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+			if($r == null){
+				$dataUsulan =  array(
+						'id_pemasuk' => $this->session->userdata('id_user'),
+						'id_unit' => $this->session->userdata('id_unit'),
+						'type_usulan' => $tp
+				);
+
+				$this->tambah_usulan_model->make_id_usulan($dataUsulan);
 				$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
-				if($r != null){
+				if($this->tambah_usulan_model->tambah_usulan_perencanaan_pendapatan($r->id_usulan, $s->id_item)){
+					$this->tambah_usulan_perencanaan_pendapatan_form("Usulan BERHASIL disimpan");
+				}else{
+					$this->tambah_usulan_perencanaan_pendapatan_form("Usulan GAGAL disimpan");
+				}
+			}else{
+				if($this->tambah_usulan_model->check_item_komponen($s->id_item,$r->id_usulan )){
+				
 					if($this->tambah_usulan_model->tambah_usulan_perencanaan_pendapatan($r->id_usulan, $s->id_item)){
 						$this->tambah_usulan_model->update_usulan($this->session->userdata('id_user'), $r->id_usulan);
 						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan BERHASIL disimpan");
 					}else{
 						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan GAGAL disimpan");
 					}
+				
 				}else{
-					$dataUsulan =  array(
-						'id_pemasuk' => $this->session->userdata('id_user'),
-						'id_unit' => $this->session->userdata('id_unit'),
-						'type_usulan' => $tp
-					);
-
-					$this->tambah_usulan_model->make_id_usulan($dataUsulan);
-					$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
-
-					if($this->tambah_usulan_model->tambah_usulan_perencanaan_pendapatan($r->id_usulan, $s->id_item)){
-						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan BERHASIL disimpan");
-					}else{
-						$this->tambah_usulan_perencanaan_pendapatan_form("Usulan GAGAL disimpan");
-					}
+					$this->tambah_usulan_perencanaan_pendapatan_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 				}
-			}else{
-				$this->tambah_usulan_perencanaan_pendapatan_form("Item Sudah Diusulkan. \n Silakan Gunakan Opsi Perubahan");
 			}
+			
 		}
 	}
 
@@ -2239,7 +2265,7 @@ class Site extends CI_Controller
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
 			
-		}else if($hak == 'Penangung Jawab'){
+		}else if($hak == 'Penanggung Jawab'){
 			$this->load->view('menu/menu_penanggung_jawab');
 		}else if($hak == 'Administrator'){
 			$this->load->view('menu/menu_administrator');
@@ -2282,6 +2308,105 @@ class Site extends CI_Controller
 
 		redirect("site/tambah_usulan_perencanaan_pendapatan_form/Usulan_Berhasil_Dihapus");
 	}
+
+
+
+	function lihat_usulan($id_usulan, $type, $id){
+		
+		$type = str_replace("%20"," ",$type);
+		
+		if($type == "DIKLAT"){
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_diklat_form/-");
+			}else{
+				redirect("site2/lihat_usulan_diklat/$id_usulan/$id");
+			}
+		}else if ($type == "OBAT") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_obat_form/-");
+			}else{
+				redirect("site2/lihat_usulan_obat/$id_usulan/$id");
+			}
+		}else if ($type == "SDM") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_sdm_form/-");
+			}else{
+				redirect("site2/lihat_usulan_sdm/$id_usulan/$id");
+			}
+		}else if ($type == "BHP") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/pilih_jenis_bhp_c");
+			}else{
+				redirect("site2/lihat_usulan_bhp/$id_usulan/$id");
+			}
+		}else if ($type == "ALAT") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/pilih_jenis_alat_c");
+			}else{
+				redirect("site2/lihat_usulan_alat/$id_usulan/$id");
+			}
+		}else if ($type == "PEMELIHARAAN ALAT") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/pilih_jenis_pmlhraan_alat_c");
+			}else{
+				redirect("site2/lihat_usulan_pemeliharaan_alat/$id_usulan/$id");
+			}
+		}else if ($type == "GEDUNG") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_gedung_form/-");
+			}else{
+				redirect("site2/lihat_usulan_gedung/$id_usulan/$id");
+			}
+		}else if ($type == "PEMELIHARAAN GEDUNG") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_pmlhrn_gedung_form/-");
+			}else{
+				redirect("site2/lihat_usulan_pemeliharaan_gedung/$id_usulan/$id");
+			}
+		}else if ($type == "GAJI NON PNS") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_gaji_non_pns_form/-");
+			}else{
+				redirect("site2/lihat_usulan_gaji_non/$id_usulan/$id");
+			}
+		}else if ($type == "GAJI PNS") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_gaji_pns_form/-");
+			}else{
+				redirect("site2/lihat_usulan_gaji_pns/$id_usulan/$id");
+			}
+		}else if ($type == "PERENCANAAN PENDAPATAN") {
+			if($this->session->userdata('id_unit') == $id){
+				redirect("site/tambah_usulan_perencanaan_pendapatan_form/-");
+			}else{
+				redirect("site2/lihat_usulan_perencanaan_pendapatan/$id_usulan/$id");
+			}
+		}
+	}
+
+	function semua_usulan(){
+		$hak = $this->session->userdata('hakAkses');
+
+		$this->load->view('template/header');
+
+		if($hak == 'Pengimput'){
+			$this->load->view('menu/menu_pengimput');
+		}else if($hak == 'Penanggung Jawab'){
+			$this->load->view('menu/menu_penanggung_jawab');
+		}else if($hak == 'Administrator'){
+			$this->load->view('menu/menu_administrator');
+		}else{
+			$this->load->view('menu/menu_not_login');
+		}
+
+		$this->load->model('master_model');
+		$data['semuaUsulan'] = $this->master_model->cari_semua_usulan();
+		$this->load->view('lihat_usulan',$data);
+
+		$this->load->view('template/footer');
+	}
+
+
 
 }
 ?>

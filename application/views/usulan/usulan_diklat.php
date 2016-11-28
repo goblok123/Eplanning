@@ -47,38 +47,39 @@
 			<th>Hapus</th>
 		</tr>
 		<?php $h = 0; ?>
-
-		<?php foreach($all as $r): ?>
-			<tr>
-				<th style="width:20px;">
-					<?php $h += 1; ?>
-					<?php  echo "$h" ?>
-				</th>
-				<th>
-		  			<?php echo $r->nama_diklat; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_sdm_pernah; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_sdm_belum; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_sdm_usul; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->justifikasi; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->catatan; ?>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/ubah_usulan_diklat_form/'.$r->id_dtl.'/-'); ?>" class="btn btn-success">Perbaharui</a>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_diklat/'.$r->id_dtl.'/-'); ?>" class="btn btn-danger">Hapus</a>
-		  		</th>
-			</tr>
-		<?php endforeach; ?>
+		<?php if (isset($all)){ ?>
+			<?php foreach($all as $r): ?>
+				<tr>
+					<th style="width:20px;">
+						<?php $h += 1; ?>
+						<?php  echo "$h" ?>
+					</th>
+					<th>
+			  			<?php echo $r->nama_diklat; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_sdm_pernah; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_sdm_belum; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_sdm_usul; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->justifikasi; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->catatan; ?>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/ubah_usulan_diklat_form/'.$r->id_dtl.'/-'); ?>" class="btn btn-success">Perbaharui</a>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/hapus_usulan_diklat/'.$r->id_dtl.'/-'); ?>" class="btn btn-danger">Hapus</a>
+			  		</th>
+				</tr>
+			<?php endforeach; ?>
+		<?php } ?>
 	</table>
 </div>

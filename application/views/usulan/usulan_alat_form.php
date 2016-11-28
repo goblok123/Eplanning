@@ -65,9 +65,8 @@
 
 		echo form_submit('submit', 'Tambah');
 	?>
+	
 </div>
-
-
 	<div class="tableMiddlePage">
 		<h1>Daftar Usulan Alat</h1>
 
@@ -84,48 +83,50 @@
 			</tr>
 			<?php $h = 0; ?>
 
-			<?php foreach($usulan_alat  as $r): ?>
-				<tr>
-					<th style="width:20px;">
-						<?php $h += 1; ?>
-						<?php  echo "$h" ?>
-					</th>
-					<th>
-						<?php echo $jenis_alat; ?>
-					</th>
-					<th>
-			  			<?php
-							foreach($semua_alat as $t)
-							{
-							    if($t->id_alat == $r->id_alat){
-							    	echo "$t->nama_alat_kes_dan_non";
-							    	break;
-							    }
-							}
-						?>
-			  		</th>
-			  		<th>
-			  			<?php echo $r->jmlh_yg_sdh_ada; ?>
-			  		</th>
-			  		<th>
-			  			<?php echo $r->kondisi; ?>
-			  		</th>
-			  		<th>
-			  			<?php echo $r->jmlh_yg_diusulkan; ?>
-			  		</th>
-			  		<th>
-			  			<?php echo $r->merk; ?>
-			  		</th>
-			  		<th>
-			  			<?php echo $r->justifikasi; ?>
-			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/ubah_usulan_alat_form/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-success">Perbaharui</a>
-			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/hapus_usulan_alat/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-danger">Hapus</a>
-			  		</th>
-				</tr>
-			<?php endforeach; ?>
+			<?php if (isset($usulan_alat)){ ?>
+				<?php foreach($usulan_alat  as $r): ?>
+					<tr>
+						<th style="width:20px;">
+							<?php $h += 1; ?>
+							<?php  echo "$h" ?>
+						</th>
+						<th>
+							<?php echo $jenis_alat; ?>
+						</th>
+						<th>
+				  			<?php
+								foreach($semua_alat as $t)
+								{
+								    if($t->id_alat == $r->id_alat){
+								    	echo "$t->nama_alat_kes_dan_non";
+								    	break;
+								    }
+								}
+							?>
+				  		</th>
+				  		<th>
+				  			<?php echo $r->jmlh_yg_sdh_ada; ?>
+				  		</th>
+				  		<th>
+				  			<?php echo $r->kondisi; ?>
+				  		</th>
+				  		<th>
+				  			<?php echo $r->jmlh_yg_diusulkan; ?>
+				  		</th>
+				  		<th>
+				  			<?php echo $r->merk; ?>
+				  		</th>
+				  		<th>
+				  			<?php echo $r->justifikasi; ?>
+				  		</th>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/ubah_usulan_alat_form/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-success">Perbaharui</a>
+				  		</th>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/hapus_usulan_alat/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-danger">Hapus</a>
+				  		</th>
+					</tr>
+				<?php endforeach; ?>
+			<?php } ?>
 		</table>
 	</div>

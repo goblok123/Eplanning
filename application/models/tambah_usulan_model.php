@@ -5,6 +5,11 @@ class Tambah_usulan_model extends CI_Model{
  //   		return $q->row();
 	// }
 
+	function cari_nama_unit($id){
+		$query = $this->db->query("SELECT name_unit from unit where id_unit = $id");
+   		return $query->row();
+	}
+
 	function find_usulan_diklat($unit, $t){
 		$q = $this->db->query("Select * from dtl_usulan_diklat where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
    		return $q->result();
@@ -134,8 +139,8 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->result();
 	}
 
-	function check_obat($id){
-		$q = $this->db->query("Select id_obat from dtl_usulan_obat where id_obat = '$id'");
+	function check_obat($id_obat, $id_usulan){
+		$q = $this->db->query("Select id_obat from dtl_usulan_obat where id_obat = '$id_obat' AND id_usulan = '$id_usulan'");
    		if($q->num_rows() >= 1){
 			return false;
 		}else{
@@ -281,8 +286,8 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->row();
 	}
 
-	function check_bhp($id){
-		$q = $this->db->query("Select id_bhp from dtl_usulan_bhp where id_bhp = '$id'");
+	function check_bhp($id,$id_usulan){
+		$q = $this->db->query("Select id_bhp from dtl_usulan_bhp where id_bhp = '$id' AND id_usulan = '$id_usulan'");
    		if($q->num_rows() >= 1){
 			return false;
 		}else{
@@ -308,10 +313,15 @@ class Tambah_usulan_model extends CI_Model{
 	}
 
 	function usulan_bhp_satu_jenis($kode, $id){
-
-		$find = $this->db->query("Select * from dtl_usulan_bhp,(Select id_bhp from bhp where id_kode = '$kode') as nt  where dtl_usulan_bhp.id_usulan = '$id' AND nt.id_bhp = dtl_usulan_bhp.id_bhp");
+		$find = $this->db->query("Select * from dtl_usulan_bhp,(Select * from bhp where id_kode = '$kode') as nt, kode_jenis_bhp where dtl_usulan_bhp.id_usulan = '$id' AND nt.id_bhp = dtl_usulan_bhp.id_bhp AND nt.id_kode =kode_jenis_bhp.id_kode ");
 		return $find->result();
 	}
+
+	function usulan_bhp($id){
+		$find = $this->db->query("Select * from dtl_usulan_bhp,kode_jenis_bhp, bhp where dtl_usulan_bhp.id_usulan = '$id' AND bhp.id_bhp = dtl_usulan_bhp.id_bhp AND  kode_jenis_bhp.id_kode = bhp.id_kode ORDER BY kode_jenis_bhp.id_kode");
+		return $find->result();
+	}
+
 
 	function find_detail_usulan_bhp($id){
 		$q = $this->db->query("Select * from dtl_usulan_bhp where id_dtl_bhp = '$id'");
@@ -358,13 +368,18 @@ class Tambah_usulan_model extends CI_Model{
 		return $find->result();
 	}
 
+	function usulan_alat($id){
+		$find = $this->db->query("Select * from dtl_usulan_alat,alat_kes_dan_non where dtl_usulan_alat.id_usulan = '$id' AND dtl_usulan_alat.id_alat = alat_kes_dan_non.id_alat ORDER BY alat_kes_dan_non.jenis_alat");
+		return $find->result();
+	}
+
 	function find_id_alat($nama){
 		$find = $this->db->query("Select id_alat from alat_kes_dan_non where nama_alat_kes_dan_non = '$nama'");
 		return $find->row();
 	}
 
-	function check_alat($id){
-		$q = $this->db->query("Select id_alat from dtl_usulan_alat where id_alat = '$id'");
+	function check_alat($id_usulan, $id){
+		$q = $this->db->query("Select id_alat from dtl_usulan_alat where id_alat = '$id' AND id_usulan = '$id_usulan'");
    		if($q->num_rows() >= 1){
 			return false;
 		}else{
@@ -425,8 +440,13 @@ class Tambah_usulan_model extends CI_Model{
 		return $find->result();
 	}
 
-	function check_pemeliharaan_alat($id){
-		$q = $this->db->query("Select id_alat from dtl_usulan_pmlhrn_alat where id_alat = '$id'");
+	function usulan_pemeliharaan_alat($id){
+		$find = $this->db->query("Select * from dtl_usulan_pmlhrn_alat, alat_kes_dan_non where dtl_usulan_pmlhrn_alat.id_usulan = '$id' AND alat_kes_dan_non.id_alat = dtl_usulan_pmlhrn_alat.id_alat ORDER BY alat_kes_dan_non.jenis_alat");
+		return $find->result();
+	}
+
+	function check_pemeliharaan_alat($id, $id_usulan2){
+		$q = $this->db->query("Select id_alat from dtl_usulan_pmlhrn_alat where id_alat = '$id' and id_usulan = '$id_usulan2'");
    		if($q->num_rows() >= 1){
 			return false;
 		}else{
@@ -609,8 +629,8 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->row();
 	}
 
-	function check_item_keu($id){
-		$q = $this->db->query("Select id_item from dtl_usulan_gaji_non_pns where id_item = '$id'");
+	function check_item_keu($id, $id_usulan2){
+		$q = $this->db->query("Select id_item from dtl_usulan_gaji_non_pns where id_item = '$id' AND id_usulan = $id_usulan2");
    		if($q->num_rows() >= 1){
 			return false;
 		}else{
@@ -679,8 +699,8 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->result();
 	}
 
-	function check_item_keu_pns($id){
-		$q = $this->db->query("Select id_item from dtl_usulan_gaji_pns where id_item = '$id'");
+	function check_item_keu_pns($id, $id_usulan2){
+		$q = $this->db->query("Select id_item from dtl_usulan_gaji_pns where id_item = '$id' and id_usulan = $id_usulan2");
    		if($q->num_rows() >= 1){
 			return false;
 		}else{
@@ -735,8 +755,8 @@ class Tambah_usulan_model extends CI_Model{
    		return $q->result();
 	}
 
-	function check_item_komponen($id){
-		$q = $this->db->query("Select id_item from dtl_usulan_prncnn_pndptn where id_item = '$id'");
+	function check_item_komponen($id, $id_usulan2){
+		$q = $this->db->query("Select id_item from dtl_usulan_prncnn_pndptn where id_item = '$id' and id_usulan = $id_usulan2");
    		if($q->num_rows() >= 1){
 			return false;
 		}else{

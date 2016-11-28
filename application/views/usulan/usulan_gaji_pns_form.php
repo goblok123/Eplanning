@@ -68,41 +68,42 @@
 			<th>Informasi/Justifikasi</th>
 		</tr>
 		<?php $h = 0; ?>
-
-		<?php foreach($usulan_gj_pns as $r): ?>
-			<tr>
-				<th style="width:20px;">
-					<?php $h += 1; ?>
-					<?php  echo "$h" ?>
-				</th>
-				<th>
-		  			<?php
-						foreach($pns as $t)
-						{
-						    if($t->id_item == $r->id_item){
-						    	echo "$t->nama_item_keu";
-						    	break;
-						    }
-						}
-					?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->gaji_tahun_lalu; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->rencana_gaji; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->info; ?>
-		  		</th>
-		  		
-		  		<th>
-		  			<a href="<?php echo base_url('/site/ubah_usulan_gaji_pns_form/'.$r->id_dtl_usln_gaji_pns.'/-'); ?>" class="btn btn-success">Perbaharui</a>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_gaji_pns/'.$r->id_dtl_usln_gaji_pns.''); ?>" class="btn btn-danger">Hapus</a>
-		  		</th>
-			</tr>
-		<?php endforeach; ?>
+		<?php if (isset($usulan_gj_pns)){ ?>
+			<?php foreach($usulan_gj_pns as $r): ?>
+				<tr>
+					<th style="width:20px;">
+						<?php $h += 1; ?>
+						<?php  echo "$h" ?>
+					</th>
+					<th>
+			  			<?php
+							foreach($pns as $t)
+							{
+							    if($t->id_item == $r->id_item){
+							    	echo "$t->nama_item_keu";
+							    	break;
+							    }
+							}
+						?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->gaji_tahun_lalu; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->rencana_gaji; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->info; ?>
+			  		</th>
+			  		
+			  		<th>
+			  			<a href="<?php echo base_url('/site/ubah_usulan_gaji_pns_form/'.$r->id_dtl_usln_gaji_pns.'/-'); ?>" class="btn btn-success">Perbaharui</a>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/hapus_usulan_gaji_pns/'.$r->id_dtl_usln_gaji_pns.''); ?>" class="btn btn-danger">Hapus</a>
+			  		</th>
+				</tr>
+			<?php endforeach; ?>
+		<?php }?>
 	</table>
 </div>

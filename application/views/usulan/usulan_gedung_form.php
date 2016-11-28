@@ -56,7 +56,7 @@
 		echo form_label('Infomasi/Justifikasi : ', 'info');
 		echo form_textarea('info', set_value('info', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Ubah');
+		echo form_submit('submit', 'Tambah');
 	?>
 
 	
@@ -77,43 +77,45 @@
 		</tr>
 		<?php $h = 0; ?>
 
-		<?php foreach($usulan_gedung  as $r): ?>
-			<tr>
-				<th style="width:20px;">
-					<?php $h += 1; ?>
-					<?php  echo "$h" ?>
-				</th>
-				<th>
-		  			<?php
-						foreach($gedung as $t)
-						{
-						    if($t->id_gedung == $r->id_gedung){
-						    	echo "$t->nama_gedung";
-						    	break;
-						    }
-						}
-					?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_ada; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->kondisi; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_diusulkan; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->info; ?>
-		  		</th>
-		  		
-		  		<th>
-		  			<a href="<?php echo base_url('/site/ubah_usulan_gedung_form/'.$r->id_dtl_usulan_gedung.'/-'); ?>" class="btn btn-success">Perbaharui</a>
-		  		</th>
-		  		<th>
-		  			<a href="<?php echo base_url('/site/hapus_usulan_gedung/'.$r->id_dtl_usulan_gedung.''); ?>" class="btn btn-danger">Hapus</a>
-		  		</th>
-			</tr>
-		<?php endforeach; ?>
+		<?php if (isset($usulan_gedung)){ ?>
+			<?php foreach($usulan_gedung  as $r): ?>
+				<tr>
+					<th style="width:20px;">
+						<?php $h += 1; ?>
+						<?php  echo "$h" ?>
+					</th>
+					<th>
+			  			<?php
+							foreach($gedung as $t)
+							{
+							    if($t->id_gedung == $r->id_gedung){
+							    	echo "$t->nama_gedung";
+							    	break;
+							    }
+							}
+						?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_ada; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->kondisi; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_diusulkan; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->info; ?>
+			  		</th>
+			  		
+			  		<th>
+			  			<a href="<?php echo base_url('/site/ubah_usulan_gedung_form/'.$r->id_dtl_usulan_gedung.'/-'); ?>" class="btn btn-success">Perbaharui</a>
+			  		</th>
+			  		<th>
+			  			<a href="<?php echo base_url('/site/hapus_usulan_gedung/'.$r->id_dtl_usulan_gedung.''); ?>" class="btn btn-danger">Hapus</a>
+			  		</th>
+				</tr>
+			<?php endforeach; ?>
+		<?php }?>
 	</table>
 </div>

@@ -14,12 +14,14 @@ class Login extends CI_Controller
 		if(!isset($is_logged_in2) || $is_logged_in2 != TRUE){
 			$this->load->view('template/header');
 			$this->load->view('menu/menu_not_login');
-			$this->load->view('not_login');
+			$this->load->model('master_model');
+			$data['semuaUsulan'] = $this->master_model->cari_semua_usulan();
+			$this->load->view('lihat_usulan',$data);
 			$this->load->view('template/footer');
 		}else{
 			$hak = $this->session->userdata('hakAkses');
 
-			redirect('site/members_area');
+			redirect('site/semua_usulan');
 			// if($hak == 'Pengimput'){
 			// 	$this->load->view('template/header');
 			// 	$this->load->view('menu/menu_pengimput');
@@ -38,7 +40,6 @@ class Login extends CI_Controller
 			// }
 		}
 	}
-
 	
 
 	function loginPage()
@@ -68,7 +69,10 @@ class Login extends CI_Controller
 				);
 
 			$this->session->set_userdata($data);
-			redirect('site/members_area');
+			redirect('site/semua_usulan');
+			// $this->load->model('master_model');
+			// $data['semuaUsulan'] = $this->master_model->cari_semua_usulan();
+			// $this->load->view('lihat_usulan',$data);
 		}else{
 			$data['account_created'] = 'Username atau password Anda salah.<br/><br/> Silahkan coba lagi!';
 
@@ -181,6 +185,15 @@ class Login extends CI_Controller
 		$this->load->view('template/header');
 		$this->load->view('menu/menu_not_login');
 		$this->load->view('item_usulan/lihat_item',$data);
+		$this->load->view('template/footer');
+	}
+
+	function lihat_usulan(){
+		$this->load->view('template/header');
+		$this->load->view('menu/menu_not_login');
+		$this->load->model('master_model');
+		$data['semuaUsulan'] = $this->master_model->cari_semua_usulan();
+		$this->load->view('lihat_usulan',$data);
 		$this->load->view('template/footer');
 	}
 }

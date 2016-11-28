@@ -12,7 +12,7 @@
       <div class="row" style="background:#1a651a; padding-left:15px; padding-right:15px; padding-top:5px; padding-bottom:5px;">
         <nav style="">
           <ul class="nav nav-justified">
-            <li><a href="#">Lihat Usulan</a></li>
+            <li><a href="<?php echo base_url('/login/lihat_usulan'); ?>">Lihat Usulan</a></li>
             <li><a href="<?php echo base_url('/login/lihat_item_usulan'); ?>">Item Usulan</a></li>
             <li><a href="<?php echo base_url('/login/loginPage'); ?>">Masuk</a></li>
           </ul>
