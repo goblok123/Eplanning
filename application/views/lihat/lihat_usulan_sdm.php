@@ -41,4 +41,5 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
+	<a href="<?php echo base_url('/site2/ketahui_usulan/'.$r->id_usulan.''); ?>" class="btn btn-success">Ketahui</a>
 </div>

@@ -199,7 +199,7 @@ class Master_model extends CI_Model{
 	}
 
 	function cari_semua_usulan(){
-		$query =  $this->db->query("SELECT (usulan.id_usulan) as id, (usulan.type_usulan) as type, (usulan.tgl_dimasukkan) as tgl_masuk, (usulan.tgl_diketahui) as tgl_ketahui, (usulan.tgl_terakhir_dirubah) as tgl_dirubah, (usulan.id_unit) as id_unit, (usulan.edit_able) as edit, (unit.name_unit) as nama_unit, (users.name) pengimput  from usulan, unit, users where usulan.id_unit = unit.id_unit AND users.id_user = usulan.id_pemasuk");
+		$query =  $this->db->query("SELECT (usulan.id_usulan) as id, (usulan.type_usulan) as type, (usulan.tgl_dimasukkan) as tgl_masuk, (usulan.tgl_diketahui) as tgl_ketahui, (usulan.tgl_terakhir_dirubah) as tgl_dirubah, (usulan.id_unit) as id_unit, (usulan.edit_able) as edit, (unit.name_unit) as nama_unit, (users.name) pengimput  from usulan, unit, users where usulan.id_unit = unit.id_unit AND users.id_user = usulan.id_terakhir_penyimpan");
    		return $query->result();
 	}
 

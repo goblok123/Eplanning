@@ -7,7 +7,7 @@
 			<th>Id Usulan</th>
 			<th>Jenis Usulan</th>
 			<th>Unit</th>
-			<th>Pengimput</th>
+			<th>Pengimput Terakhir</th>
 			<th>Tanggal Dimasukkan</th>
 			<th>Tanggal Terakhir Dirubah</th>
 			<th>Tanggal Diketahui Oleh Penanggung Jawab</th>

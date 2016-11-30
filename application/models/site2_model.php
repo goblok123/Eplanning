@@ -55,5 +55,33 @@ class Site2_model extends CI_Model{
    		return $query->result();
 	}
 
+	function cari_usulan_berdasarkan_unit($id_unit2){
+		$query = $this->db->query("SELECT * from usulan, users where usulan.id_unit = $id_unit2 AND usulan.id_terakhir_penyimpan = users.id_user");
+   		return $query->result();
+	}
+
+	function status_diketahui($is_usulan2){
+		$query = $this->db->query("SELECT id_usulan from usulan where tgl_diketahui = '1970-01-01' && id_usulan = '$is_usulan2'");
+   		return $query->num_rows();
+	}
+
+	function ketahui_usulan($id_usulan2){
+		$this->db->set('tgl_diketahui', 'NOW()', FALSE);
+
+		$this->db->where('id_usulan',$id_usulan2);
+
+		$insert = $this->db->update('usulan');
+		return $insert;
+	}
+
+	function batalkan_ketahui_usulan($id_usulan2){
+		$this->db->set('tgl_diketahui', date('Y-m-d',1970-01-01)) ;
+		
+		$this->db->where('id_usulan',$id_usulan2);
+
+		$insert = $this->db->update('usulan');
+		return $insert;
+	}
+
 }
 ?>

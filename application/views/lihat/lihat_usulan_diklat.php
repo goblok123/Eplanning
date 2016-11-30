@@ -13,32 +13,42 @@
 		</tr>
 		<?php $h = 0; ?>
 
-		<?php foreach($all as $r): ?>
-			<tr>
-				<th style="width:20px;">
-					<?php $h += 1; ?>
-					<?php  echo "$h" ?>
-				</th>
-				<th>
-		  			<?php echo $r->nama_diklat; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_sdm_pernah; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_sdm_belum; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->jmlh_sdm_usul; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->justifikasi; ?>
-		  		</th>
-		  		<th>
-		  			<?php echo $r->catatan; ?>
-		  		</th>
-		  	
-			</tr>
-		<?php endforeach; ?>
+		<?php if (isset($all)){ ?>
+			<?php foreach($all as $r): ?>
+				<tr>
+					<th style="width:20px;">
+						<?php $h += 1; ?>
+						<?php  echo "$h" ?>
+					</th>
+					<th>
+			  			<?php echo $r->nama_diklat; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_sdm_pernah; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_sdm_belum; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->jmlh_sdm_usul; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->justifikasi; ?>
+			  		</th>
+			  		<th>
+			  			<?php echo $r->catatan; ?>
+			  		</th> 
+				</tr>
+			<?php endforeach; ?>
+		<?php } ?>
 	</table>
+
+
+	<!-- <?php if (isset($ketahui)){
+		if($ketahui){ ?> -->
+			<a href="<?php echo base_url('/site2/ketahui_usulan/'.$r->id_usulan.''); ?>" class="btn btn-success">Ketahui</a>
+			<!-- <?php }
+		} ?> -->
+
+	
 </div>

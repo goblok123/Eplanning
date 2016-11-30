@@ -2314,72 +2314,74 @@ class Site extends CI_Controller
 	function lihat_usulan($id_usulan, $type, $id){
 		
 		$type = str_replace("%20"," ",$type);
+
+		$ketahui = false;
 		
 		if($type == "DIKLAT"){
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_diklat_form/-");
 			}else{
-				redirect("site2/lihat_usulan_diklat/$id_usulan/$id");
+				redirect("site2/lihat_usulan_diklat/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "OBAT") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_obat_form/-");
 			}else{
-				redirect("site2/lihat_usulan_obat/$id_usulan/$id");
+				redirect("site2/lihat_usulan_obat/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "SDM") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_sdm_form/-");
 			}else{
-				redirect("site2/lihat_usulan_sdm/$id_usulan/$id");
+				redirect("site2/lihat_usulan_sdm/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "BHP") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/pilih_jenis_bhp_c");
 			}else{
-				redirect("site2/lihat_usulan_bhp/$id_usulan/$id");
+				redirect("site2/lihat_usulan_bhp/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "ALAT") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/pilih_jenis_alat_c");
 			}else{
-				redirect("site2/lihat_usulan_alat/$id_usulan/$id");
+				redirect("site2/lihat_usulan_alat/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "PEMELIHARAAN ALAT") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/pilih_jenis_pmlhraan_alat_c");
 			}else{
-				redirect("site2/lihat_usulan_pemeliharaan_alat/$id_usulan/$id");
+				redirect("site2/lihat_usulan_pemeliharaan_alat/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "GEDUNG") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_gedung_form/-");
 			}else{
-				redirect("site2/lihat_usulan_gedung/$id_usulan/$id");
+				redirect("site2/lihat_usulan_gedung/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "PEMELIHARAAN GEDUNG") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_pmlhrn_gedung_form/-");
 			}else{
-				redirect("site2/lihat_usulan_pemeliharaan_gedung/$id_usulan/$id");
+				redirect("site2/lihat_usulan_pemeliharaan_gedung/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "GAJI NON PNS") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_gaji_non_pns_form/-");
 			}else{
-				redirect("site2/lihat_usulan_gaji_non/$id_usulan/$id");
+				redirect("site2/lihat_usulan_gaji_non/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "GAJI PNS") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_gaji_pns_form/-");
 			}else{
-				redirect("site2/lihat_usulan_gaji_pns/$id_usulan/$id");
+				redirect("site2/lihat_usulan_gaji_pns/$id_usulan/$id/$ketahui");
 			}
 		}else if ($type == "PERENCANAAN PENDAPATAN") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_perencanaan_pendapatan_form/-");
 			}else{
-				redirect("site2/lihat_usulan_perencanaan_pendapatan/$id_usulan/$id");
+				redirect("site2/lihat_usulan_perencanaan_pendapatan/$id_usulan/$id/$ketahui");
 			}
 		}
 	}

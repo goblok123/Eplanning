@@ -15,7 +15,7 @@
             <li><a href="<?php echo base_url('/site/semua_usulan'); ?>">Lihat Usulan</a></li>
             <li><a href="<?php echo base_url('/site/usulan'); ?>">Masukkan Usulan</a></li>
             <li><a href="<?php echo base_url('/site/item_usulan'); ?>">Item Usulan</a></li>
-            <li><a href="#">Ketahui Usulan</a></li>
+            <li><a href="<?php echo base_url('/site2/buka_ketahui_usulan'); ?>">Ketahui Usulan</a></li>
             <li><a href="<?php echo base_url('/site/members_area'); ?>">Password</a></li>
           </ul>
         </nav>

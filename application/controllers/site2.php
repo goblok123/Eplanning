@@ -25,12 +25,11 @@ class Site2 extends CI_Controller
     }
   }
 
-  function lihat_usulan_diklat($id_usulan, $id_unit){
+  function lihat_usulan_diklat($id_usulan, $id_unit, $ketahui2){
     $this->load->view('template/header');
     $hak = $this->session->userdata('hakAkses');
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -38,9 +37,13 @@ class Site2 extends CI_Controller
     }else{
       $this->load->view('menu/menu_not_login');
     }
+
+    $data['ketahui'] = $ketahui2;
     $this->load->model('site2_model');
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_diklat($id_usulan);
+    $data['sudah_diketahui'] =  $this->site2_model->status_diketahui($id_usulan);
+   
 
     $this->load->view('lihat/lihat_usulan_diklat',$data);
 
@@ -48,17 +51,17 @@ class Site2 extends CI_Controller
 
   }
 
-  function lihat_usulan_obat($id_usulan, $id_unit){
+  function lihat_usulan_obat($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_obat($id_usulan);
 
     $this->load->view('template/header');
 
-    if($hak == 'Pengimput'){
+   if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -72,9 +75,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_sdm($id_usulan, $id_unit){
+  function lihat_usulan_sdm($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_sdm($id_usulan);
 
@@ -82,7 +86,6 @@ class Site2 extends CI_Controller
 
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -96,9 +99,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_bhp($id_usulan, $id_unit){
+  function lihat_usulan_bhp($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('tambah_usulan_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->tambah_usulan_model->cari_nama_unit($id_unit);
     $data['all'] = $this->tambah_usulan_model->usulan_bhp($id_usulan);
 
@@ -106,7 +110,6 @@ class Site2 extends CI_Controller
 
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -120,9 +123,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-   function lihat_usulan_alat($id_usulan, $id_unit){
+   function lihat_usulan_alat($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_alat($id_usulan);
 
@@ -130,7 +134,6 @@ class Site2 extends CI_Controller
 
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -144,17 +147,17 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_pemeliharaan_alat($id_usulan, $id_unit){
+  function lihat_usulan_pemeliharaan_alat($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_pemeliharaan_alat($id_usulan);
 
     $this->load->view('template/header');
 
-    if($hak == 'Pengimput'){
+   if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -168,9 +171,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_gedung($id_usulan, $id_unit){
+  function lihat_usulan_gedung($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_gedung($id_usulan);
 
@@ -178,7 +182,6 @@ class Site2 extends CI_Controller
 
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -192,9 +195,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-   function lihat_usulan_pemeliharaan_gedung($id_usulan, $id_unit){
+   function lihat_usulan_pemeliharaan_gedung($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_pemeliharaan_gedung($id_usulan);
 
@@ -202,7 +206,6 @@ class Site2 extends CI_Controller
 
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -216,9 +219,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_gaji_non($id_usulan, $id_unit){
+  function lihat_usulan_gaji_non($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_gaji_non($id_usulan);
 
@@ -226,7 +230,6 @@ class Site2 extends CI_Controller
 
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -240,9 +243,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_gaji_pns($id_usulan, $id_unit){
+  function lihat_usulan_gaji_pns($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_gaji_pns($id_usulan);
 
@@ -250,7 +254,6 @@ class Site2 extends CI_Controller
 
     if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -258,23 +261,22 @@ class Site2 extends CI_Controller
     }else{
       $this->load->view('menu/menu_not_login');
     }
-
     $this->load->view('lihat/lihat_usulan_gaji_pns',$data);
 
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_perencanaan_pendapatan($id_usulan, $id_unit){
+  function lihat_usulan_perencanaan_pendapatan($id_usulan, $id_unit, $ketahui2){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
+    $data['ketahui'] = $ketahui2;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_perencanaan_pendapatan($id_usulan);
 
     $this->load->view('template/header');
 
-    if($hak == 'Pengimput'){
+   if($hak == 'Pengimput'){
       $this->load->view('menu/menu_pengimput');
-      
     }else if($hak == 'Penanggung Jawab'){
       $this->load->view('menu/menu_penanggung_jawab');
     }else if($hak == 'Administrator'){
@@ -287,6 +289,99 @@ class Site2 extends CI_Controller
 
     $this->load->view('template/footer');
   }
+
+   function buka_ketahui_usulan(){
+    
+    $id_unit = $this->session->userdata('id_unit');
+    $this->load->model('site2_model');
+    $data['unit_user'] = $this->session->userdata('nama_unit');
+    $data['usulan_unit'] = $this->site2_model->cari_usulan_berdasarkan_unit($id_unit);
+
+    $hak = $this->session->userdata('hakAkses');
+    $this->load->view('template/header');
+
+    if($hak == 'Pengimput'){
+      $this->load->view('menu/menu_pengimput');
+    }else if($hak == 'Penanggung Jawab'){
+      $this->load->view('menu/menu_penanggung_jawab');
+    }else if($hak == 'Administrator'){
+      $this->load->view('menu/menu_administrator');
+    }else{
+      $this->load->view('menu/menu_not_login');
+    }
+
+    $this->load->view('ketahui_usulan',$data);
+
+    $this->load->view('template/footer');
+  }
+
+  function template(){
+
+    $hak = $this->session->userdata('hakAkses');
+    $this->load->view('template/header');
+
+    if($hak == 'Pengimput'){
+      $this->load->view('menu/menu_pengimput');
+    }else if($hak == 'Penanggung Jawab'){
+      $this->load->view('menu/menu_penanggung_jawab');
+    }else if($hak == 'Administrator'){
+      $this->load->view('menu/menu_administrator');
+    }else{
+      $this->load->view('menu/menu_not_login');
+    }
+
+  }
+
+   function buka_detail_usulan($id, $type, $id_unit){
+    $type = str_replace("%20"," ",$type);
+    
+    $hak = $this->session->userdata('hakAkses');
+    if(($hak == 'Penanggung Jawab' || $hak == 'Administrator')){
+       $hak = true;
+    }else{
+       $hak = false;
+    }
+
+    if($type == "DIKLAT"){
+      $this->lihat_usulan_diklat($id, $id_unit, $hak);
+    }else if ($type == "OBAT") {
+      $this->lihat_usulan_obat($id, $id_unit, $hak);
+    }else if ($type == "SDM") {
+      $this->lihat_usulan_sdm($id, $id_unit, $hak);
+    }else if ($type == "BHP") {
+      $this->lihat_usulan_bhp($id, $id_unit, $hak);
+    }else if ($type == "ALAT") {
+      $this->lihat_usulan_alat($id, $id_unit, $hak);
+    }else if ($type == "PEMELIHARAAN ALAT") {
+      $this->lihat_usulan_pemeliharaan_alat($id, $id_unit, $hak);
+    }else if ($type == "GEDUNG") {
+      $this->lihat_usulan_gedung($id, $id_unit, $hak);
+    }else if ($type == "PEMELIHARAAN GEDUNG") {
+      $this->lihat_usulan_pemeliharaan_gedung($id, $id_unit, $hak);
+    }else if ($type == "GAJI NON PNS") {
+     $this->lihat_usulan_gaji_non($id, $id_unit, $hak);
+    }else if ($type == "GAJI PNS") {
+      $this->lihat_usulan_gaji_pns($id, $id_unit, $hak);
+    }else if ($type == "PERENCANAAN PENDAPATAN") {
+      $this->lihat_usulan_perencanaan_pendapatan($id, $id_unit, $hak);
+    }
+
+  }
+
+  function ketahui_usulan($id_usulan){
+    $this->load->model('site2_model');
+    $this->site2_model->ketahui_usulan($id_usulan);
+
+    $this->buka_ketahui_usulan();
+  }
+
+  function batalkan_ketahui_usulan($id_usulan){
+    $this->load->model('site2_model');
+    $this->site2_model->batalkan_ketahui_usulan($id_usulan);
+
+    $this->buka_ketahui_usulan();
+  }
+
 
 
 }

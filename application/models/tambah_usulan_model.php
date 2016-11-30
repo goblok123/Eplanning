@@ -11,19 +11,19 @@ class Tambah_usulan_model extends CI_Model{
 	}
 
 	function find_usulan_diklat($unit, $t){
-		$q = $this->db->query("Select * from dtl_usulan_diklat where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
+		$q = $this->db->query("Select * from dtl_usulan_diklat where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND type_usulan = '$t' AND active_status = '1')");
    		return $q->result();
 		// return null;
 	}
 
 	function find_id_usulan($unit, $t){
-		$q = $this->db->query("Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1'");
+		$q = $this->db->query("Select id_usulan from usulan where id_unit = '$unit' AND type_usulan = '$t' AND active_status = '1'");
 
 		return $q->row();
 	}
 
 	function there_usul($unit, $t){
-		$result = $this->db->query("Select id_unit from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1'");
+		$result = $this->db->query("Select id_unit from usulan where id_unit = '$unit' AND type_usulan = '$t' AND active_status = '1'");
 
 		if($result->num_rows() >= 1){
 			return TRUE;
@@ -149,7 +149,7 @@ class Tambah_usulan_model extends CI_Model{
 	}
 
 	function all_usulan_obat($unit, $t){
-		$q = $this->db->query("Select * from dtl_usulan_obat where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
+		$q = $this->db->query("Select * from dtl_usulan_obat where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND type_usulan = '$t' AND active_status = '1')");
    		return $q->result();
 		// return null;
 	}
@@ -205,7 +205,7 @@ class Tambah_usulan_model extends CI_Model{
 	}
 
 	function all_usulan_sdm($unit, $t){
-		$q = $this->db->query("Select * from dtl_usulan_sdm where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
+		$q = $this->db->query("Select * from dtl_usulan_sdm where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND type_usulan = '$t' AND active_status = '1')");
    		return $q->result();
 	}
 
@@ -511,7 +511,7 @@ class Tambah_usulan_model extends CI_Model{
 	}
 
 	function semua_usulan_gedung($unit, $t){
-		$q = $this->db->query("Select * from dtl_usulan_gedung where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
+		$q = $this->db->query("Select * from dtl_usulan_gedung where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND type_usulan = '$t' AND active_status = '1')");
    		return $q->result();
 	}
 
@@ -562,7 +562,7 @@ class Tambah_usulan_model extends CI_Model{
 
 	//Pemeliharaan Gedung
 	function semua_usulan_pmlhrn_gedung($unit, $t){
-		$q = $this->db->query("Select * from dtl_usulan_pmlhrn_gedung where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1' AND type_usulan = '$t' AND active_status = '1')");
+		$q = $this->db->query("Select * from dtl_usulan_pmlhrn_gedung where id_usulan = (Select id_usulan from usulan where id_unit = '$unit' AND type_usulan = '$t' AND active_status = '1')");
    		return $q->result();
 	}
 
