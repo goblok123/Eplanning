@@ -25,7 +25,7 @@ class Site2 extends CI_Controller
     }
   }
 
-  function lihat_usulan_diklat($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_diklat($id_usulan, $id_unit, $boleh_ketahui){
     $this->load->view('template/header');
     $hak = $this->session->userdata('hakAkses');
     if($hak == 'Pengimput'){
@@ -38,12 +38,13 @@ class Site2 extends CI_Controller
       $this->load->view('menu/menu_not_login');
     }
 
-    $data['ketahui'] = $ketahui2;
+    echo "$hak";
+    echo "$boleh_ketahui";
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $this->load->model('site2_model');
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_diklat($id_usulan);
     $data['sudah_diketahui'] =  $this->site2_model->status_diketahui($id_usulan);
-   
 
     $this->load->view('lihat/lihat_usulan_diklat',$data);
 
@@ -51,10 +52,10 @@ class Site2 extends CI_Controller
 
   }
 
-  function lihat_usulan_obat($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_obat($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_obat($id_usulan);
 
@@ -75,10 +76,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_sdm($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_sdm($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_sdm($id_usulan);
 
@@ -99,10 +100,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_bhp($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_bhp($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('tambah_usulan_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->tambah_usulan_model->cari_nama_unit($id_unit);
     $data['all'] = $this->tambah_usulan_model->usulan_bhp($id_usulan);
 
@@ -123,10 +124,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-   function lihat_usulan_alat($id_usulan, $id_unit, $ketahui2){
+   function lihat_usulan_alat($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_alat($id_usulan);
 
@@ -147,10 +148,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_pemeliharaan_alat($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_pemeliharaan_alat($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_pemeliharaan_alat($id_usulan);
 
@@ -171,10 +172,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_gedung($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_gedung($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_gedung($id_usulan);
 
@@ -195,10 +196,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-   function lihat_usulan_pemeliharaan_gedung($id_usulan, $id_unit, $ketahui2){
+   function lihat_usulan_pemeliharaan_gedung($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_pemeliharaan_gedung($id_usulan);
 
@@ -219,10 +220,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_gaji_non($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_gaji_non($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_gaji_non($id_usulan);
 
@@ -243,10 +244,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_gaji_pns($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_gaji_pns($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_gaji_pns($id_usulan);
 
@@ -266,10 +267,10 @@ class Site2 extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  function lihat_usulan_perencanaan_pendapatan($id_usulan, $id_unit, $ketahui2){
+  function lihat_usulan_perencanaan_pendapatan($id_usulan, $id_unit, $boleh_ketahui){
     $hak = $this->session->userdata('hakAkses');
     $this->load->model('site2_model');
-    $data['ketahui'] = $ketahui2;
+    $data['boleh_ketahui'] = $boleh_ketahui;
     $data['nama_unit'] = $this->site2_model->cari_nama_unit($id_unit);
     $data['all'] = $this->site2_model->cari_usulan_perencanaan_pendapatan($id_usulan);
 
@@ -336,34 +337,38 @@ class Site2 extends CI_Controller
     $type = str_replace("%20"," ",$type);
     
     $hak = $this->session->userdata('hakAkses');
-    if(($hak == 'Penanggung Jawab' || $hak == 'Administrator')){
-       $hak = true;
+
+
+    if($hak == 'Penanggung Jawab'){
+       $boleh_ketahui = 1;
+    }else if($hak == 'Administrator'){
+      $boleh_ketahui = 1;
     }else{
-       $hak = false;
+       $boleh_ketahui = 0;
     }
 
     if($type == "DIKLAT"){
-      $this->lihat_usulan_diklat($id, $id_unit, $hak);
+      $this->lihat_usulan_diklat($id, $id_unit, $boleh_ketahui);
     }else if ($type == "OBAT") {
-      $this->lihat_usulan_obat($id, $id_unit, $hak);
+      $this->lihat_usulan_obat($id, $id_unit, $boleh_ketahui);
     }else if ($type == "SDM") {
-      $this->lihat_usulan_sdm($id, $id_unit, $hak);
+      $this->lihat_usulan_sdm($id, $id_unit, $boleh_ketahui);
     }else if ($type == "BHP") {
-      $this->lihat_usulan_bhp($id, $id_unit, $hak);
+      $this->lihat_usulan_bhp($id, $id_unit, $boleh_ketahui);
     }else if ($type == "ALAT") {
-      $this->lihat_usulan_alat($id, $id_unit, $hak);
+      $this->lihat_usulan_alat($id, $id_unit, $boleh_ketahui);
     }else if ($type == "PEMELIHARAAN ALAT") {
-      $this->lihat_usulan_pemeliharaan_alat($id, $id_unit, $hak);
+      $this->lihat_usulan_pemeliharaan_alat($id, $id_unit, $boleh_ketahui);
     }else if ($type == "GEDUNG") {
-      $this->lihat_usulan_gedung($id, $id_unit, $hak);
+      $this->lihat_usulan_gedung($id, $id_unit, $boleh_ketahui);
     }else if ($type == "PEMELIHARAAN GEDUNG") {
-      $this->lihat_usulan_pemeliharaan_gedung($id, $id_unit, $hak);
+      $this->lihat_usulan_pemeliharaan_gedung($id, $id_unit, $boleh_ketahui);
     }else if ($type == "GAJI NON PNS") {
-     $this->lihat_usulan_gaji_non($id, $id_unit, $hak);
+     $this->lihat_usulan_gaji_non($id, $id_unit, $boleh_ketahui);
     }else if ($type == "GAJI PNS") {
-      $this->lihat_usulan_gaji_pns($id, $id_unit, $hak);
+      $this->lihat_usulan_gaji_pns($id, $id_unit, $boleh_ketahui);
     }else if ($type == "PERENCANAAN PENDAPATAN") {
-      $this->lihat_usulan_perencanaan_pendapatan($id, $id_unit, $hak);
+      $this->lihat_usulan_perencanaan_pendapatan($id, $id_unit, $boleh_ketahui);
     }
 
   }

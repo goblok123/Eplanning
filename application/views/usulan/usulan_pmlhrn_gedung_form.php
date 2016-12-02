@@ -19,51 +19,56 @@
 
     <h1>Tambah Usulan Pemeliharaan Pengadaan Gedung</h1>
 
-	<?php if (isset($added)){ ?>
+    <?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+    	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
-	<?php } else { ?>
-		<h3>-</h3>
-	<?php } ?>
+		<?php } else { ?>
+			<h3>-</h3>
+		<?php } ?>
 
-	<?php echo validation_errors('<p class="error">'); ?>
+		<?php echo validation_errors('<p class="error">'); ?>
 
-	<?php
-		echo form_open('site/tambah_usulan_pmlhrn_gedung');
-		echo form_label('Nama Gedung dan Sarana Konstruksi Lainnya: ', 'nama_gedung');
-	?>
+		<?php
+			echo form_open('site/tambah_usulan_pmlhrn_gedung');
+			echo form_label('Nama Gedung dan Sarana Konstruksi Lainnya: ', 'nama_gedung');
+		?>
 
-	<div>
-		<select name="nama_gedung" id="nama_gedung" style="width:275px;">
+		<div>
+			<select name="nama_gedung" id="nama_gedung" style="width:275px;">
 
-		</select>
-	</div>
+			</select>
+		</div>
 
 
-	<?php
-		echo form_label('Bagian yang Diperbaiki/Dipelihara: ', 'bgn_diperbaiki');
-		echo form_textarea('bgn_diperbaiki', set_value('bgn_diperbaiki', ''), 'class="input1"');
+		<?php
+			echo form_label('Bagian yang Diperbaiki/Dipelihara: ', 'bgn_diperbaiki');
+			echo form_textarea('bgn_diperbaiki', set_value('bgn_diperbaiki', ''), 'class="input1"');
 
-		echo form_label('Pengadaan Tahun: ', 'pngdn_thn');
-		echo form_input('pngdn_thn', set_value('pngdn_thn', ''), 'class="input1"');
+			echo form_label('Pengadaan Tahun: ', 'pngdn_thn');
+			echo form_input('pngdn_thn', set_value('pngdn_thn', ''), 'class="input1"');
 
-		echo form_label('Kondisi : ', 'kondisi');
-		$options = array(
-	        "RR"         => "RR",
-	        "RB"           => "RB",
-		);
-		echo form_dropdown('kondisi', $options, 'kondisi', 'class="dropdownStyle"');
-		
-		echo form_label('Volume/Jumlah yang Diperbaiki : ', 'jmlh_dprbk');
-		echo form_input('jmlh_dprbk', set_value('jmlh_dprbk', ''), 'class="input1"');
+			echo form_label('Kondisi : ', 'kondisi');
+			$options = array(
+		        "RR"         => "RR",
+		        "RB"           => "RB",
+			);
+			echo form_dropdown('kondisi', $options, 'kondisi', 'class="dropdownStyle"');
+			
+			echo form_label('Volume/Jumlah yang Diperbaiki : ', 'jmlh_dprbk');
+			echo form_input('jmlh_dprbk', set_value('jmlh_dprbk', ''), 'class="input1"');
 
-		echo form_label('Jenis Pemeliharaan : ', 'jns_pmlhrn');
-		echo form_input('jns_pmlhrn', set_value('jns_pmlhrn', ''), 'class="input1"');
+			echo form_label('Jenis Pemeliharaan : ', 'jns_pmlhrn');
+			echo form_input('jns_pmlhrn', set_value('jns_pmlhrn', ''), 'class="input1"');
 
-		echo form_label('Info Kerusakan: ', 'info');
-		echo form_textarea('info', set_value('info', ''), 'class="input1"');
+			echo form_label('Info Kerusakan: ', 'info');
+			echo form_textarea('info', set_value('info', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Tambah');
-	?>
+			echo form_submit('submit', 'Tambah');
+		?>
+    <?php } ?>
 
 </div>
 
@@ -120,13 +125,14 @@
 			  		<th>
 			  			<?php echo $r->info; ?>
 			  		</th>
-			  		
-			  		<th>
-			  			<a href="<?php echo base_url('/site/ubah_usulan_pmlhrn_gedung_form/'.$r->id_dtl_usln_pmlhrn_gedung.'/-'); ?>" class="btn btn-success">Perbaharui</a>
-			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/hapus_usulan_pmlhrn_gedung/'.$r->id_dtl_usln_pmlhrn_gedung.''); ?>" class="btn btn-danger">Hapus</a>
-			  		</th>
+			  		<?php if ($diketahui == 1){ ?>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/ubah_usulan_pmlhrn_gedung_form/'.$r->id_dtl_usln_pmlhrn_gedung.'/-'); ?>" class="btn btn-success">Perbaharui</a>
+				  		</th>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/hapus_usulan_pmlhrn_gedung/'.$r->id_dtl_usln_pmlhrn_gedung.''); ?>" class="btn btn-danger">Hapus</a>
+				  		</th>
+			  		<?php }?>
 				</tr>
 			<?php endforeach; ?>
 		<?php }?>

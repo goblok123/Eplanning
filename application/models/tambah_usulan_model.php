@@ -32,6 +32,12 @@ class Tambah_usulan_model extends CI_Model{
 		}
 	}
 
+	function cari_status_ketahui_m($unit, $type){
+		$q = $this->db->query("Select tgl_diketahui from usulan where id_unit = '$unit' AND type_usulan = '$type' AND active_status = '1' AND tgl_diketahui = '1970-01-01'");
+		
+		return $q->num_rows();
+	}
+
 	// function find_id_detail_usulan($unit){
 	// 	$q = $this->db->query("Select id_usulan from usulan where id_unit = '$unit' AND edit_able ='1')");
 	// 	return $q->row();

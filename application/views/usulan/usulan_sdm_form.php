@@ -19,52 +19,55 @@
 
     <h1>Tambah Usulan SDM</h1>
 
-	<?php if (isset($added)){ ?>
+    <?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+    	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
-	<?php } else { ?>
-		<h3>-</h3>
-	<?php } ?>
+		<?php } else { ?>
+			<h3>-</h3>
+		<?php } ?>
 
-	<?php echo validation_errors('<p class="error">'); ?>
+		<?php echo validation_errors('<p class="error">'); ?>
 
-	<?php
-		echo form_open('site/add_usulan_sdm');
-		echo form_label('Jenis dan Kualifikasi SDM yang Diusulkan Ditambah : : ', 'nama_sdm');
-	?>
+		<?php
+			echo form_open('site/add_usulan_sdm');
+			echo form_label('Jenis dan Kualifikasi SDM yang Diusulkan Ditambah : : ', 'nama_sdm');
+		?>
 
-	<div>
-		<select name="nama_sdm" id="nama_sdm" style="width:275px;">
+		<div>
+			<select name="nama_sdm" id="nama_sdm" style="width:275px;">
 
-		</select>
-	</div>
+			</select>
+		</div>
 
 
-	<?php
-		echo form_label('Pendidikan dan Keahlian: ', 'pendidikan_dan_keahlian');
-		echo form_input('pendidikan_dan_keahlian', set_value('pendidikan_dan_keahlian', ''), 'class="input1"');
-		
-		// echo form_label('Satuan');
-		// $options = array(
-	 //        "buah"         => "buah",
-	 //        "biji"         => "biji",
-	 //        "kotak"           => "kotak",
-	 //        "pel-pel"		=> "pel-pel",
-		// );
-		// echo form_dropdown('satuan', $options, 'buah', 'class="dropdownStyle"');
+		<?php
+			echo form_label('Pendidikan dan Keahlian: ', 'pendidikan_dan_keahlian');
+			echo form_input('pendidikan_dan_keahlian', set_value('pendidikan_dan_keahlian', ''), 'class="input1"');
+			
+			// echo form_label('Satuan');
+			// $options = array(
+		 //        "buah"         => "buah",
+		 //        "biji"         => "biji",
+		 //        "kotak"           => "kotak",
+		 //        "pel-pel"		=> "pel-pel",
+			// );
+			// echo form_dropdown('satuan', $options, 'buah', 'class="dropdownStyle"');
 
-		echo form_label('Jumlah yang Sudah Ada: ', 'jmlh_ada');
-		echo form_input('jmlh_ada', set_value('jmlh_ada', ''), 'class="input1"');
-		echo form_label('Jumlah yang Harus Ada Menurut Standar : ', 'jmlh_mnrt_stndr');
-		echo form_input('jmlh_mnrt_stndr', set_value('jmlh_mnrt_stndr', ''), 'class="input1"');
-		echo form_label('Jumlah Kebutuhan SDM yang Diusulkan ', 'jmlh_usulan');
-		echo form_input('jmlh_usulan', set_value('jmlh_usulan', ''), 'class="input1"');
-		echo form_label('Justifikasi : ', 'justifikasi');
-		echo form_input('justifikasi', set_value('justifikasi', ''), 'class="input1"');
+			echo form_label('Jumlah yang Sudah Ada: ', 'jmlh_ada');
+			echo form_input('jmlh_ada', set_value('jmlh_ada', ''), 'class="input1"');
+			echo form_label('Jumlah yang Harus Ada Menurut Standar : ', 'jmlh_mnrt_stndr');
+			echo form_input('jmlh_mnrt_stndr', set_value('jmlh_mnrt_stndr', ''), 'class="input1"');
+			echo form_label('Jumlah Kebutuhan SDM yang Diusulkan ', 'jmlh_usulan');
+			echo form_input('jmlh_usulan', set_value('jmlh_usulan', ''), 'class="input1"');
+			echo form_label('Justifikasi : ', 'justifikasi');
+			echo form_input('justifikasi', set_value('justifikasi', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Tambah');
-	?>
-
-	
+			echo form_submit('submit', 'Tambah');
+		?>
+    <?php } ?>
 </div>
 
 
@@ -116,13 +119,14 @@
 			  		<th>
 			  			<?php echo $r->justifikasi; ?>
 			  		</th>
-			  		
+			  		<?php if ($diketahui == 1){ ?>
 			  		<th>
 			  			<a href="<?php echo base_url('/site/ubah_usulan_sdm_form/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-success">Perbaharui</a>
 			  		</th>
 			  		<th>
 			  			<a href="<?php echo base_url('/site/hapus_usulan_sdm/'.$r->id_dtl_usulan_sdm.''); ?>" class="btn btn-danger">Hapus</a>
 			  		</th>
+			  		<?php }?>
 				</tr>
 			<?php endforeach; ?>
 		<?php } ?>

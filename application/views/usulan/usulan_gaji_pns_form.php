@@ -19,38 +19,46 @@
 
     <h1>Tambah Usulan Gaji PNS</h1>
 
-	<?php if (isset($added)){ ?>
+    <?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+    	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
-	<?php } else { ?>
-		<h3>-</h3>
-	<?php } ?>
+		<?php } else { ?>
+			<h3>-</h3>
+		<?php } ?>
 
-	<?php echo validation_errors('<p class="error">'); ?>
+		<?php echo validation_errors('<p class="error">'); ?>
 
-	<?php
-		echo form_open('site/tambah_usulan_gaji_pns');
-		echo form_label('Uraian Belanja Gaji dan Tunjangan PNS: ', 'nama_item_keu');
-	?>
+		<?php
+			echo form_open('site/tambah_usulan_gaji_pns');
+			echo form_label('Uraian Belanja Gaji dan Tunjangan PNS: ', 'nama_item_keu');
+		?>
 
-	<div>
-		<select name="nama_item_keu" id="nama_item_keu" style="width:275px;">
+		<div>
+			<select name="nama_item_keu" id="nama_item_keu" style="width:275px;">
 
-		</select>
-	</div>
+			</select>
+		</div>
 
 
-	<?php
-		echo form_label('Realisasi Belanja Gaji Tahun Lalu(N-1): ', 'gaji_tahun_lalu');
-		echo form_input('gaji_tahun_lalu', set_value('gaji_tahun_lalu', ''), 'class="input1"');
+		<?php
+			echo form_label('Realisasi Belanja Gaji Tahun Lalu(N-1): ', 'gaji_tahun_lalu');
+			echo form_input('gaji_tahun_lalu', set_value('gaji_tahun_lalu', ''), 'class="input1"');
 
-		echo form_label('Rencana Anggaran Gaji PNS TA (N+1): ', 'rencana_gaji');
-		echo form_input('rencana_gaji', set_value('rencana_gaji', ''), 'class="input1"');
+			echo form_label('Rencana Anggaran Gaji PNS TA (N+1): ', 'rencana_gaji');
+			echo form_input('rencana_gaji', set_value('rencana_gaji', ''), 'class="input1"');
 
-		echo form_label('Infomasi/Justifikasi : ', 'info');
-		echo form_textarea('info', set_value('info', ''), 'class="input1"');
+			echo form_label('Infomasi/Justifikasi : ', 'info');
+			echo form_textarea('info', set_value('info', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Tambah');
-	?>
+			echo form_submit('submit', 'Tambah');
+		?>
+    <?php } ?>
+
+
+	
 
 	
 </div>
@@ -95,13 +103,14 @@
 			  		<th>
 			  			<?php echo $r->info; ?>
 			  		</th>
-			  		
-			  		<th>
-			  			<a href="<?php echo base_url('/site/ubah_usulan_gaji_pns_form/'.$r->id_dtl_usln_gaji_pns.'/-'); ?>" class="btn btn-success">Perbaharui</a>
-			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/hapus_usulan_gaji_pns/'.$r->id_dtl_usln_gaji_pns.''); ?>" class="btn btn-danger">Hapus</a>
-			  		</th>
+			  		<?php if ($diketahui == 1){ ?>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/ubah_usulan_gaji_pns_form/'.$r->id_dtl_usln_gaji_pns.'/-'); ?>" class="btn btn-success">Perbaharui</a>
+				  		</th>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/hapus_usulan_gaji_pns/'.$r->id_dtl_usln_gaji_pns.''); ?>" class="btn btn-danger">Hapus</a>
+				  		</th>
+			  		<?php } ?>
 				</tr>
 			<?php endforeach; ?>
 		<?php }?>

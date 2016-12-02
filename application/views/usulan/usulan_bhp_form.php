@@ -19,56 +19,60 @@
 
     <h1>Tambah Usulan BHP</h1>
 
-	<?php if (isset($added)){ ?>
+    <?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+    	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
-	<?php } else { ?>
-		<h3>-</h3>
-	<?php } ?>
+		<?php } else { ?>
+			<h3>-</h3>
+		<?php } ?>
 
-	<?php echo validation_errors('<p class="error">'); ?>
+		<?php echo validation_errors('<p class="error">'); ?>
 
-	<?php
-		echo form_open('site/tambah_usulan_bhp/'.$no_jenis.'');
-	?>
+		<?php
+			echo form_open('site/tambah_usulan_bhp/'.$no_jenis.'');
+		?>
 
-	<h4>Jenis BHP : <?php echo "$jenis_bhp"; ?></h4>
+		<h4>Jenis BHP : <?php echo "$jenis_bhp"; ?></h4>
 
-	<?php
-		echo form_label('Nama BHP : ', 'nama_bhp');
-	?>
+		<?php
+			echo form_label('Nama BHP : ', 'nama_bhp');
+		?>
 
-	<div>
-		<select name="nama_bhp" id="nama_bhp" style="width:275px;">
+		<div>
+			<select name="nama_bhp" id="nama_bhp" style="width:275px;">
 
-		</select>
-	</div>
+			</select>
+		</div>
 
 
-	<?php
-		echo form_label('Jumlah yang Diusulkan(untuk 1 tahun/12 bulan)(tahun n+1) : ', 'jmlh_yg_diusulkan');
-		echo form_input('jmlh_yg_diusulkan', set_value('jmlh_yg_diusulkan', ''), 'class="input1"');
-		
-		echo form_label('Satuan');
-		$options = array(
-	        "buah"         => "buah",
-	        "biji"         => "biji",
-	        "kotak"           => "kotak",
-	        "pel-pel"		=> "pel-pel",
-		);
-		echo form_dropdown('satuan', $options, 'buah', 'class="dropdownStyle"');
+		<?php
+			echo form_label('Jumlah yang Diusulkan(untuk 1 tahun/12 bulan)(tahun n+1) : ', 'jmlh_yg_diusulkan');
+			echo form_input('jmlh_yg_diusulkan', set_value('jmlh_yg_diusulkan', ''), 'class="input1"');
+			
+			echo form_label('Satuan');
+			$options = array(
+		        "buah"         => "buah",
+		        "biji"         => "biji",
+		        "kotak"           => "kotak",
+		        "pel-pel"		=> "pel-pel",
+			);
+			echo form_dropdown('satuan', $options, 'buah', 'class="dropdownStyle"');
 
-		echo form_label('Harga Satuan : ', 'hrg_satuan');
-		echo form_input('hrg_satuan', set_value('hrg_satuan', ''), 'class="input1"');
-		echo form_label('Jumlah Harga : ', 'jmlh_harga');
-		echo form_input('jmlh_harga', set_value('jmlh_harga', ''), 'class="input1"');
-		echo form_label('Merk/Type/Model/Ukuran yang Diinginkan: ', 'merk');
-		echo form_input('merk', set_value('merk', ''), 'class="input1"');
-		echo form_label('Jumlah yang Penggunaan Tahun n-1 : ', 'jmlh_pnggnaan_thn_sblm');
-		echo form_input('jmlh_pnggnaan_thn_sblm', set_value('jmlh_pnggnaan_thn_sblm', ''), 'class="input1"');
+			echo form_label('Harga Satuan : ', 'hrg_satuan');
+			echo form_input('hrg_satuan', set_value('hrg_satuan', ''), 'class="input1"');
+			echo form_label('Jumlah Harga : ', 'jmlh_harga');
+			echo form_input('jmlh_harga', set_value('jmlh_harga', ''), 'class="input1"');
+			echo form_label('Merk/Type/Model/Ukuran yang Diinginkan: ', 'merk');
+			echo form_input('merk', set_value('merk', ''), 'class="input1"');
+			echo form_label('Jumlah yang Penggunaan Tahun n-1 : ', 'jmlh_pnggnaan_thn_sblm');
+			echo form_input('jmlh_pnggnaan_thn_sblm', set_value('jmlh_pnggnaan_thn_sblm', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Tambah');
-	?>
-
+			echo form_submit('submit', 'Tambah');
+		?>
+    <?php } ?>
 	
 </div>
 
@@ -123,12 +127,14 @@
 				  		<th>
 				  			<?php echo $r->jmlh_harga; ?>
 				  		</th>
-				  		<th>
-				  			<a href="<?php echo base_url('/site/ubah_usulan_bhp_form/'.$r->id_dtl_bhp.''); ?>" class="btn btn-success">Perbaharui</a>
-				  		</th>
-				  		<th>
-				  			<a href="<?php echo base_url('/site/hapus_usulan_bhp/'.$r->id_dtl_bhp.''); ?>" class="btn btn-danger">Hapus</a>
-				  		</th>
+				  		<?php if ($diketahui == 1){ ?>
+					  		<th>
+					  			<a href="<?php echo base_url('/site/ubah_usulan_bhp_form/'.$r->id_dtl_bhp.''); ?>" class="btn btn-success">Perbaharui</a>
+					  		</th>
+					  		<th>
+					  			<a href="<?php echo base_url('/site/hapus_usulan_bhp/'.$r->id_dtl_bhp.''); ?>" class="btn btn-danger">Hapus</a>
+					  		</th>
+				  		<?php } ?>
 					</tr>
 				<?php endforeach; ?>
 			<?php } ?>

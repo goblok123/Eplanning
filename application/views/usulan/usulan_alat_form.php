@@ -18,53 +18,60 @@
 <div id="add_usulan_obat" class="formMid">
 
     <h1>Tambah Usulan Alat</h1>
-
-	<?php if (isset($added)){ ?>
+	
+	<?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+    	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
 	<?php } else { ?>
 		<h3>-</h3>
 	<?php } ?>
 
-	<?php echo validation_errors('<p class="error">'); ?>
+		<?php echo validation_errors('<p class="error">'); ?>
 
-	<?php
-		echo form_open('site/tambah_usulan_alat/'.$no_jenis.'');
-	?>
+		<?php
+			echo form_open('site/tambah_usulan_alat/'.$no_jenis.'');
+		?>
 
-	<h4>Jenis BHP : <?php echo "$jenis_alat"; ?></h4>
+		<h4>Jenis BHP : <?php echo "$jenis_alat"; ?></h4>
 
-	<?php
-		echo form_label('Nama Alat :', 'nama_alat');
-	?>
+		<?php
+			echo form_label('Nama Alat :', 'nama_alat');
+		?>
 
-	<div>
-		<select name="nama_alat" id="nama_alat" style="width:275px;">
+		<div>
+			<select name="nama_alat" id="nama_alat" style="width:275px;">
 
-		</select>
-	</div>
+			</select>
+		</div>
 
 
-	<?php
-		echo form_label('Jumlah yang Sudah Ada:', 'jmlh_yg_sdh_ada');
-		echo form_input('jmlh_yg_sdh_ada', set_value('jmlh_yg_sdh_ada', ''), 'class="input1"');
-		
-		echo form_label('Kondisi:');
-		$options = array(
-	        "B"         => "B",
-	        "RR"         => "RR",
-	        "RB"           => "RB",
-		);
-		echo form_dropdown('kondisi', $options, 'kondisi', 'class="dropdownStyle"');
+		<?php
+			echo form_label('Jumlah yang Sudah Ada:', 'jmlh_yg_sdh_ada');
+			echo form_input('jmlh_yg_sdh_ada', set_value('jmlh_yg_sdh_ada', ''), 'class="input1"');
+			
+			echo form_label('Kondisi:');
+			$options = array(
+		        "B"         => "B",
+		        "RR"         => "RR",
+		        "RB"           => "RB",
+			);
+			echo form_dropdown('kondisi', $options, 'kondisi', 'class="dropdownStyle"');
 
-		echo form_label('Jumlah yang Diusulkan : ', 'jmlh_yg_diusulkan');
-		echo form_input('jmlh_yg_diusulkan', set_value('jmlh_yg_diusulkan', ''), 'class="input1"');
-		echo form_label('Merk/Type/Model yang Diinginkan : ', 'merk');
-		echo form_input('merk', set_value('merk', ''), 'class="input1"');
-		echo form_label('Justifikasi ', 'justifikasi');
-		echo form_input('justifikasi', set_value('justifikasi', ''), 'class="input1"');
+			echo form_label('Jumlah yang Diusulkan : ', 'jmlh_yg_diusulkan');
+			echo form_input('jmlh_yg_diusulkan', set_value('jmlh_yg_diusulkan', ''), 'class="input1"');
+			echo form_label('Merk/Type/Model yang Diinginkan : ', 'merk');
+			echo form_input('merk', set_value('merk', ''), 'class="input1"');
+			echo form_label('Justifikasi ', 'justifikasi');
+			echo form_input('justifikasi', set_value('justifikasi', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Tambah');
-	?>
+			echo form_submit('submit', 'Tambah');
+		?>
+    <?php } ?>
+
+	
 	
 </div>
 	<div class="tableMiddlePage">
@@ -119,12 +126,14 @@
 				  		<th>
 				  			<?php echo $r->justifikasi; ?>
 				  		</th>
-				  		<th>
-				  			<a href="<?php echo base_url('/site/ubah_usulan_alat_form/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-success">Perbaharui</a>
-				  		</th>
-				  		<th>
-				  			<a href="<?php echo base_url('/site/hapus_usulan_alat/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-danger">Hapus</a>
-				  		</th>
+				  		<?php if ($diketahui == 1){ ?>
+					  		<th>
+					  			<a href="<?php echo base_url('/site/ubah_usulan_alat_form/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-success">Perbaharui</a>
+					  		</th>
+					  		<th>
+					  			<a href="<?php echo base_url('/site/hapus_usulan_alat/'.$r->id_dtl_usulan_alat.''); ?>" class="btn btn-danger">Hapus</a>
+					  		</th>
+				  		<?php }?>
 					</tr>
 				<?php endforeach; ?>
 			<?php } ?>

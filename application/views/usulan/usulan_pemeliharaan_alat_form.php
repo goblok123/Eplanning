@@ -19,56 +19,61 @@
 
     <h1>Tambah Usulan Pemeliharaan Alat</h1>
 
-	<?php if (isset($added)){ ?>
+    <?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+    	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
-	<?php } else { ?>
-		<h3>-</h3>
-	<?php } ?>
+		<?php } else { ?>
+			<h3>-</h3>
+		<?php } ?>
 
-	<?php echo validation_errors('<p class="error">'); ?>
+		<?php echo validation_errors('<p class="error">'); ?>
 
-	<?php
-		echo form_open('site/tambah_usulan_pemeliharaan_alat/'.$no_jenis.'');
-	?>
+		<?php
+			echo form_open('site/tambah_usulan_pemeliharaan_alat/'.$no_jenis.'');
+		?>
 
-	<h4>Jenis BHP : <?php echo "$jenis_alat"; ?></h4>
+		<h4>Jenis BHP : <?php echo "$jenis_alat"; ?></h4>
 
-	<?php
-		echo form_label('Nama Alat :', 'nama_alat');
-	?>
+		<?php
+			echo form_label('Nama Alat :', 'nama_alat');
+		?>
 
-	<div>
-		<select name="nama_alat" id="nama_alat" style="width:275px;">
+		<div>
+			<select name="nama_alat" id="nama_alat" style="width:275px;">
 
-		</select>
-	</div>
+			</select>
+		</div>
 
 
-	<?php
-		echo form_label('Merk/Type/Model: ', 'merk');
-		echo form_input('merk', set_value('merk', ''), 'class="input1"');
+		<?php
+			echo form_label('Merk/Type/Model: ', 'merk');
+			echo form_input('merk', set_value('merk', ''), 'class="input1"');
 
-		echo form_label('Pengadaan Tahun:', 'pngdn_thn');
-		echo form_input('pngdn_thn', set_value('pngdn_thn', ''), 'class="input1"');
-		
-		echo form_label('Kondisi:');
-		$options = array(
-	        "RR"         => "RR",
-	        "RB"           => "RB",
-		);
-		echo form_dropdown('kondisi', $options, 'kondisi', 'class="dropdownStyle"');
+			echo form_label('Pengadaan Tahun:', 'pngdn_thn');
+			echo form_input('pngdn_thn', set_value('pngdn_thn', ''), 'class="input1"');
+			
+			echo form_label('Kondisi:');
+			$options = array(
+		        "RR"         => "RR",
+		        "RB"           => "RB",
+			);
+			echo form_dropdown('kondisi', $options, 'kondisi', 'class="dropdownStyle"');
 
-		echo form_label('Jumlah yang Diperbaiki/Dipelihara : ', 'jmlh_diperbaiki');
-		echo form_input('jmlh_diperbaiki', set_value('jmlh_diperbaiki', ''), 'class="input1"');
-		
-		echo form_label('Jenis Pemeliharaan ', 'jns_pmlhrn');
-		echo form_input('jns_pmlhrn', set_value('jns_pmlhrn', ''), 'class="input1"');
+			echo form_label('Jumlah yang Diperbaiki/Dipelihara : ', 'jmlh_diperbaiki');
+			echo form_input('jmlh_diperbaiki', set_value('jmlh_diperbaiki', ''), 'class="input1"');
+			
+			echo form_label('Jenis Pemeliharaan ', 'jns_pmlhrn');
+			echo form_input('jns_pmlhrn', set_value('jns_pmlhrn', ''), 'class="input1"');
 
-		echo form_label('Info Kerusakan : ', 'info');
-		echo form_textarea('info', set_value('info', ''), 'class="input1"');
+			echo form_label('Info Kerusakan : ', 'info');
+			echo form_textarea('info', set_value('info', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Tambah');
-	?>
+			echo form_submit('submit', 'Tambah');
+		?>
+    <?php } ?>
 </div>
 
 
@@ -128,12 +133,14 @@
 			  		<th>
 			  			<?php echo $r->info; ?>
 			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/ubah_usulan_pemeliharaan_alat_form/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-success">Perbaharui</a>
-			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/hapus_usulan_pemeliharaan_alat/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-danger">Hapus</a>
-			  		</th>
+			  		<?php if ($diketahui == 1){ ?>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/ubah_usulan_pemeliharaan_alat_form/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-success">Perbaharui</a>
+				  		</th>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/hapus_usulan_pemeliharaan_alat/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-danger">Hapus</a>
+				  		</th>
+			  		<?php } ?>
 				</tr>
 			<?php endforeach; ?>
 		<?php }?>

@@ -484,9 +484,17 @@ class Site extends CI_Controller
 		$unit = $this->session->userdata('id_unit');
 		$hak = $this->session->userdata('hakAkses');
 		$this->load->view('template/header');
+		$tp = "DIKLAT";
 
 		$this->load->model('tambah_usulan_model');
-		$data['all'] = $this->tambah_usulan_model->find_usulan_diklat($unit,"Diklat");
+		$data['all'] = $this->tambah_usulan_model->find_usulan_diklat($unit, $tp);
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
+		
 		$data['added'] = $a;
 
 		if($hak == 'Pengimput'){
@@ -651,10 +659,18 @@ class Site extends CI_Controller
 	function tambah_usulan_obat_form($a){
 		$unit = $this->session->userdata('id_unit');
 		$hak = $this->session->userdata('hakAkses');
+
+		$tp = "OBAT";
 		$this->load->model('tambah_usulan_model');
 		$data["obat"] = $this->tambah_usulan_model->find_all_obat();
 		$data["added"] = $a;
-		$data["usulan_obat"] = $this->tambah_usulan_model->all_usulan_obat($unit, "OBAT");
+		$data["usulan_obat"] = $this->tambah_usulan_model->all_usulan_obat($unit, $tp);
+
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
 
 		$this->load->view('template/header');
 
@@ -801,6 +817,11 @@ class Site extends CI_Controller
 		$data["added"] = $a;
 		$tp = "SDM";
 
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
 
 		$data["usulan_sdm"] = $this->tambah_usulan_model->all_usulan_sdm($unit, $tp);
 
@@ -949,6 +970,12 @@ class Site extends CI_Controller
 		if($r != null){
 			$data["usulan_bhp"] = $this->tambah_usulan_model->usulan_bhp($r->id_usulan);
 		}
+		$unit = $this->session->userdata('id_unit');
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
 
 		if($hak == 'Pengimput'){
 			$this->load->view('menu/menu_pengimput');
@@ -1009,6 +1036,13 @@ class Site extends CI_Controller
 		$data["no_jenis"] = $no;
 		$data["dt"] = $this->tambah_usulan_model->cari_data_jenis_bhp($no);
 		$tp = "BHP";
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
 
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1178,13 +1212,21 @@ class Site extends CI_Controller
 		}
 
 		$tp = "ALAT";
+
 		$this->load->model('tambah_usulan_model');
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
+
 		$data["usulan_alat"] = null;
 		if($r != null){
 			$data["usulan_alat"] = $this->tambah_usulan_model->usulan_alat($r->id_usulan);
-		}else{
-
 		}
 		
 		$this->load->view('usulan/pilihan_jenis_alat', $data);
@@ -1208,6 +1250,15 @@ class Site extends CI_Controller
 
 		$data["added"] = $msg;
 		$tp = "ALAT";
+
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
+
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
 		if($r != null){
@@ -1253,6 +1304,14 @@ class Site extends CI_Controller
 			$s = $this->tambah_usulan_model->find_id_alat($r);
 
 			$tp = "ALAT";
+
+			$unit = $this->session->userdata('id_unit');
+		
+			if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+				$data['diketahui'] = 1;
+			}else{
+				$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+			}
 
 			$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
 
@@ -1385,9 +1444,18 @@ class Site extends CI_Controller
 			$this->load->view('menu/menu_not_login');
 		}
 
+
+
 		$this->load->model('tambah_usulan_model');
 		$tp = "PEMELIHARAAN ALAT";
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
 		$data["usulan_pemeliharaan"] = null;
 		if($r != null){
 			$data["usulan_pemeliharaan"] = $this->tambah_usulan_model->usulan_pemeliharaan_alat($r->id_usulan);
@@ -1416,6 +1484,14 @@ class Site extends CI_Controller
 		$data["added"] = $msg;
 		$tp = "PEMELIHARAAN ALAT";
 		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
 
 		if($r != null){
 			$data["usulan_pemeliharaan"] = $this->tambah_usulan_model->usulan_pemeliharaan_alat_satu_jenis($jenis, $r->id_usulan);
@@ -1587,6 +1663,15 @@ class Site extends CI_Controller
 		$data["gedung"] = $this->tambah_usulan_model->cari_semua_gedung();
 		$data["added"] = $msg;
 		$tp = "GEDUNG";
+
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
+
 		$data["usulan_gedung"] = $this->tambah_usulan_model->semua_usulan_gedung($unit, $tp);
 
 		$this->load->view('template/header');
@@ -1724,7 +1809,14 @@ class Site extends CI_Controller
 		$this->load->model('tambah_usulan_model');
 		$data["gedung"] = $this->tambah_usulan_model->cari_semua_gedung();
 		$data["added"] = $msg;
-		$data["usulan_pmlhraan_gdng"] = $this->tambah_usulan_model->semua_usulan_pmlhrn_gedung($unit, "PEMELIHARAAN GEDUNG");
+		$tp = "PEMELIHARAAN GEDUNG";
+		$data["usulan_pmlhraan_gdng"] = $this->tambah_usulan_model->semua_usulan_pmlhrn_gedung($unit, $tp);
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
 
 		$this->load->view('template/header');
 
@@ -1864,7 +1956,15 @@ class Site extends CI_Controller
 		$data["non_pns"] = $this->tambah_usulan_model->cari_data_jenis_item_non_pns();
 		$tp = "GAJI NON PNS";
 
-		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
+
+		$r = $this->tambah_usulan_model->find_id_usulan($unit, $tp);
 
 		if($r != null){
 			$data["usulan_gj_non"] = $this->tambah_usulan_model->usulan_gaji_non($r->id_usulan);
@@ -2023,7 +2123,15 @@ class Site extends CI_Controller
 		$data["pns"] = $this->tambah_usulan_model->cari_data_jenis_item_pns();
 		$tp = "GAJI PNS";
 
-		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
+
+		$r = $this->tambah_usulan_model->find_id_usulan($unit, $tp);
 
 		if($r != null){
 			$data["usulan_gj_pns"] = $this->tambah_usulan_model->usulan_gaji_pns($r->id_usulan);
@@ -2168,7 +2276,15 @@ class Site extends CI_Controller
 		$data["komponen"] = $this->tambah_usulan_model->cari_data_jenis_item_komponen();
 		$tp = "PERENCANAAN PENDAPATAN";
 
-		$r = $this->tambah_usulan_model->find_id_usulan($this->session->userdata('id_unit'), $tp);
+		$unit = $this->session->userdata('id_unit');
+		
+		if(!$this->tambah_usulan_model->there_usul($unit,$tp)){
+			$data['diketahui'] = 1;
+		}else{
+			$data['diketahui'] = $this->tambah_usulan_model->cari_status_ketahui_m($unit,$tp);
+		}
+
+		$r = $this->tambah_usulan_model->find_id_usulan($unit, $tp);
 
 		if($r != null){
 			$data["usulan_perencanaan_pendapatan"] = $this->tambah_usulan_model->usulan_perencanaan_pendapatan($r->id_usulan);
@@ -2315,73 +2431,73 @@ class Site extends CI_Controller
 		
 		$type = str_replace("%20"," ",$type);
 
-		$ketahui = false;
+		$boleh_diketahui = 0;
 		
 		if($type == "DIKLAT"){
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_diklat_form/-");
 			}else{
-				redirect("site2/lihat_usulan_diklat/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_diklat/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "OBAT") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_obat_form/-");
 			}else{
-				redirect("site2/lihat_usulan_obat/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_obat/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "SDM") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_sdm_form/-");
 			}else{
-				redirect("site2/lihat_usulan_sdm/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_sdm/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "BHP") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/pilih_jenis_bhp_c");
 			}else{
-				redirect("site2/lihat_usulan_bhp/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_bhp/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "ALAT") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/pilih_jenis_alat_c");
 			}else{
-				redirect("site2/lihat_usulan_alat/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_alat/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "PEMELIHARAAN ALAT") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/pilih_jenis_pmlhraan_alat_c");
 			}else{
-				redirect("site2/lihat_usulan_pemeliharaan_alat/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_pemeliharaan_alat/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "GEDUNG") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_gedung_form/-");
 			}else{
-				redirect("site2/lihat_usulan_gedung/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_gedung/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "PEMELIHARAAN GEDUNG") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_pmlhrn_gedung_form/-");
 			}else{
-				redirect("site2/lihat_usulan_pemeliharaan_gedung/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_pemeliharaan_gedung/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "GAJI NON PNS") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_gaji_non_pns_form/-");
 			}else{
-				redirect("site2/lihat_usulan_gaji_non/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_gaji_non/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "GAJI PNS") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_gaji_pns_form/-");
 			}else{
-				redirect("site2/lihat_usulan_gaji_pns/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_gaji_pns/$id_usulan/$id/$boleh_diketahui");
 			}
 		}else if ($type == "PERENCANAAN PENDAPATAN") {
 			if($this->session->userdata('id_unit') == $id){
 				redirect("site/tambah_usulan_perencanaan_pendapatan_form/-");
 			}else{
-				redirect("site2/lihat_usulan_perencanaan_pendapatan/$id_usulan/$id/$ketahui");
+				redirect("site2/lihat_usulan_perencanaan_pendapatan/$id_usulan/$id/$boleh_diketahui");
 			}
 		}
 	}

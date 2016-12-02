@@ -42,5 +42,8 @@
 			<?php endforeach; ?>
 		<?php }?>
 	</table>
-	<a href="<?php echo base_url('/site2/ketahui_usulan/'.$r->id_usulan.''); ?>" class="btn btn-success">Ketahui</a>
+
+	<?php if($boleh_ketahui == 1){ ?>
+		<a href="<?php echo base_url('/site2/ketahui_usulan/'.$r->id_usulan.''); ?>" class="btn btn-success">Ketahui</a>
+	<?php }?>
 </div>

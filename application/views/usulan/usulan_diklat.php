@@ -2,33 +2,43 @@
 
     <h1>Tambah Usulan Diklat</h1>
 
-	<?php if (isset($added)){ ?>
+    <!-- <?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+
+    <?php } ?> -->
+
+    <?php if ($diketahui == 0){ ?>
+    	<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } else{ ?>
+    	<?php if (isset($added)){ ?>
 		<h3 style="color: red"><?php echo $added; ?> </h3>
-	<?php } else { ?>
-		<h3>-</h3>
-	<?php } ?>
+		<?php } else { ?>
+			<h3>-</h3>
+		<?php } ?>
 
-	<?php echo validation_errors('<p class="error">'); ?>
+		<?php echo validation_errors('<p class="error">'); ?>
 
-	<?php
-		echo form_open('site/add_usulan_diklat');
-		echo form_label('Nama Diklat : ', 'nama_diklat');
-		echo form_input('nama_diklat', set_value('nama_diklat', ''), 'class="input1"');
-		echo form_label('Jumlah SDM Pernah Mengikuti : ', 'jmlh_sdm_pernah');
-		echo form_input('jmlh_sdm_pernah', set_value('jmlh_sdm_pernah', ''), 'class="input1"');
-		echo form_label('Jumlah SDM Belum Mengikuti : ', 'jmlh_sdm_belum');
-		echo form_input('jmlh_sdm_belum', set_value('jmlh_sdm_belum', ''), 'class="input1"');
-		echo form_label('Jumlah SDM Diusulkan Mengikuti : ', 'jmlh_sdm_usul');
-		echo form_input('jmlh_sdm_usul', set_value('jmlh_sdm_usul', ''), 'class="input1"');
-		echo form_label('Justifikasi : ', 'justifikasi');
-		echo form_textarea('justifikasi', set_value('justifikasi', ''), 'class="input1"');
-		echo form_label('Catatan : ', 'catatan');
-		echo form_textarea('catatan', set_value('catatan', ''), 'class="input1"');
+		<?php
+			echo form_open('site/add_usulan_diklat');
+			echo form_label('Nama Diklat : ', 'nama_diklat');
+			echo form_input('nama_diklat', set_value('nama_diklat', ''), 'class="input1"');
+			echo form_label('Jumlah SDM Pernah Mengikuti : ', 'jmlh_sdm_pernah');
+			echo form_input('jmlh_sdm_pernah', set_value('jmlh_sdm_pernah', ''), 'class="input1"');
+			echo form_label('Jumlah SDM Belum Mengikuti : ', 'jmlh_sdm_belum');
+			echo form_input('jmlh_sdm_belum', set_value('jmlh_sdm_belum', ''), 'class="input1"');
+			echo form_label('Jumlah SDM Diusulkan Mengikuti : ', 'jmlh_sdm_usul');
+			echo form_input('jmlh_sdm_usul', set_value('jmlh_sdm_usul', ''), 'class="input1"');
+			echo form_label('Justifikasi : ', 'justifikasi');
+			echo form_textarea('justifikasi', set_value('justifikasi', ''), 'class="input1"');
+			echo form_label('Catatan : ', 'catatan');
+			echo form_textarea('catatan', set_value('catatan', ''), 'class="input1"');
 
-		echo form_submit('submit', 'Tambah');
-	?>
-
-	
+			echo form_submit('submit', 'Tambah');
+		?>
+    <?php } ?>
 </div>
 
 <div class="tableMiddlePage">
@@ -72,12 +82,16 @@
 			  		<th>
 			  			<?php echo $r->catatan; ?>
 			  		</th>
-			  		<th>
+
+			  		<?php if ($diketahui == 1){ ?>
+						<th>
 			  			<a href="<?php echo base_url('/site/ubah_usulan_diklat_form/'.$r->id_dtl.'/-'); ?>" class="btn btn-success">Perbaharui</a>
-			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/hapus_usulan_diklat/'.$r->id_dtl.'/-'); ?>" class="btn btn-danger">Hapus</a>
-			  		</th>
+				  		</th>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/hapus_usulan_diklat/'.$r->id_dtl.'/-'); ?>" class="btn btn-danger">Hapus</a>
+				  		</th>
+					<?php } ?>
+			  		
 				</tr>
 			<?php endforeach; ?>
 		<?php } ?>

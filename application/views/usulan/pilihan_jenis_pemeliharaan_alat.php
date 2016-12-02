@@ -6,6 +6,11 @@
 <div class="tableMiddlePage">
 	<h1>Daftar Usulan Pemeliharaan</h1>
 
+	<?php if ($diketahui == 0){ ?>
+		<h3 style="color: red">Usulan sudah diketahui oleh Penanggung Jawab/Kepala Unit,</h3>
+    	<h3 style="color: red">Untuk dapat mengubah/menambah usulan silakan menghubungi Penanggung Jawab/Kepala agar usulan membatalkan ketahui usulan di menu Ketahui Usulan </h3>
+    <?php } ?>
+
 	<table class="table table-bordered" >
 		<tr>
 			<th>No.</th>
@@ -51,12 +56,14 @@
 			  		<th>
 			  			<?php echo $r->info; ?>
 			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/ubah_usulan_pemeliharaan_alat_form/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-success">Perbaharui</a>
-			  		</th>
-			  		<th>
-			  			<a href="<?php echo base_url('/site/hapus_usulan_pemeliharaan_alat/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-danger">Hapus</a>
-			  		</th>
+			  		<?php if ($diketahui == 1){ ?>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/ubah_usulan_pemeliharaan_alat_form/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-success">Perbaharui</a>
+				  		</th>
+				  		<th>
+				  			<a href="<?php echo base_url('/site/hapus_usulan_pemeliharaan_alat/'.$r->id_dtl_pmlhrn_alat.''); ?>" class="btn btn-danger">Hapus</a>
+				  		</th>
+			  		<?php }?>
 				</tr>
 			<?php endforeach; ?>
 		<?php }?>
